@@ -146,4 +146,65 @@ export const fr = {
     skipToContent: 'Aller au contenu principal',
     externalLink: '(nouvelle fenêtre)',
   },
+  legalPages: {
+    lastUpdatedLabel: 'Dernière mise à jour :',
+    lastUpdated: '19 juillet 2026',
+    backHome: "Retour à l'accueil",
+    mentions: {
+      metaTitle: 'Mentions légales — REMOLUX',
+      metaDescription: 'Mentions légales du site REMOLUX, édité par la société GRYCO.',
+      title: 'Mentions légales',
+      intro:
+        "Conformément à la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique (LCEN), les informations suivantes identifient l'éditeur et l'hébergeur de ce site.",
+      publisherHeading: 'Éditeur du site',
+      publisherLabels: {
+        company: 'Société',
+        form: 'Forme juridique',
+        capital: 'Capital social',
+        siret: 'SIRET',
+        address: 'Siège social',
+        director: 'Directeur de la publication',
+        contact: 'Contact',
+      },
+      brandNote: 'REMOLUX est une marque commercialisée par la société GRYCO.',
+      hostHeading: 'Hébergement',
+      hostIntro: 'Le site est hébergé par :',
+      ipHeading: 'Propriété intellectuelle',
+      ipBody:
+        "L'ensemble des contenus de ce site (textes, visuels, logo, identité graphique) est la propriété de la société GRYCO, sauf mention contraire. Toute reproduction ou représentation, totale ou partielle, sans autorisation écrite préalable est interdite.",
+      externalHeading: 'Liens externes',
+      externalBody:
+        "Ce site est une vitrine de présentation : l'achat du produit s'effectue sur Amazon, via des liens clairement identifiés. La société GRYCO n'est pas responsable du contenu des sites tiers vers lesquels elle renvoie. Les conditions de vente, de livraison et de retour applicables à l'achat sont celles d'Amazon.",
+      lawHeading: 'Droit applicable',
+      lawBody:
+        'Le présent site et ses mentions légales sont soumis au droit français. En cas de litige, et à défaut de résolution amiable, les tribunaux français seront seuls compétents.',
+    },
+    privacy: {
+      metaTitle: 'Politique de confidentialité — REMOLUX',
+      metaDescription:
+        'Politique de confidentialité du site REMOLUX : données collectées, cookies, droits des visiteurs.',
+      title: 'Politique de confidentialité',
+      intro:
+        'Cette page décrit, simplement et sans jargon, les données traitées lors de votre visite sur ce site — et celles qui ne le sont pas.',
+      controllerHeading: 'Responsable du traitement',
+      collectHeading: 'Données collectées',
+      collectBody:
+        'Ce site ne comporte ni compte utilisateur, ni formulaire, ni paiement, ni outil de suivi publicitaire. La simple consultation du site ne donne lieu à aucune collecte de données personnelles par la société GRYCO.',
+      contactHeading: 'Contact par email',
+      contactBody:
+        'Si vous nous écrivez, votre adresse email et le contenu de votre message sont utilisés uniquement pour vous répondre. Ils sont conservés le temps nécessaire au traitement de votre demande, puis supprimés. Ils ne sont ni cédés, ni utilisés à des fins commerciales.',
+      cookiesHeading: 'Cookies et stockage local',
+      cookiesBody:
+        "Ce site n'utilise aucun cookie. Un stockage de session technique (sessionStorage) mémorise uniquement, le temps de votre visite, le fait que l'écran d'introduction a déjà été affiché. Il ne contient aucune donnée personnelle, n'est transmis à personne et disparaît à la fermeture du navigateur. Ce type de stockage strictement technique est exempté de consentement (recommandations CNIL).",
+      hostingHeading: 'Hébergement',
+      hostingBody:
+        'Le site est hébergé par Vercel Inc. Comme tout hébergeur, Vercel traite des journaux techniques de connexion (adresses IP) à des fins de sécurité et de bon fonctionnement du service, selon sa propre politique de confidentialité, consultable sur vercel.com.',
+      amazonHeading: 'Achat sur Amazon',
+      amazonBody:
+        "L'achat du produit s'effectue intégralement sur Amazon. À partir du moment où vous quittez ce site, la politique de confidentialité d'Amazon s'applique — nous n'avons accès à aucune donnée de votre commande.",
+      rightsHeading: 'Vos droits',
+      rightsBody:
+        "Conformément au Règlement général sur la protection des données (RGPD), vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité sur les données vous concernant. Pour l'exercer, écrivez-nous par email. Vous pouvez également adresser une réclamation à la CNIL (cnil.fr).",
+    },
+  },
 } as const;

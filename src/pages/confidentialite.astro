@@ -1,0 +1,52 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { getDictionary } from '../i18n';
+import { SITE } from '../config/site';
+
+const t = getDictionary();
+const p = t.legalPages.privacy;
+const legal = SITE.legal;
+---
+
+<LegalLayout title={p.title} metaTitle={p.metaTitle} metaDescription={p.metaDescription}>
+  <p>{p.intro}</p>
+
+  <section aria-labelledby="responsable">
+    <h2 id="responsable">{p.controllerHeading}</h2>
+    <p>
+      {legal.companyName} ({legal.companyForm}), {legal.address}. Contact : <a
+        href={`mailto:${SITE.email}`}>{SITE.email}</a
+      >
+    </p>
+  </section>
+
+  <section aria-labelledby="donnees">
+    <h2 id="donnees">{p.collectHeading}</h2>
+    <p>{p.collectBody}</p>
+  </section>
+
+  <section aria-labelledby="contact">
+    <h2 id="contact">{p.contactHeading}</h2>
+    <p>{p.contactBody}</p>
+  </section>
+
+  <section aria-labelledby="cookies">
+    <h2 id="cookies">{p.cookiesHeading}</h2>
+    <p>{p.cookiesBody}</p>
+  </section>
+
+  <section aria-labelledby="hebergement">
+    <h2 id="hebergement">{p.hostingHeading}</h2>
+    <p>{p.hostingBody}</p>
+  </section>
+
+  <section aria-labelledby="amazon">
+    <h2 id="amazon">{p.amazonHeading}</h2>
+    <p>{p.amazonBody}</p>
+  </section>
+
+  <section aria-labelledby="droits">
+    <h2 id="droits">{p.rightsHeading}</h2>
+    <p>{p.rightsBody}</p>
+  </section>
+</LegalLayout>

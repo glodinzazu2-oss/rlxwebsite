@@ -9,7 +9,12 @@ import sitemap from '@astrojs/sitemap';
  */
 export default defineConfig({
   site: 'https://www.remolux.com',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // Pages légales en noindex (voir .claude/seo.md §3 et §7) : exclues du sitemap.
+      filter: (page) => !page.includes('/mentions-legales') && !page.includes('/confidentialite'),
+    }),
+  ],
   compressHTML: true,
   build: {
     inlineStylesheets: 'auto',

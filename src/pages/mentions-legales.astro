@@ -1,0 +1,60 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { getDictionary } from '../i18n';
+import { SITE } from '../config/site';
+
+const t = getDictionary();
+const m = t.legalPages.mentions;
+const legal = SITE.legal;
+---
+
+<LegalLayout title={m.title} metaTitle={m.metaTitle} metaDescription={m.metaDescription}>
+  <p>{m.intro}</p>
+
+  <section aria-labelledby="editeur">
+    <h2 id="editeur">{m.publisherHeading}</h2>
+    <dl>
+      <dt>{m.publisherLabels.company}</dt>
+      <dd>{legal.companyName}</dd>
+      <dt>{m.publisherLabels.form}</dt>
+      <dd>{legal.companyForm}</dd>
+      <dt>{m.publisherLabels.capital}</dt>
+      <dd>{legal.shareCapital}</dd>
+      <dt>{m.publisherLabels.siret}</dt>
+      <dd>{legal.siret}</dd>
+      <dt>{m.publisherLabels.address}</dt>
+      <dd>{legal.address}</dd>
+      <dt>{m.publisherLabels.director}</dt>
+      <dd>{legal.president}</dd>
+      <dt>{m.publisherLabels.contact}</dt>
+      <dd><a href={`mailto:${SITE.email}`}>{SITE.email}</a></dd>
+    </dl>
+    <p>{m.brandNote}</p>
+  </section>
+
+  <section aria-labelledby="hebergement">
+    <h2 id="hebergement">{m.hostHeading}</h2>
+    <p>
+      {m.hostIntro}
+      {legal.host.name}, {legal.host.address} —
+      <a href={legal.host.website} target="_blank" rel="noopener noreferrer">
+        {legal.host.website.replace('https://', '')}
+      </a>
+    </p>
+  </section>
+
+  <section aria-labelledby="propriete">
+    <h2 id="propriete">{m.ipHeading}</h2>
+    <p>{m.ipBody}</p>
+  </section>
+
+  <section aria-labelledby="liens">
+    <h2 id="liens">{m.externalHeading}</h2>
+    <p>{m.externalBody}</p>
+  </section>
+
+  <section aria-labelledby="droit">
+    <h2 id="droit">{m.lawHeading}</h2>
+    <p>{m.lawBody}</p>
+  </section>
+</LegalLayout>
