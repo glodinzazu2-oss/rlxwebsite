@@ -29,7 +29,7 @@ Même en l'absence d'une suite de tests automatisés complète dès le départ, 
 
 REMOLUX est un projet de marque vivant : nouvelles sections, nouveaux produits, nouvelles campagnes viendront s'ajouter dans le temps. L'architecture doit absorber cette croissance sans réécriture majeure — ce qui signifie des interfaces stables, des responsabilités bien séparées, et l'absence de couplage inutile entre les couches (contenu, présentation, animation, 3D).
 
-**Principe d'arbitrage permanent** : à chaque décision technique, la question n'est jamais "est-ce que ça marche ?" mais *"est-ce que ça reste compréhensible, maintenable et cohérent dans deux ans, pour quelqu'un qui découvre ce projet ?"*
+**Principe d'arbitrage permanent** : à chaque décision technique, la question n'est jamais "est-ce que ça marche ?" mais _"est-ce que ça reste compréhensible, maintenable et cohérent dans deux ans, pour quelqu'un qui découvre ce projet ?"_
 
 ---
 
@@ -58,42 +58,55 @@ public/             → fichiers statiques servis tels quels (favicon, robots.tx
 ## Rôle précis de chaque dossier
 
 ### `pages/`
+
 Contient exclusivement les fichiers qui définissent des routes. Une page assemble des `layouts/` et des `sections/` — elle ne doit **jamais** contenir de logique métier, de style complexe ou d'animation directe. Une page se lit comme un sommaire.
 
 ### `layouts/`
+
 Structures de page communes (squelette HTML, `<head>`, navigation globale, footer). Un layout ne connaît jamais le contenu spécifique d'une page — il expose des slots/`<slot />` que la page vient remplir.
 
 ### `components/`
+
 Briques UI atomiques et génériques (bouton, carte, icône, champ, badge). Un composant de ce dossier ne doit jamais connaître le contexte métier dans lequel il est utilisé — il doit pouvoir être déplacé sur n'importe quel projet Astro sans modification. Voir section 3 pour la philosophie de composition.
 
 ### `sections/`
+
 Assemblages de composants formant une section complète de page (Hero, Problème, Fonctionnement, Preuves, Avis, CTA). Une section connaît le contenu et le contexte métier ; elle orchestre des composants de `components/` sans en redéfinir le style interne.
 
 ### `features/`
+
 Regroupe la logique fonctionnelle transverse par domaine métier quand elle dépasse la portée d'un simple composant (ex. un système de galerie produit avec son état, ses composants et sa logique dédiée). Un `feature` est un module autonome : il expose une interface claire et cache son fonctionnement interne.
 
 ### `lib/`
+
 Logique métier, configuration, constantes de domaine, clients d'intégration externe (ex. configuration Amazon, constantes de marque). Ne contient jamais de composant UI.
 
 ### `utils/`
+
 Fonctions utilitaires pures et génériques, sans état, sans effet de bord, réutilisables indépendamment du domaine métier (formatage, calculs, helpers génériques). Si une fonction utilitaire devient spécifique au métier REMOLUX, elle appartient à `lib/`, pas à `utils/`.
 
 ### `hooks/`
+
 Logique réutilisable côté client liée à un cycle de vie ou à un état (ex. détection de viewport, gestion d'intersection observer, état de scroll). Réservé aux comportements transverses utilisés par plusieurs composants.
 
 ### `types/`
+
 Définitions TypeScript partagées entre plusieurs modules (interfaces de contenu, types de domaine). Un type utilisé dans un seul fichier reste local à ce fichier — il ne migre vers `types/` que lorsqu'il est réellement partagé.
 
 ### `assets/`
+
 Médias sources destinés à être traités par le pipeline de build Astro (optimisation d'image, compression). Jamais de médias déjà pré-optimisés à la main en dehors de ce pipeline sans raison.
 
 ### `styles/`
+
 Design tokens globaux (couleurs, typographie, espacements, easings — cohérents avec `design.md`), styles de base et resets. Aucun style spécifique à un composant ne doit s'y trouver — les styles de composants restent colocalisés avec leur composant.
 
 ### `animations/`
+
 Toute la logique GSAP et Lenis isolée du markup (voir section 9 et `motion.md`). Aucune timeline complexe ne doit être écrite inline dans un composant.
 
 ### `public/`
+
 Fichiers strictement statiques, non traités par le pipeline de build (favicon, `robots.txt`, `sitemap.xml`). Rien qui bénéficierait d'une optimisation automatique ne doit s'y trouver.
 
 **Règle stricte** : avant de créer un fichier, toujours se demander à quel dossier il appartient selon cette hiérarchie. Un fichier "qui ne sait pas où aller" est le signe d'une responsabilité mal définie — clarifier cette responsabilité avant de choisir un emplacement par défaut.
@@ -169,7 +182,7 @@ Un composant qui n'est plus référencé nulle part dans le projet doit être su
 
 Lorsqu'un composant gère visiblement plusieurs responsabilités distinctes (affichage + état + animation + logique de données), ou lorsqu'il devient difficile de nommer clairement ce qu'il fait en une phrase courte.
 
-**Méthode de décision rapide** : avant toute action sur un composant, répondre à trois questions — *Existe-t-il déjà quelque chose de similaire ? Ce composant a-t-il une seule responsabilité claire ? Ce composant reste-t-il utilisé quelque part ?* Les réponses déterminent directement s'il faut créer, réutiliser, fusionner, découper ou supprimer.
+**Méthode de décision rapide** : avant toute action sur un composant, répondre à trois questions — _Existe-t-il déjà quelque chose de similaire ? Ce composant a-t-il une seule responsabilité claire ? Ce composant reste-t-il utilisé quelque part ?_ Les réponses déterminent directement s'il faut créer, réutiliser, fusionner, découper ou supprimer.
 
 ---
 
@@ -193,7 +206,7 @@ Un store global (si nécessaire) reste réservé à un état véritablement tran
 
 ## Éviter les états globaux inutiles
 
-Le réflexe par défaut ne doit jamais être la création d'un store. Un état global mal justifié introduit du couplage invisible et complique la traçabilité du flux de données. Chaque état global doit pouvoir être justifié par une phrase claire : *"cet état doit être global parce que ces deux composants n'ont aucune relation hiérarchique directe et ont pourtant besoin de la même valeur en temps réel."*
+Le réflexe par défaut ne doit jamais être la création d'un store. Un état global mal justifié introduit du couplage invisible et complique la traçabilité du flux de données. Chaque état global doit pouvoir être justifié par une phrase claire : _"cet état doit être global parce que ces deux composants n'ont aucune relation hiérarchique directe et ont pourtant besoin de la même valeur en temps réel."_
 
 ## Prévisibilité
 
@@ -241,15 +254,15 @@ Si un framework UI (React, Vue, Svelte...) est introduit pour un besoin spécifi
 
 ## Récapitulatif de décision
 
-| Besoin | Stratégie |
-|---|---|
-| Contenu statique, sans interactivité | Composant Astro pur, aucune hydratation |
-| Interaction critique visible immédiatement | `client:load`, usage minimal |
-| Interaction secondaire au-dessus de la ligne de flottaison | `client:idle` |
-| Interaction ou animation plus bas dans la page (scroll) | `client:visible` (par défaut recommandé) |
-| Interactivité dépendante d'un breakpoint | `client:media` |
-| Dépendance stricte à une API navigateur dès le rendu | `client:only` (exceptionnel) |
-| Contenu dynamique dépendant de la requête | SSR (validation explicite requise) |
+| Besoin                                                     | Stratégie                                |
+| ---------------------------------------------------------- | ---------------------------------------- |
+| Contenu statique, sans interactivité                       | Composant Astro pur, aucune hydratation  |
+| Interaction critique visible immédiatement                 | `client:load`, usage minimal             |
+| Interaction secondaire au-dessus de la ligne de flottaison | `client:idle`                            |
+| Interaction ou animation plus bas dans la page (scroll)    | `client:visible` (par défaut recommandé) |
+| Interactivité dépendante d'un breakpoint                   | `client:media`                           |
+| Dépendance stricte à une API navigateur dès le rendu       | `client:only` (exceptionnel)             |
+| Contenu dynamique dépendant de la requête                  | SSR (validation explicite requise)       |
 
 ---
 

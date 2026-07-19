@@ -24,27 +24,35 @@ REMOLUX ne cherche jamais à provoquer un "wahou" technique. Elle cherche à pro
 # 2. Principes fondamentaux
 
 ## Le mouvement suit le regard
+
 Toute animation doit accompagner la direction naturelle du regard (haut vers bas, gauche vers droite), jamais la contredire. Un élément qui apparaît dans une direction inattendue force l'utilisateur à réajuster son attention — c'est une friction, pas un effet.
 
 ## Le mouvement révèle, il ne cache jamais
+
 Une animation ne doit jamais masquer temporairement une information dont l'utilisateur a besoin. Elle prépare et introduit le contenu, elle ne le retient pas artificiellement pour créer un effet de suspense inutile.
 
 ## Le mouvement ne surprend jamais
+
 Aucune animation ne doit démarrer de façon abrupte, imprévisible ou déclenchée sans lien clair avec une action ou une position de l'utilisateur (scroll, hover, clic). La surprise casse la confiance ; la prévisibilité la construit.
 
 ## Le mouvement respecte l'utilisateur
+
 Il respecte son rythme (jamais plus rapide que ce qu'il peut suivre, jamais plus lent que ce qu'il peut tolérer), ses préférences système (`prefers-reduced-motion`, voir section 13), et son intention (une animation ne doit jamais empêcher ou retarder une action que l'utilisateur souhaite effectuer).
 
 ## Le mouvement ne ralentit jamais
+
 Aucune animation ne doit être un obstacle à la progression de l'utilisateur dans la page. Si une animation retarde perceptiblement l'accès à un contenu ou à une action, elle est mal calibrée et doit être raccourcie ou supprimée.
 
 ## Le mouvement est cohérent
+
 Le même type d'interaction produit toujours le même type de mouvement, avec les mêmes timings et les mêmes easings, partout sur le site. Cette cohérence est ce qui transforme une collection d'animations en un véritable langage de marque.
 
 ## Le mouvement est discret par défaut
+
 L'intensité d'une animation doit toujours être la plus faible possible pour remplir sa fonction. Une animation subtile qui atteint son objectif est toujours préférable à une animation spectaculaire qui atteint le même objectif avec plus de bruit visuel.
 
 ## Le mouvement est réversible dans sa perception
+
 L'utilisateur doit toujours pouvoir "suivre mentalement" ce qui s'est passé visuellement — d'où vient l'élément, où il va. Un mouvement trop rapide ou trop complexe pour être suivi par l'œil casse la sensation de maîtrise.
 
 ---
@@ -54,27 +62,35 @@ L'utilisateur doit toujours pouvoir "suivre mentalement" ce qui s'est passé vis
 Chaque émotion cible correspond à des choix précis de motion design :
 
 ## Fluidité
+
 Produite par des courbes d'easing continues (jamais linéaires), un scroll fluide (Lenis) parfaitement synchronisé avec les animations, et l'absence totale de saccade (jank) perceptible à 60fps.
 
 ## Précision
+
 Produite par des timings exacts et cohérents, des points de départ et d'arrivée d'animation alignés sur la grille du design system, et des mouvements qui s'arrêtent net à leur position finale sans dépassement (overshoot) non maîtrisé.
 
 ## Robustesse
+
 Produite par des mouvements qui ont du poids et de la matière (easing avec une légère résistance en fin de course plutôt qu'un arrêt artificiel), évoquant un mécanisme physique solide plutôt qu'un élément numérique sans consistance.
 
 ## Élégance
+
 Produite par la retenue : peu d'animations simultanées, une hiérarchie claire dans l'ordre d'apparition des éléments, et l'absence de tout effet superflu.
 
 ## Technologie
+
 Produite par des transitions nettes et rapides sur les micro-interactions (hover, focus), et par le rendu 3D qui démontre le produit avec une précision quasi chirurgicale.
 
 ## Silence
+
 Produite par l'absence de mouvement inutile en dehors des zones d'interaction — un écran au repos doit rester véritablement au repos, sans animation de fond continue qui solliciterait l'attention sans raison.
 
 ## Maîtrise
+
 Produite par la prévisibilité totale du comportement de chaque élément animé : le même geste produit toujours le même résultat, sans exception ni variation aléatoire.
 
 ## Confiance
+
 Produite par la stabilité (jamais de layout shift), la continuité (jamais de rupture brutale entre deux états), et la cohérence du langage de mouvement sur l'ensemble du site.
 
 ---
@@ -84,24 +100,31 @@ Produite par la stabilité (jamais de layout shift), la continuité (jamais de r
 Le site doit avoir un tempo pensé comme une partition, avec des temps forts et des temps de respiration.
 
 ## Hero
+
 Entrée posée et confiante : apparition progressive et hiérarchisée des éléments (visuel produit, accroche, sous-texte, CTA secondaire), jamais tout en même temps. Premier souffle du site — il donne le tempo de tout ce qui suit.
 
 ## Sections
+
 Chaque nouvelle section se révèle au rythme du scroll de l'utilisateur, jamais de façon automatique ou déconnectée de son geste. Le tempo interne d'une section (ordre d'apparition de ses éléments) suit toujours la hiérarchie de lecture définie dans `ux.md`.
 
 ## Transitions entre sections
+
 Continues et sans rupture — la fin d'une section prépare visuellement l'entrée dans la suivante (fondu, léger décalage de profondeur), jamais de coupure nette qui donnerait une sensation de pages assemblées artificiellement.
 
 ## CTA
+
 Apparition calme, jamais précipitée. Le CTA ne doit jamais sembler "surgir" — il doit sembler être la conséquence naturelle du contenu qui vient de se dérouler.
 
 ## Footer
+
 Ralentissement du tempo général, signalant la fin du parcours narratif. Mouvement minimal, presque immobile, pour installer une sensation de conclusion sereine.
 
 ## Chargement
+
 Le tempo doit rester perceptible même pendant le chargement initial (voir section 11 pour la performance) — jamais un écran figé sans signal de vie, mais jamais non plus un loader spectaculaire qui deviendrait lui-même un point d'attention excessif.
 
 ## Sortie (navigation vers Amazon)
+
 Le dernier mouvement avant la sortie du site (clic CTA) doit être bref, net et confirmatif — une micro-animation de retour au clic suffit ; aucune transition de sortie complexe n'est nécessaire ni souhaitable.
 
 **Le site doit se ressentir comme une seule respiration continue du haut vers le bas de la page**, jamais comme une suite d'écrans indépendants.
@@ -112,18 +135,18 @@ Le dernier mouvement avant la sortie du site (clic CTA) doit être bref, net et 
 
 Recommandations précises de durée, à respecter comme règle par défaut sauf justification documentée.
 
-| Interaction | Durée recommandée | Durée interdite |
-|---|---|---|
-| Hover (couleur, fond, bordure) | 150–200 ms | > 400 ms (perçu comme lent) |
-| Focus (apparition du contour) | 100–150 ms (quasi instantané) | tout délai perceptible (nuit à l'accessibilité) |
-| Click / micro-feedback | 80–120 ms | > 200 ms (donne une sensation de latence) |
-| Fade (apparition/disparition simple) | 300–500 ms | < 150 ms (saccadé) ou > 800 ms (mou) |
-| Reveal de contenu au scroll | 400–700 ms | > 1000 ms (retarde la lecture) |
-| Cards (apparition, hover) | 250–400 ms | > 600 ms |
-| Images (apparition, zoom léger au hover) | 300–500 ms | > 700 ms ou effet de zoom > 5-8% |
-| Navigation (ouverture menu mobile) | 250–350 ms | > 500 ms |
-| Transitions de section | 500–800 ms | > 1200 ms (casse le rythme de scroll) |
-| Loader / écran de chargement | dépendant du temps réel de chargement, jamais artificiellement allongé | tout délai ajouté artificiellement pour "faire patienter" |
+| Interaction                              | Durée recommandée                                                      | Durée interdite                                           |
+| ---------------------------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------- |
+| Hover (couleur, fond, bordure)           | 150–200 ms                                                             | > 400 ms (perçu comme lent)                               |
+| Focus (apparition du contour)            | 100–150 ms (quasi instantané)                                          | tout délai perceptible (nuit à l'accessibilité)           |
+| Click / micro-feedback                   | 80–120 ms                                                              | > 200 ms (donne une sensation de latence)                 |
+| Fade (apparition/disparition simple)     | 300–500 ms                                                             | < 150 ms (saccadé) ou > 800 ms (mou)                      |
+| Reveal de contenu au scroll              | 400–700 ms                                                             | > 1000 ms (retarde la lecture)                            |
+| Cards (apparition, hover)                | 250–400 ms                                                             | > 600 ms                                                  |
+| Images (apparition, zoom léger au hover) | 300–500 ms                                                             | > 700 ms ou effet de zoom > 5-8%                          |
+| Navigation (ouverture menu mobile)       | 250–350 ms                                                             | > 500 ms                                                  |
+| Transitions de section                   | 500–800 ms                                                             | > 1200 ms (casse le rythme de scroll)                     |
+| Loader / écran de chargement             | dépendant du temps réel de chargement, jamais artificiellement allongé | tout délai ajouté artificiellement pour "faire patienter" |
 
 ## Durées interdites, en synthèse
 
@@ -136,21 +159,27 @@ Recommandations précises de durée, à respecter comme règle par défaut sauf 
 # 6. Les easings
 
 ## power1
+
 Le plus doux des `power`. Utilisé pour des mouvements très subtils, presque imperceptibles (micro-décalages, respiration légère). À utiliser quand le mouvement doit être ressenti sans être identifié consciemment.
 
 ## power2
+
 L'easing par défaut du projet pour la grande majorité des transitions (fade, reveal, hover). Il offre une accélération/décélération naturelle et confiante, sans excès. **C'est l'easing de référence de REMOLUX.**
 
 ## power3
+
 Réservé aux mouvements plus marqués nécessitant une décélération plus prononcée en fin de course (grands déplacements, transitions de section importantes). À utiliser avec parcimonie — son usage systématique donnerait une sensation de mouvement trop appuyé.
 
 ## expo
+
 Réservé aux entrées ou sorties rapides et nettes (ex. apparition d'un élément d'interface critique). Son accélération/décélération très marquée en fait un easing à utiliser uniquement pour des moments ponctuels et volontairement affirmés — jamais en usage courant.
 
 ## circ
+
 Peut être utilisé pour des mouvements circulaires ou des rotations légères (ex. interaction avec le produit en 3D) où une décélération très douce en fin de course est recherchée. Usage rare et spécifique.
 
 ## sine
+
 Le plus neutre et le plus doux de tous. Adapté aux animations continues ou en boucle légère (ex. respiration très subtile d'un halo lumineux) où l'on veut éviter toute sensation mécanique. À utiliser uniquement pour des effets d'ambiance très discrets.
 
 ## Philosophie des easings
@@ -215,36 +244,47 @@ Toute animation liée au scroll doit être testée après redimensionnement de l
 # 8. Les micro-interactions
 
 ## Hover
+
 Changement subtil et immédiat (150–200 ms, `power2.out`) de couleur, de fond ou d'élévation. Jamais de changement de taille brutal ni de rotation.
 
 ## Focus
+
 Apparition quasi instantanée d'un contour ou halo net et visible, conforme à l'accessibilité — jamais retardée, jamais supprimée pour raison esthétique.
 
 ## Active / Pressed
+
 Micro-retour visuel très bref (80–120 ms) au moment du clic ou du toucher (légère variation d'opacité ou d'échelle, jamais de saut de position), confirmant la prise en compte du geste avant même le résultat de l'action.
 
 ## Drag (si applicable, ex. rotation produit en 3D)
+
 Le mouvement doit suivre fidèlement le geste de l'utilisateur en temps réel (sans latence perceptible), avec un relâchement en douceur (`ease-out`) une fois le geste terminé, jamais un arrêt brutal ou un rebond exagéré.
 
 ## Cursor
+
 Si un curseur personnalisé est utilisé (desktop uniquement), son comportement doit rester discret et fonctionnel (ex. changement subtil au survol d'un élément interactif) — jamais un effet spectaculaire qui détournerait l'attention du contenu.
 
 ## Navigation / Menu
+
 Ouverture et fermeture fluides (250–350 ms), avec une hiérarchie d'apparition des éléments du menu (pas tous simultanément) pour renforcer la sensation de contrôle et de clarté.
 
 ## CTA
+
 Micro-animation de confirmation au hover et au clic (cohérent avec `design.md` section 10 et `ux.md` section 10) — jamais de pulsation continue ou d'effet d'appel à l'action agressif.
 
 ## Cards
+
 Légère élévation ou variation de fond au hover (250–400 ms, `power2.out`), jamais de rotation, de zoom excessif ou d'inclinaison 3D exagérée (tilt).
 
 ## Images
+
 Zoom très léger au hover si pertinent (maximum 5–8%, jamais plus), toujours avec un `overflow: hidden` propre sur le conteneur pour éviter tout débordement disgracieux.
 
 ## Icônes
+
 Micro-mouvement discret uniquement si l'icône est elle-même interactive (ex. légère rotation d'un chevron), jamais d'animation sur une icône purement décorative.
 
 ## Liens
+
 Changement de couleur ou de soulignement progressif (150–200 ms), jamais de saut brusque ou de soulignement qui apparaît instantanément sans transition.
 
 ---
@@ -252,30 +292,39 @@ Changement de couleur ou de soulignement progressif (150–200 ms), jamais de sa
 # 9. Les transitions
 
 ## Entrée
+
 Toute apparition de contenu (section, image, texte) suit un `ease-out` avec un léger décalage de position initiale (quelques pixels, jamais un déplacement large) combiné à un fondu — jamais une apparition instantanée ni un déplacement large et rapide qui distrairait.
 
 ## Sortie
+
 Une sortie doit toujours être aussi soignée que l'entrée : fondu et léger décalage inverse, avec une durée légèrement plus courte que l'entrée pour ne jamais donner une sensation de lenteur au moment de quitter un état.
 
 ## Section à section
+
 Continuité visuelle assurée par un chevauchement léger des animations d'entrée/sortie (la section suivante commence à apparaître légèrement avant que la précédente ait totalement disparu du champ d'attention), pour éviter tout "trou" visuel.
 
 ## Page à page (navigation interne, le cas échéant)
+
 Transition cohérente avec le langage du site (fondu, jamais de slide brutal ou d'effet de page qui se retourne). La continuité prime toujours sur l'originalité.
 
 ## Overlay (menu mobile, modal éventuelle)
+
 Apparition en fondu avec léger effet de profondeur (l'arrière-plan peut s'assombrir légèrement), fermeture symétrique et tout aussi soignée que l'ouverture.
 
 ## Loader
+
 Le loader (si nécessaire, ex. chargement d'une scène 3D lourde) doit rester minimaliste, cohérent avec l'identité de marque, et ne jamais donner une impression d'attente excessive — voir section 11 pour la philosophie de performance liée.
 
 ## Images
+
 Chargement progressif soigné (fondu à l'apparition une fois l'image chargée), jamais de saut brutal d'un espace vide à l'image pleinement chargée sans transition.
 
 ## Texte
+
 Apparition du texte toujours groupée par bloc logique (titre, puis paragraphe), jamais lettre par lettre ou mot par mot de façon systématique (effet trop démonstratif, à réserver à un usage exceptionnel et justifié narrativement).
 
 ## CTA
+
 La transition d'apparition du CTA doit toujours sembler être la conclusion naturelle du mouvement de la section qui précède, jamais un élément qui surgit indépendamment.
 
 **Règle absolue de cette section : ne jamais créer de rupture.** Chaque transition doit donner l'impression que l'écran précédent et l'écran suivant appartiennent à la même continuité narrative et visuelle.
@@ -287,36 +336,47 @@ La transition d'apparition du CTA doit toujours sembler être la conclusion natu
 Le rendu 3D est un outil de motion design à part entière, soumis aux mêmes exigences de retenue et d'intention que GSAP.
 
 ## Caméra
+
 Mouvements de caméra lents, continus, toujours motivés par un objectif de démonstration (révéler un angle, un détail) — jamais de mouvement de caméra rapide, saccadé ou orbital continu sans interaction utilisateur.
 
 ## Rotation
+
 Si le produit peut être tourné par l'utilisateur (drag), la rotation doit être fluide et directement proportionnelle au geste, avec un léger amorti (`ease-out`) au relâchement. Aucune rotation automatique continue n'est activée par défaut sans interaction — un produit qui tourne seul indéfiniment devient rapidement un gadget plutôt qu'une démonstration.
 
 ## Lumière
+
 Éclairage cohérent avec la palette de `design.md` (tons froids, halos LED), utilisé pour sculpter le volume du produit et souligner ses détails de fabrication — jamais un éclairage plat qui aplatirait la perception de qualité.
 
 ## HDRI
+
 Si un environnement HDRI est utilisé pour les reflets, il doit rester discret et cohérent avec l'univers de marque (jamais un environnement studio générique ou un ciel spectaculaire qui détournerait l'attention du produit).
 
 ## Reflets
+
 Les reflets sur les surfaces du produit (boîtier, verre de LED) doivent rester réalistes et subtils — ils renforcent la perception de qualité matérielle sans devenir un effet visuel dominant.
 
 ## Ombres
+
 Ombres douces et réalistes, cohérentes avec la lumière définie, utilisées pour ancrer le produit dans son espace 3D — jamais d'ombres dures ou stylisées qui casseraient le réalisme recherché.
 
 ## Animations
+
 Toute animation 3D (apparition du produit, démonstration du mécanisme magnétique) suit les mêmes principes de timing et d'easing que le reste du site (sections 5 et 6) — le 3D n'a pas de vocabulaire de mouvement séparé du reste du site, il applique le même langage dans un espace tridimensionnel.
 
 ## Interaction
+
 Les interactions 3D (drag, hover sur une pièce du produit) doivent rester intuitives et découvrables sans explication — si une interaction 3D nécessite un mode d'emploi, elle est trop complexe pour l'objectif du site.
 
 ## Idle (état de repos)
+
 En l'absence d'interaction, la scène peut présenter un mouvement extrêmement subtil (respiration légère de la lumière, très léger flottement) pour signaler que la scène est vivante — jamais un mouvement assez marqué pour être qualifié d'animation active.
 
 ## Performance
+
 Le rendu 3D doit toujours respecter le budget de performance global du site (section 11) — geometry et texture optimisées, boucle de rendu suspendue hors du viewport.
 
 ## Fallback
+
 Une version dégradée (image statique haute qualité) est systématiquement prévue en cas d'incompatibilité ou de contrainte de performance — jamais d'écran vide ou cassé.
 
 **Rappel central : le 3D doit toujours servir le produit.** Aucun effet 3D n'est validé s'il ne renforce pas directement la perception de qualité, de robustesse ou de compréhension du fonctionnement du produit REMOLUX.

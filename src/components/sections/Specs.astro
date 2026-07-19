@@ -11,12 +11,14 @@ const t = getDictionary();
     <SectionHeading eyebrow={t.specs.eyebrow} title={t.specs.title} titleId="specs-title" />
 
     <dl class="specs__grid" data-reveal data-reveal-delay="0.1">
-      {SPECS.map((spec) => (
-        <div class="specs__row">
-          <dt class="specs__label">{spec.label}</dt>
-          <dd class="specs__value">{spec.value}</dd>
-        </div>
-      ))}
+      {
+        SPECS.map((spec) => (
+          <div class="specs__row">
+            <dt class="specs__label">{spec.label}</dt>
+            <dd class="specs__value">{spec.value}</dd>
+          </div>
+        ))
+      }
     </dl>
 
     <p class="specs__note" data-reveal data-reveal-delay="0.15">{t.specs.note}</p>

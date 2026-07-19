@@ -6,9 +6,9 @@
 
 :root {
   /* ----- Couleurs : fond (dark premium) ----- */
-  --color-bg: #060607;            /* Noir profond — fond principal */
-  --color-bg-elevated: #0c0c0e;   /* Surfaces surélevées (cartes) */
-  --color-bg-panel: #111114;      /* Panneaux, header au scroll */
+  --color-bg: #060607; /* Noir profond — fond principal */
+  --color-bg-elevated: #0c0c0e; /* Surfaces surélevées (cartes) */
+  --color-bg-panel: #111114; /* Panneaux, header au scroll */
   --color-border: rgba(255, 255, 255, 0.08);
   --color-border-strong: rgba(255, 255, 255, 0.16);
 
@@ -18,10 +18,10 @@
   --color-text-muted: #6b7178;
 
   /* ----- Couleurs : accents LED ----- */
-  --color-led-red: #ff1e2d;       /* Rouge LED signature */
-  --color-led-red-deep: #b3000c;  /* Rouge profond */
-  --color-amber: #ffb454;         /* Ambre clignotant */
-  --color-white-cold: #eaf2ff;    /* Blanc froid feux de recul */
+  --color-led-red: #ff1e2d; /* Rouge LED signature */
+  --color-led-red-deep: #b3000c; /* Rouge profond */
+  --color-amber: #ffb454; /* Ambre clignotant */
+  --color-white-cold: #eaf2ff; /* Blanc froid feux de recul */
 
   /* ----- Dégradés & lumières ----- */
   --gradient-led: linear-gradient(135deg, var(--color-led-red) 0%, var(--color-led-red-deep) 100%);
@@ -63,8 +63,8 @@
   --space-section: clamp(5rem, 4rem + 8vw, 11rem); /* rythme vertical des sections */
 
   /* ----- Layout ----- */
-  --container-max: 80rem;      /* 1280px */
-  --container-wide: 90rem;     /* 1440px */
+  --container-max: 80rem; /* 1280px */
+  --container-wide: 90rem; /* 1440px */
   --container-pad: clamp(1.25rem, 4vw, 3rem);
 
   /* ----- Rayons ----- */

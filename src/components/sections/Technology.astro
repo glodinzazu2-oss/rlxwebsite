@@ -7,20 +7,26 @@ const t = getDictionary();
 
 <section class="section tech" id="technologie" data-tech-section aria-labelledby="tech-title">
   <div class="container tech__inner">
-    <SectionHeading eyebrow={t.technology.eyebrow} title={t.technology.title} titleId="tech-title" />
+    <SectionHeading
+      eyebrow={t.technology.eyebrow}
+      title={t.technology.title}
+      titleId="tech-title"
+    />
 
     <div class="tech__timeline">
       <span class="tech__line" data-tech-line aria-hidden="true"></span>
       <ol class="tech__steps" role="list">
-        {t.technology.steps.map((step) => (
-          <li class="tech__step" data-tech-step>
-            <span class="tech__number">{step.number}</span>
-            <div>
-              <h3 class="tech__step-title">{step.title}</h3>
-              <p class="tech__step-desc">{step.description}</p>
-            </div>
-          </li>
-        ))}
+        {
+          t.technology.steps.map((step) => (
+            <li class="tech__step" data-tech-step>
+              <span class="tech__number">{step.number}</span>
+              <div>
+                <h3 class="tech__step-title">{step.title}</h3>
+                <p class="tech__step-desc">{step.description}</p>
+              </div>
+            </li>
+          ))
+        }
       </ol>
     </div>
   </div>
@@ -29,8 +35,7 @@ const t = getDictionary();
 <style>
   .tech {
     background:
-      radial-gradient(40% 50% at 85% 20%, rgba(255, 30, 45, 0.05), transparent 70%),
-      var(--color-bg);
+      radial-gradient(40% 50% at 85% 20%, rgba(255, 30, 45, 0.05), transparent 70%), var(--color-bg);
   }
 
   .tech__inner {

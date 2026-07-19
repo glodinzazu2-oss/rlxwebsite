@@ -8,6 +8,7 @@ Les importer dans les composants via le composant `<Image />` d'Astro :
 import { Image } from 'astro:assets';
 import produit from '../assets/images/produit-hero.jpg';
 ---
+
 <Image src={produit} alt="Kit REMOLUX sur remorque" widths={[480, 960, 1440]} format="avif" />
 ```
 

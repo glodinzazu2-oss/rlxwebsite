@@ -54,9 +54,7 @@ function initMenu(): void {
     document.documentElement.classList.toggle('menu-open', open);
   };
 
-  toggle.addEventListener('click', () =>
-    setOpen(toggle.getAttribute('aria-expanded') !== 'true')
-  );
+  toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
   menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') setOpen(false);

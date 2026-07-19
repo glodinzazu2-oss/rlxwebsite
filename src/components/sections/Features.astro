@@ -8,18 +8,24 @@ const t = getDictionary();
 
 <section class="section features" aria-labelledby="features-title">
   <div class="container">
-    <SectionHeading eyebrow={t.features.eyebrow} title={t.features.title} titleId="features-title" />
+    <SectionHeading
+      eyebrow={t.features.eyebrow}
+      title={t.features.title}
+      titleId="features-title"
+    />
 
     <ul class="features__grid" role="list">
-      {t.features.items.map((item, i) => (
-        <li class="features__card" data-reveal data-reveal-delay={String(0.06 * (i % 3))}>
-          <span class="features__icon">
-            <Icon name={item.icon} />
-          </span>
-          <h3 class="features__title">{item.title}</h3>
-          <p class="features__desc">{item.description}</p>
-        </li>
-      ))}
+      {
+        t.features.items.map((item, i) => (
+          <li class="features__card" data-reveal data-reveal-delay={String(0.06 * (i % 3))}>
+            <span class="features__icon">
+              <Icon name={item.icon} />
+            </span>
+            <h3 class="features__title">{item.title}</h3>
+            <p class="features__desc">{item.description}</p>
+          </li>
+        ))
+      }
     </ul>
   </div>
 </section>

@@ -223,11 +223,13 @@ Workflow obligatoire pour toute évolution significative envisagée sur REMOLUX 
 Cette checklist est spécifique au processus de priorisation d'une évolution (elle ne recoupe pas les checklists techniques/créatives de [`checklist.md`](./checklist.md), qui restent applicables une fois l'évolution retenue et en cours de développement).
 
 ## Alignement stratégique
+
 - [ ] L'évolution sert directement la mission de REMOLUX (`CLAUDE.md`), pas uniquement un intérêt technique ou esthétique isolé.
 - [ ] L'évolution respecte les quatre principes directeurs (qualité avant quantité, simplicité avant fonctionnalités, performance avant effets, cohérence avant nouveauté — section 2).
 - [ ] L'évolution est cohérente avec la phase actuelle du projet (section 4), ou sa priorisation anticipée est explicitement justifiée.
 
 ## Priorisation
+
 - [ ] L'impact utilisateur réel de l'évolution est clairement identifié et significatif.
 - [ ] Le coût de développement et de validation qualité a été estimé de façon réaliste.
 - [ ] Le coût de maintenance dans le temps a été explicitement évalué, pas seulement le coût de livraison initial.
@@ -235,10 +237,12 @@ Cette checklist est spécifique au processus de priorisation d'une évolution (e
 - [ ] La cohérence avec l'identité de marque et le design system existants a été vérifiée.
 
 ## Dette et maintenabilité
+
 - [ ] L'évolution n'introduit aucune dette technique, design, UX ou contenu non documentée et non assumée consciemment (section 6).
 - [ ] Si l'évolution impacte une décision fondatrice, un nouvel ADR a été envisagé conformément à `decisions.md`.
 
 ## Validation finale
+
 - [ ] Aucune des erreurs interdites listées en section 9 n'a été commise.
 - [ ] L'évolution satisfait l'ensemble des six critères de réussite définis en section 8.
 - [ ] Une fois retenue, l'évolution suit `checklist.md` intégralement (sections Brand, Git, QA notamment) avant mise en production.

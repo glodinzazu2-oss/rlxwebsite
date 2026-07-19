@@ -32,7 +32,7 @@ La 3D transforme une promesse marketing ("facile à installer") en une expérien
 
 Un rendu 3D fluide, précis, sans latence ni artefact visuel est perçu, consciemment ou non, comme une preuve indirecte de la rigueur de la marque : si REMOLUX soigne à ce point la présentation numérique de son produit, l'utilisateur en déduit intuitively que le produit physique reçoit le même niveau d'exigence. À l'inverse, une scène 3D qui rame, qui saccade, ou qui semble "gadget", détruit instantanément cette confiance — la 3D est à double tranchant, et doit donc toujours être traitée avec la plus grande rigueur technique.
 
-**Principe d'arbitrage permanent** : avant d'ajouter ou de modifier un élément 3D, toujours se demander — *"Est-ce que cet élément aide concrètement l'utilisateur à comprendre ou désirer le produit, ou est-ce une démonstration technique qui me flatte moi, développeur, plus qu'elle ne sert la marque ?"*
+**Principe d'arbitrage permanent** : avant d'ajouter ou de modifier un élément 3D, toujours se demander — _"Est-ce que cet élément aide concrètement l'utilisateur à comprendre ou désirer le produit, ou est-ce une démonstration technique qui me flatte moi, développeur, plus qu'elle ne sert la marque ?"_
 
 ---
 
@@ -173,12 +173,12 @@ Utilisée exclusivement pour simuler l'allumage réel des LED du produit — c'e
 
 ## Quand utiliser chaque matériau — récapitulatif
 
-| Surface | Matériau recommandé |
-|---|---|
-| Boîtier plastique/métal | `MeshStandardMaterial` |
-| Verre de LED | `MeshPhysicalMaterial` (transmission, clearcoat) |
-| LED allumée | `MeshStandardMaterial` avec `emissive` calibré |
-| Éléments de fixation (aimants) | `MeshStandardMaterial`, metalness élevée |
+| Surface                        | Matériau recommandé                              |
+| ------------------------------ | ------------------------------------------------ |
+| Boîtier plastique/métal        | `MeshStandardMaterial`                           |
+| Verre de LED                   | `MeshPhysicalMaterial` (transmission, clearcoat) |
+| LED allumée                    | `MeshStandardMaterial` avec `emissive` calibré   |
+| Éléments de fixation (aimants) | `MeshStandardMaterial`, metalness élevée         |
 
 ---
 

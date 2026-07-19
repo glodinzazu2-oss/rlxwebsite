@@ -23,7 +23,7 @@ Les Core Web Vitals (LCP, CLS, INP — voir `performance.md`) sont des facteurs 
 
 Le SEO de REMOLUX repose sur un principe simple : **rendre à Google, à Bing et aux IA génératives exactement ce qu'un humain comprendrait en lisant la page** — une structure claire, un contenu honnête et précis (cohérent avec `copywriting.md`), une hiérarchie d'information logique, et un code technique qui ne cache ni ne complique cette lisibilité. Aucune technique de manipulation ou de sur-optimisation artificielle n'a sa place ici — le meilleur SEO est la conséquence naturelle d'un site bien construit, pas une couche de tactiques ajoutées en marge.
 
-**Principe d'arbitrage permanent** : à chaque décision technique ou éditoriale, se demander — *"Est-ce que cette décision aide un moteur de recherche (et un humain) à comprendre plus clairement ce qu'est cette page et pourquoi elle mérite d'être trouvée ?"*
+**Principe d'arbitrage permanent** : à chaque décision technique ou éditoriale, se demander — _"Est-ce que cette décision aide un moteur de recherche (et un humain) à comprendre plus clairement ce qu'est cette page et pourquoi elle mérite d'être trouvée ?"_
 
 ---
 
@@ -211,15 +211,15 @@ Utilisé uniquement si de véritables avis clients vérifiés sont affichés sur
 
 ## Quand utiliser chaque schema — synthèse
 
-| Contexte | Schema |
-|---|---|
-| Toute page principale du site | `Organization` |
-| Page d'accueil | `WebSite` (+ `SearchAction` si recherche interne) |
-| Page présentant un produit | `Product` |
-| Section FAQ réelle | `FAQPage` |
-| Navigation avec fil d'Ariane | `BreadcrumbList` |
-| Contenu éditorial (blog, actualité) | `Article` |
-| Avis clients vérifiés affichés | `Review` / `AggregateRating` |
+| Contexte                            | Schema                                            |
+| ----------------------------------- | ------------------------------------------------- |
+| Toute page principale du site       | `Organization`                                    |
+| Page d'accueil                      | `WebSite` (+ `SearchAction` si recherche interne) |
+| Page présentant un produit          | `Product`                                         |
+| Section FAQ réelle                  | `FAQPage`                                         |
+| Navigation avec fil d'Ariane        | `BreadcrumbList`                                  |
+| Contenu éditorial (blog, actualité) | `Article`                                         |
+| Avis clients vérifiés affichés      | `Review` / `AggregateRating`                      |
 
 **Règle absolue** : aucune donnée structurée n'est implémentée si elle ne correspond pas exactement et honnêtement au contenu réellement visible par l'utilisateur sur la page — toute donnée structurée trompeuse expose le site à une pénalité de la part des moteurs de recherche.
 

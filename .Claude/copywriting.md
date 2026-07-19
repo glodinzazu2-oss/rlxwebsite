@@ -19,7 +19,7 @@ Une marque premium n'a pas besoin de crier pour être entendue. Elle parle avec 
 
 N'importe qui peut écrire une phrase longue qui liste toutes les caractéristiques d'un produit. Il faut un vrai travail d'écriture pour réduire cette même information à une phrase courte qui ne perd ni la précision, ni la force. Chaque mot superflu retiré est un gain de clarté et de crédibilité. La simplicité n'est pas un raccourci de paresse — c'est le résultat d'un effort de clarification exigeant, et c'est précisément ce qui distingue un texte de marque premium d'un texte marketing générique.
 
-**Principe d'arbitrage permanent** : avant de publier une phrase, se demander — *"Est-ce que cette phrase inspire confiance, démontre, explique, donne envie, ou convertit ? Si je ne peux répondre clairement à aucune de ces fonctions, cette phrase doit être coupée."*
+**Principe d'arbitrage permanent** : avant de publier une phrase, se demander — _"Est-ce que cette phrase inspire confiance, démontre, explique, donne envie, ou convertit ? Si je ne peux répondre clairement à aucune de ces fonctions, cette phrase doit être coupée."_
 
 ---
 
@@ -161,7 +161,7 @@ Conclure la démonstration par une phrase qui ramène à l'émotion recherchée 
 
 Une invitation claire, brève, et cohérente avec le ton installé tout au long de la page — jamais une rupture de ton vers un registre plus commercial ou pressant en fin de parcours.
 
-**Structure narrative type** : *Voici un problème que vous connaissez → Voici pourquoi REMOLUX le résout → Voici la preuve que ça fonctionne vraiment → Voici comment ça se passe concrètement → Voici ce que vous ressentirez → Voici comment l'obtenir.*
+**Structure narrative type** : _Voici un problème que vous connaissez → Voici pourquoi REMOLUX le résout → Voici la preuve que ça fonctionne vraiment → Voici comment ça se passe concrètement → Voici ce que vous ressentirez → Voici comment l'obtenir._
 
 ---
 
@@ -169,22 +169,22 @@ Une invitation claire, brève, et cohérente avec le ton installé tout au long 
 
 ## Différence entre fonctionnalité et bénéfice
 
-Une **fonctionnalité** décrit ce que le produit *est* ou *fait* techniquement. Un **bénéfice** décrit ce que cela *change concrètement* pour l'utilisateur. Le copywriting REMOLUX ne s'arrête jamais à la fonctionnalité seule — il la traduit systématiquement en bénéfice avant de la présenter au lecteur, tout en gardant la fonctionnalité disponible comme preuve à l'appui.
+Une **fonctionnalité** décrit ce que le produit _est_ ou _fait_ techniquement. Un **bénéfice** décrit ce que cela _change concrètement_ pour l'utilisateur. Le copywriting REMOLUX ne s'arrête jamais à la fonctionnalité seule — il la traduit systématiquement en bénéfice avant de la présenter au lecteur, tout en gardant la fonctionnalité disponible comme preuve à l'appui.
 
 ## Méthode de transformation
 
-Pour chaque caractéristique technique, se poser la question : *"Et donc, concrètement, qu'est-ce que ça change pour la personne qui utilise ce produit sur sa remorque, un soir de pluie, sur la route ?"* La réponse à cette question est le bénéfice à mettre en avant ; la caractéristique technique devient sa preuve.
+Pour chaque caractéristique technique, se poser la question : _"Et donc, concrètement, qu'est-ce que ça change pour la personne qui utilise ce produit sur sa remorque, un soir de pluie, sur la route ?"_ La réponse à cette question est le bénéfice à mettre en avant ; la caractéristique technique devient sa preuve.
 
 ## Exemples de transformation
 
-| Fonctionnalité (technique) | Bénéfice (utilisateur) |
-|---|---|
-| Fixation magnétique haute puissance | Se fixe en une seconde, sans outil, sans perceuse. |
-| Certification IP67 | Continue de fonctionner sous une pluie battante, sans jamais vous laisser dans le noir. |
-| Batterie longue autonomie | Reste allumé tout le trajet, même le plus long, sans y penser. |
-| Boîtier en polymère renforcé | Encaisse les chocs de la route sans se fissurer, année après année. |
-| Sans fil, sans câblage | S'installe et se retire en un geste, sur n'importe quelle remorque, sans jamais abîmer un câble. |
-| Signal lumineux haute intensité | Vous voit de loin, même de nuit, même sous la pluie — la visibilité qui protège vraiment. |
+| Fonctionnalité (technique)          | Bénéfice (utilisateur)                                                                           |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Fixation magnétique haute puissance | Se fixe en une seconde, sans outil, sans perceuse.                                               |
+| Certification IP67                  | Continue de fonctionner sous une pluie battante, sans jamais vous laisser dans le noir.          |
+| Batterie longue autonomie           | Reste allumé tout le trajet, même le plus long, sans y penser.                                   |
+| Boîtier en polymère renforcé        | Encaisse les chocs de la route sans se fissurer, année après année.                              |
+| Sans fil, sans câblage              | S'installe et se retire en un geste, sur n'importe quelle remorque, sans jamais abîmer un câble. |
+| Signal lumineux haute intensité     | Vous voit de loin, même de nuit, même sous la pluie — la visibilité qui protège vraiment.        |
 
 ## Règle de présentation
 

@@ -15,7 +15,7 @@ Une image, un modèle 3D, une police ou un logo n'est pas un simple fichier dép
 
 Un asset introuvable est recréé ou dupliqué inutilement. Un asset mal nommé oblige à l'ouvrir pour comprendre son contenu, perdant un temps qui s'accumule sur des centaines de fichiers. Un asset non optimisé alourdit silencieusement le site à chaque page qui l'utilise, dégradant la performance globale (cohérent avec `performance.md`) sans qu'aucune ligne de code n'ait changé. Un asset orphelin, jamais nettoyé, gonfle le dépôt et sème le doute sur ce qui est réellement utilisé. Une organisation rigoureuse des assets n'est donc pas une question d'ordre esthétique — c'est un facteur direct de vitesse de développement, de performance produit, et de fiabilité du projet dans le temps.
 
-**Principe d'arbitrage permanent** : avant d'ajouter un asset au projet, toujours se demander — *"Cet asset est-il à sa place exacte, nommé sans ambiguïté, optimisé au minimum nécessaire, et sera-t-il facilement retrouvable et compréhensible par quelqu'un d'autre dans six mois ?"*
+**Principe d'arbitrage permanent** : avant d'ajouter un asset au projet, toujours se demander — _"Cet asset est-il à sa place exacte, nommé sans ambiguïté, optimisé au minimum nécessaire, et sera-t-il facilement retrouvable et compréhensible par quelqu'un d'autre dans six mois ?"_
 
 ---
 
@@ -40,33 +40,43 @@ src/assets/
 ## Rôle précis de chaque dossier
 
 ### `images/`
+
 Photographies et visuels raster destinés au pipeline d'optimisation Astro (`astro:assets`). Organisées en sous-dossiers thématiques si le volume le justifie (`images/hero/`, `images/produit/`, `images/situations/`) — jamais un dossier plat de plusieurs centaines de fichiers sans sous-structure.
 
 ### `icons/`
+
 Pictogrammes SVG uniquement (voir section 4). Aucune icône raster (PNG) sauf cas exceptionnel documenté.
 
 ### `logos/`
+
 Toutes les déclinaisons officielles du logo REMOLUX (voir section 5), dans un dossier dédié et distinct des autres images, car soumises à des règles d'usage spécifiques.
 
 ### `videos/`
+
 Séquences vidéo optimisées pour le web (voir section 6), jamais de rush ou de fichier source non compressé.
 
 ### `models/`
+
 Modèles 3D au format GLB, prêts pour l'intégration Three.js (voir section 7 et `three.md`).
 
 ### `textures/`
+
 Textures liées aux modèles 3D, organisées par modèle si plusieurs modèles existent (`textures/remolux-light/diffuse.ktx2`), jamais mélangées avec les images de contenu classique de `images/`.
 
 ### `hdri/`
+
 Environnements HDRI utilisés pour l'éclairage réaliste des scènes Three.js (cohérent avec `three.md` section 5).
 
 ### `fonts/`
+
 Fichiers de police auto-hébergés au format WOFF2 (voir section 8).
 
 ### `audio/`
+
 Réservé à un usage futur explicitement validé — REMOLUX ne diffuse aucun son automatique par défaut (cohérent avec `ux.md` section 14).
 
 ### `documents/`
+
 Fichiers non médias nécessaires au contenu (fiches techniques, certificats) si le besoin est confirmé — à distinguer strictement des assets visuels.
 
 ## `public/`

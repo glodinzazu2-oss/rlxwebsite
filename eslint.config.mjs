@@ -43,5 +43,5 @@ export default tseslint.config(
       // et documenté l'exige (voir architecture.md §7).
     },
   },
-  prettier
+  prettier,
 );

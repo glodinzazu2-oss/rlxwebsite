@@ -22,7 +22,7 @@ REMOLUX existe parce qu'un besoin fonctionnel simple — voir et être vu en rem
 
 Prouver qu'un produit d'apparence modeste — un feu de remorque — peut être conçu, fabriqué et présenté avec la même exigence que des objets considérés comme "nobles". L'ambition de REMOLUX n'est pas de paraître plus grande qu'elle n'est, mais de faire, dans sa catégorie précise, ce que personne d'autre ne fait avec autant de soin.
 
-**Cette identité doit rester la boussole de toute décision** : à chaque nouvelle fonctionnalité, chaque nouveau texte, chaque nouveau visuel, on doit pouvoir répondre — *"est-ce que cela sert la mission de remplacer l'incertitude par l'évidence, dans un objet modeste traité avec une exigence noble ?"*
+**Cette identité doit rester la boussole de toute décision** : à chaque nouvelle fonctionnalité, chaque nouveau texte, chaque nouveau visuel, on doit pouvoir répondre — _"est-ce que cela sert la mission de remplacer l'incertitude par l'évidence, dans un objet modeste traité avec une exigence noble ?"_
 
 ---
 

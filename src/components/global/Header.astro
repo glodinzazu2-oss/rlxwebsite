@@ -20,9 +20,15 @@ const links = [
 
     <nav class="header__nav" aria-label="Navigation principale">
       <ul role="list">
-        {links.map((link) => (
-          <li><a href={link.href} class="header__link">{link.label}</a></li>
-        ))}
+        {
+          links.map((link) => (
+            <li>
+              <a href={link.href} class="header__link">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </nav>
 
@@ -45,11 +51,22 @@ const links = [
   <div class="menu" id="mobile-menu" data-menu>
     <nav aria-label="Navigation mobile">
       <ul role="list">
-        {links.map((link) => (
-          <li><a href={link.href} class="menu__link">{link.label}</a></li>
-        ))}
+        {
+          links.map((link) => (
+            <li>
+              <a href={link.href} class="menu__link">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
         <li>
-          <a href={SITE.amazonUrl} class="menu__link menu__link--cta" target="_blank" rel="noopener noreferrer">
+          <a
+            href={SITE.amazonUrl}
+            class="menu__link menu__link--cta"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {t.nav.cta}
           </a>
         </li>
@@ -140,7 +157,9 @@ const links = [
     height: 2px;
     background: var(--color-text);
     border-radius: var(--radius-full);
-    transition: transform var(--duration-fast) var(--ease-out-quart), opacity var(--duration-fast);
+    transition:
+      transform var(--duration-fast) var(--ease-out-quart),
+      opacity var(--duration-fast);
   }
 
   .header__burger[aria-expanded='true'] span:first-child {
@@ -162,7 +181,9 @@ const links = [
     backdrop-filter: blur(20px);
     opacity: 0;
     visibility: hidden;
-    transition: opacity var(--duration-base) var(--ease-out-quart), visibility var(--duration-base);
+    transition:
+      opacity var(--duration-base) var(--ease-out-quart),
+      visibility var(--duration-base);
   }
 
   .menu.is-open {

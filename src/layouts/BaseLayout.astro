@@ -79,7 +79,7 @@ const jsonLdString = JSON.stringify(jsonLd).replace(/</g, '\\u003c');
     <meta property="og:locale" content="fr_FR" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <script type="application/ld+json" set:html={jsonLdString} />
+    <script type="application/ld+json" set:html={jsonLdString} is:inline />
   </head>
   <body>
     <a href="#main" class="skip-link">{t.a11y.skipToContent}</a>

@@ -15,7 +15,9 @@ const t = getDictionary();
     <p class="eyebrow hero__eyebrow" data-hero-fade>{t.hero.eyebrow}</p>
 
     <h1 class="hero__title" id="hero-title">
-      <span class="hero__mask"><span class="hero__line" data-hero-line>{t.hero.titleLine1}</span></span>
+      <span class="hero__mask"
+        ><span class="hero__line" data-hero-line>{t.hero.titleLine1}</span></span
+      >
       <span class="hero__mask">
         <span class="hero__line hero__line--accent" data-hero-line>{t.hero.titleLine2}</span>
       </span>
@@ -33,45 +35,63 @@ const t = getDictionary();
       <svg viewBox="0 0 640 160" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="housing" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#2e3136" />
-            <stop offset="0.45" stop-color="#141518" />
-            <stop offset="1" stop-color="#1f2124" />
+            <stop offset="0" stop-color="#2e3136"></stop>
+            <stop offset="0.45" stop-color="#141518"></stop>
+            <stop offset="1" stop-color="#1f2124"></stop>
           </linearGradient>
           <linearGradient id="ledbar" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stop-color="#ffb454" />
-            <stop offset="0.18" stop-color="#ff1e2d" />
-            <stop offset="0.82" stop-color="#ff1e2d" />
-            <stop offset="1" stop-color="#ffb454" />
+            <stop offset="0" stop-color="#ffb454"></stop>
+            <stop offset="0.18" stop-color="#ff1e2d"></stop>
+            <stop offset="0.82" stop-color="#ff1e2d"></stop>
+            <stop offset="1" stop-color="#ffb454"></stop>
           </linearGradient>
           <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="18" />
+            <feGaussianBlur stdDeviation="18"></feGaussianBlur>
           </filter>
         </defs>
 
         <!-- Halo LED -->
-        <rect data-led-glow x="60" y="52" width="520" height="56" rx="28" fill="url(#ledbar)" filter="url(#blur)" opacity="0.8" />
+        <rect
+          data-led-glow
+          x="60"
+          y="52"
+          width="520"
+          height="56"
+          rx="28"
+          fill="url(#ledbar)"
+          filter="url(#blur)"
+          opacity="0.8"></rect>
 
         <!-- Boîtier métal brossé -->
-        <rect x="40" y="40" width="560" height="80" rx="40" fill="url(#housing)" stroke="rgba(255,255,255,0.12)" />
+        <rect
+          x="40"
+          y="40"
+          width="560"
+          height="80"
+          rx="40"
+          fill="url(#housing)"
+          stroke="rgba(255,255,255,0.12)"></rect>
 
         <!-- Barre LED -->
-        <rect x="72" y="66" width="496" height="28" rx="14" fill="url(#ledbar)" />
-        <rect x="72" y="70" width="496" height="8" rx="4" fill="rgba(255,255,255,0.35)" />
+        <rect x="72" y="66" width="496" height="28" rx="14" fill="url(#ledbar)"></rect>
+        <rect x="72" y="70" width="496" height="8" rx="4" fill="rgba(255,255,255,0.35)"></rect>
 
         <!-- Détails techniques -->
-        <circle cx="56" cy="80" r="4" fill="rgba(255,255,255,0.25)" />
-        <circle cx="584" cy="80" r="4" fill="rgba(255,255,255,0.25)" />
+        <circle cx="56" cy="80" r="4" fill="rgba(255,255,255,0.25)"></circle>
+        <circle cx="584" cy="80" r="4" fill="rgba(255,255,255,0.25)"></circle>
       </svg>
       <span class="hero__reflection"></span>
     </figure>
 
     <ul class="hero__stats" role="list" data-hero-fade>
-      {t.hero.stats.map((stat) => (
-        <li class="hero__stat">
-          <span class="hero__stat-value">{stat.value}</span>
-          <span class="hero__stat-label">{stat.label}</span>
-        </li>
-      ))}
+      {
+        t.hero.stats.map((stat) => (
+          <li class="hero__stat">
+            <span class="hero__stat-value">{stat.value}</span>
+            <span class="hero__stat-label">{stat.label}</span>
+          </li>
+        ))
+      }
     </ul>
   </div>
 

@@ -19,12 +19,14 @@ const lines = title.split('\n');
 <header class:list={['section-heading', `section-heading--${align}`]}>
   <p class="eyebrow" data-reveal>{eyebrow}</p>
   <Tag class="section-heading__title" id={titleId} data-reveal data-reveal-delay="0.08">
-    {lines.map((line, i) => (
-      <span class="section-heading__line">
-        {line}
-        {i < lines.length - 1 && <br />}
-      </span>
-    ))}
+    {
+      lines.map((line, i) => (
+        <span class="section-heading__line">
+          {line}
+          {i < lines.length - 1 && <br />}
+        </span>
+      ))
+    }
   </Tag>
 </header>
 
@@ -39,3 +41,5 @@ const lines = title.split('\n');
   .section-heading--center {
     justify-items: center;
     text-align: center;
+  }
+</style>

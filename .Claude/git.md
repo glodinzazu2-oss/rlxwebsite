@@ -21,7 +21,7 @@ Un historique Git clair permet de retrouver rapidement quand et pourquoi un bug 
 
 L'historique Git du projet doit pouvoir se lire comme un récit cohérent de l'évolution du produit — chaque commit une étape logique et compréhensible isolément. Un bon test : si l'on retirait uniquement les messages de commit d'une période donnée et qu'on les lisait comme une liste, on devrait pouvoir reconstituer une narration cohérente de ce qui s'est passé sur le projet, sans avoir besoin d'ouvrir le code. C'est cette exigence narrative qui distingue un historique professionnel d'un simple journal de sauvegardes.
 
-**Principe d'arbitrage permanent** : avant de créer un commit, se demander — *"Si quelqu'un lit uniquement ce message dans un an, sans aucun autre contexte, comprendra-t-il ce qui a changé et pourquoi ?"*
+**Principe d'arbitrage permanent** : avant de créer un commit, se demander — _"Si quelqu'un lit uniquement ce message dans un an, sans aucun autre contexte, comprendra-t-il ce qui a changé et pourquoi ?"_
 
 ---
 
@@ -295,6 +295,7 @@ Aucune étape de ce workflow n'est sautée, même pour une modification qui semb
 À utiliser obligatoirement avant tout commit.
 
 ## Avant de committer
+
 - [ ] Le build passe sans erreur.
 - [ ] Aucune erreur de lint ou de type-check n'a été ignorée.
 - [ ] Le protocole de validation de `testing.md` a été suivi pour le périmètre du changement.

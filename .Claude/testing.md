@@ -19,7 +19,7 @@ Un bug non détecté avant livraison ne disparaît pas — il se déplace. Il de
 
 Un site qui fonctionne parfaitement ne se remarque pas — l'utilisateur ne pense jamais consciemment "quelle fluidité, quelle absence de bug". C'est précisément l'objectif : la qualité réussie disparaît derrière l'expérience elle-même. À l'inverse, la moindre défaillance (un bouton qui ne répond pas, une animation qui saccade, un texte qui déborde) devient immédiatement visible et disproportionnellement dommageable à la perception de marque, car elle rompt une attente de perfection implicite construite par tout le reste de l'expérience (`design.md`, `ux.md`, `motion.md`). Le QA protège cette invisibilité de la qualité — c'est un travail dont le succès ne se voit jamais, mais dont l'échec se voit toujours.
 
-**Principe d'arbitrage permanent** : avant de considérer une tâche terminée, se demander — *"Ai-je vérifié ce comportement, ou est-ce que je suppose simplement qu'il fonctionne ?"* Toute réponse qui repose sur une supposition, même raisonnable, doit être remplacée par une vérification réelle avant livraison.
+**Principe d'arbitrage permanent** : avant de considérer une tâche terminée, se demander — _"Ai-je vérifié ce comportement, ou est-ce que je suppose simplement qu'il fonctionne ?"_ Toute réponse qui repose sur une supposition, même raisonnable, doit être remplacée par une vérification réelle avant livraison.
 
 ---
 

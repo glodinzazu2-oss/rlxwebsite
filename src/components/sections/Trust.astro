@@ -7,15 +7,22 @@ const t = getDictionary();
 
 <section class="section trust" aria-labelledby="trust-title">
   <div class="container">
-    <SectionHeading eyebrow={t.trust.eyebrow} title={t.trust.title} align="center" titleId="trust-title" />
+    <SectionHeading
+      eyebrow={t.trust.eyebrow}
+      title={t.trust.title}
+      align="center"
+      titleId="trust-title"
+    />
 
     <ul class="trust__grid" role="list">
-      {t.trust.items.map((item, i) => (
-        <li class="trust__card" data-reveal data-reveal-delay={String(0.08 * i)}>
-          <h3 class="trust__title">{item.title}</h3>
-          <p class="trust__desc">{item.description}</p>
-        </li>
-      ))}
+      {
+        t.trust.items.map((item, i) => (
+          <li class="trust__card" data-reveal data-reveal-delay={String(0.08 * i)}>
+            <h3 class="trust__title">{item.title}</h3>
+            <p class="trust__desc">{item.description}</p>
+          </li>
+        ))
+      }
     </ul>
   </div>
 </section>

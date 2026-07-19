@@ -17,7 +17,7 @@ Concrètement, cela signifie :
 - Le site **démontre** plutôt qu'il n'affirme. Chaque promesse (robustesse, étanchéité, simplicité d'installation) doit être montrée en situation — visuellement, par le mouvement, par le détail — jamais seulement écrite en toutes lettres.
 - Le site **crée le désir** par la qualité de l'expérience elle-même : la fluidité du scroll, la précision du 3D, la beauté des mises en situation deviennent une preuve indirecte de la qualité du produit physique.
 - Le site n'est **jamais le point de conversion final**. Le CTA vers Amazon est un aboutissement naturel du parcours émotionnel, pas une extraction forcée. L'utilisateur doit avoir l'impression de décider de cliquer, pas d'y être poussé.
-- Chaque écran doit répondre à une question implicite : *"Est-ce que ce que je vois renforce ma confiance dans cette marque, ou est-ce que ça me fait douter ?"* Si un élément ne répond pas positivement à cette question, il ne doit pas exister sur le site.
+- Chaque écran doit répondre à une question implicite : _"Est-ce que ce que je vois renforce ma confiance dans cette marque, ou est-ce que ça me fait douter ?"_ Si un élément ne répond pas positivement à cette question, il ne doit pas exister sur le site.
 
 L'UX de REMOLUX doit se lire comme celle d'un produit qui n'a rien à prouver par la pression commerciale — seulement par l'évidence de sa qualité.
 
@@ -137,7 +137,7 @@ Les mentions légales, les informations logistiques (livraison, retours — gér
 
 Aucun élément décoratif, aucune animation, aucun bloc promotionnel ne doit capter l'attention au détriment du produit ou du message en cours. Toute information qui n'aide pas directement à avancer dans le parcours (section 3) est une distraction et doit être reléguée ou supprimée.
 
-**Règle d'arbitrage** : à chaque ajout d'information ou d'élément visuel, se demander *"est-ce que ceci aide l'utilisateur à avancer d'une étape du parcours, ou est-ce que ça le retient sans raison ?"*
+**Règle d'arbitrage** : à chaque ajout d'information ou d'élément visuel, se demander _"est-ce que ceci aide l'utilisateur à avancer d'une étape du parcours, ou est-ce que ça le retient sans raison ?"_
 
 ---
 

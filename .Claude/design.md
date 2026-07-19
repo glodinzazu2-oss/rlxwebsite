@@ -29,13 +29,13 @@ Le visiteur ne doit jamais avoir l'impression de "consulter un site". Il doit av
 - **Compliqué** — jamais de parcours qui oblige le visiteur à réfléchir pour comprendre où cliquer ou quoi faire.
 - **Brouillon** — zéro incohérence d'alignement, de typographie, d'espacement ou de couleur. Zéro élément "à peu près juste".
 
-**Règle d'arbitrage** : à chaque décision de design, se poser la question — *"Est-ce que cet élément renforce une des huit émotions recherchées, ou est-ce qu'il risque de faire basculer le site dans l'une des six perceptions interdites ?"* En cas de doute, retirer plutôt qu'ajouter.
+**Règle d'arbitrage** : à chaque décision de design, se poser la question — _"Est-ce que cet élément renforce une des huit émotions recherchées, ou est-ce qu'il risque de faire basculer le site dans l'une des six perceptions interdites ?"_ En cas de doute, retirer plutôt qu'ajouter.
 
 ---
 
 # 2. Positionnement visuel
 
-REMOLUX doit évoquer, par son langage visuel, le même niveau d'exigence que des marques comme **Apple**, **Rivian**, **DJI**, **Garmin** ou **Ledlenser** — sans jamais copier leur identité graphique, leurs couleurs, leur typographie ou leurs compositions spécifiques. Il s'agit de s'inspirer de leurs *principes*, pas de leur *forme*.
+REMOLUX doit évoquer, par son langage visuel, le même niveau d'exigence que des marques comme **Apple**, **Rivian**, **DJI**, **Garmin** ou **Ledlenser** — sans jamais copier leur identité graphique, leurs couleurs, leur typographie ou leurs compositions spécifiques. Il s'agit de s'inspirer de leurs _principes_, pas de leur _forme_.
 
 ## Principes communs à intégrer
 
@@ -223,7 +223,7 @@ Le rendu 3D existe pour une seule raison : **sublimer le produit et clarifier so
 
 Chaque animation doit raconter quelque chose : révéler une information, guider l'attention vers l'élément suivant, illustrer une caractéristique du produit (le clic magnétique, l'ouverture, la lumière qui s'allume). Une animation qui ne raconte rien ne doit pas exister.
 
-**Jamais d'animation gratuite.** Avant d'ajouter une animation, se poser la question : *"Que comprend ou ressent le visiteur grâce à cette animation, qu'il n'aurait pas compris ou ressenti sans elle ?"* Si la réponse est vague, ne pas l'ajouter.
+**Jamais d'animation gratuite.** Avant d'ajouter une animation, se poser la question : _"Que comprend ou ressent le visiteur grâce à cette animation, qu'il n'aurait pas compris ou ressenti sans elle ?"_ Si la réponse est vague, ne pas l'ajouter.
 
 ## Vitesse
 

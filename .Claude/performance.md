@@ -23,7 +23,7 @@ Les études de comportement utilisateur convergent toutes vers la même réalit�
 
 La performance n'est jamais une passe de nettoyage de fin de projet. Une architecture pensée sans considération de performance accumule une dette qui devient exponentiellement plus coûteuse à corriger a posteriori (hydratation excessive difficile à retirer, dépendances lourdes profondément intégrées, animations mal conçues qu'il faut reconstruire). Chaque décision technique — choix d'une dépendance, stratégie d'hydratation, format d'image — doit intégrer la question de la performance au moment même où elle est prise, jamais après coup.
 
-**Principe d'arbitrage permanent** : à chaque décision technique, se demander — *"Est-ce que cette approche coûte le moins de temps possible à l'utilisateur, du premier octet reçu à la première interaction possible ?"* En cas d'hésitation entre deux solutions de qualité visuelle équivalente, choisir systématiquement la plus légère.
+**Principe d'arbitrage permanent** : à chaque décision technique, se demander — _"Est-ce que cette approche coûte le moins de temps possible à l'utilisateur, du premier octet reçu à la première interaction possible ?"_ En cas d'hésitation entre deux solutions de qualité visuelle équivalente, choisir systématiquement la plus légère.
 
 ---
 
@@ -42,14 +42,14 @@ Cohérent avec l'objectif fixé dans `CLAUDE.md` — ce score n'est pas une aspi
 
 ## Core Web Vitals
 
-| Métrique | Objectif REMOLUX | Seuil "bon" Google |
-|---|---|---|
-| **LCP** (Largest Contentful Paint) | < 2.0 s | < 2.5 s |
-| **CLS** (Cumulative Layout Shift) | < 0.05 | < 0.1 |
-| **INP** (Interaction to Next Paint) | < 150 ms | < 200 ms |
-| **FCP** (First Contentful Paint) | < 1.2 s | < 1.8 s |
-| **TTFB** (Time to First Byte) | < 400 ms | < 800 ms |
-| **TBT** (Total Blocking Time) | < 100 ms | < 200 ms |
+| Métrique                            | Objectif REMOLUX | Seuil "bon" Google |
+| ----------------------------------- | ---------------- | ------------------ |
+| **LCP** (Largest Contentful Paint)  | < 2.0 s          | < 2.5 s            |
+| **CLS** (Cumulative Layout Shift)   | < 0.05           | < 0.1              |
+| **INP** (Interaction to Next Paint) | < 150 ms         | < 200 ms           |
+| **FCP** (First Contentful Paint)    | < 1.2 s          | < 1.8 s            |
+| **TTFB** (Time to First Byte)       | < 400 ms         | < 800 ms           |
+| **TBT** (Total Blocking Time)       | < 100 ms         | < 200 ms           |
 
 REMOLUX vise systématiquement un seuil plus strict que le simple seuil "bon" de Google — l'objectif est de rester confortablement dans la zone verte, jamais de flirter avec la limite.
 

@@ -23,7 +23,7 @@ export function initTechnologyScroll(): void {
           end: 'bottom 70%',
           scrub: 0.8,
         },
-      }
+      },
     );
   }
 
