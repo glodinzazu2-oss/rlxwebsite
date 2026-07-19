@@ -4,7 +4,7 @@
  */
 export const SITE = {
   name: 'REMOLUX',
-  domain: 'https://www.remolux.com', // TODO : confirmer le domaine final (remolux.com ou remolux.eu — LWS)
+  domain: 'https://www.remolux.eu',
   locale: 'fr',
   /** Lien fiche produit Amazon (ASIN B0H5DX7S5V) */
   amazonUrl: 'https://www.amazon.fr/dp/B0H5DX7S5V',
@@ -20,8 +20,7 @@ export const SITE = {
     president: 'Glodi Nzazu',
     siren: '104 955 950',
     siret: '104 955 950 00019',
-    /** TODO : compléter avec le capital social exact (obligation légale) */
-    shareCapital: '[capital social à compléter]',
+    shareCapital: '1 000 €',
     address: '8 Place Roger Salengro, 31000 Toulouse, France',
     host: {
       name: 'Vercel Inc.',
