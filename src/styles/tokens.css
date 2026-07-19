@@ -1,0 +1,88 @@
+/* ==========================================================================
+   REMOLUX — Design Tokens
+   Source unique de vérité pour couleurs, typographie, espacements, motion.
+   Ne jamais coder une valeur en dur dans un composant : utiliser un token.
+   ========================================================================== */
+
+:root {
+  /* ----- Couleurs : fond (dark premium) ----- */
+  --color-bg: #060607;            /* Noir profond — fond principal */
+  --color-bg-elevated: #0c0c0e;   /* Surfaces surélevées (cartes) */
+  --color-bg-panel: #111114;      /* Panneaux, header au scroll */
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
+
+  /* ----- Couleurs : texte (blanc froid) ----- */
+  --color-text: #f4f6f8;
+  --color-text-secondary: #a7adb5;
+  --color-text-muted: #6b7178;
+
+  /* ----- Couleurs : accents LED ----- */
+  --color-led-red: #ff1e2d;       /* Rouge LED signature */
+  --color-led-red-deep: #b3000c;  /* Rouge profond */
+  --color-amber: #ffb454;         /* Ambre clignotant */
+  --color-white-cold: #eaf2ff;    /* Blanc froid feux de recul */
+
+  /* ----- Dégradés & lumières ----- */
+  --gradient-led: linear-gradient(135deg, var(--color-led-red) 0%, var(--color-led-red-deep) 100%);
+  --gradient-metal: linear-gradient(160deg, #2a2c30 0%, #131417 45%, #1e2023 100%);
+  --glow-red: 0 0 24px rgba(255, 30, 45, 0.45), 0 0 80px rgba(255, 30, 45, 0.18);
+  --glow-amber: 0 0 24px rgba(255, 180, 84, 0.4), 0 0 80px rgba(255, 180, 84, 0.15);
+
+  /* ----- Typographie ----- */
+  --font-display: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter Variable', 'Inter', system-ui, sans-serif;
+
+  /* Échelle fluide (mobile → desktop) */
+  --text-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
+  --text-sm: clamp(0.875rem, 0.84rem + 0.2vw, 0.9375rem);
+  --text-base: clamp(1rem, 0.96rem + 0.25vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem);
+  --text-xl: clamp(1.375rem, 1.2rem + 0.9vw, 1.875rem);
+  --text-2xl: clamp(1.75rem, 1.4rem + 1.8vw, 2.75rem);
+  --text-3xl: clamp(2.25rem, 1.7rem + 2.8vw, 4rem);
+  --text-hero: clamp(2.75rem, 1.8rem + 5vw, 6.5rem);
+
+  --leading-tight: 1.05;
+  --leading-snug: 1.25;
+  --leading-normal: 1.6;
+  --tracking-tight: -0.02em;
+  --tracking-wide: 0.08em;
+  --tracking-caps: 0.18em;
+
+  /* ----- Espacements (échelle 4px) ----- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-section: clamp(5rem, 4rem + 8vw, 11rem); /* rythme vertical des sections */
+
+  /* ----- Layout ----- */
+  --container-max: 80rem;      /* 1280px */
+  --container-wide: 90rem;     /* 1440px */
+  --container-pad: clamp(1.25rem, 4vw, 3rem);
+
+  /* ----- Rayons ----- */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+
+  /* ----- Motion : courbes signature ----- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 0.25s;
+  --duration-base: 0.5s;
+  --duration-slow: 0.9s;
+
+  /* ----- Z-index ----- */
+  --z-header: 100;
+  --z-menu: 200;
+  --z-loader: 300;
+}

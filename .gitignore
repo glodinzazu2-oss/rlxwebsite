@@ -1,0 +1,22 @@
+# Dépendances
+node_modules/
+
+# Build
+dist/
+.astro/
+
+# Environnement
+.env
+.env.*
+!.env.example
+
+# Système
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+.idea/
+*.swp
+
+# Fichiers de verrouillage Word/Office (artefacts temporaires, jamais de contenu réel)
+~$*

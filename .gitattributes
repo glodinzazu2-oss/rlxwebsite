@@ -1,0 +1,14 @@
+# Normalise les fins de ligne en LF dans le dépôt, quel que soit l'OS du contributeur.
+* text=auto eol=lf
+
+# Binaires : jamais de normalisation de fin de ligne, jamais de diff textuel.
+*.docx binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.avif binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.glb binary
+*.hdr binary

@@ -1,0 +1,267 @@
+---
+import { getDictionary } from '../../i18n';
+import { SITE } from '../../config/site';
+import Button from '../ui/Button.astro';
+
+const t = getDictionary();
+---
+
+<section class="hero" data-hero aria-labelledby="hero-title">
+  <!-- Ambiance lumineuse d'arrière-plan -->
+  <div class="hero__glow" data-parallax="0.12" aria-hidden="true"></div>
+  <div class="hero__grid" aria-hidden="true"></div>
+
+  <div class="hero__inner container">
+    <p class="eyebrow hero__eyebrow" data-hero-fade>{t.hero.eyebrow}</p>
+
+    <h1 class="hero__title" id="hero-title">
+      <span class="hero__mask"><span class="hero__line" data-hero-line>{t.hero.titleLine1}</span></span>
+      <span class="hero__mask">
+        <span class="hero__line hero__line--accent" data-hero-line>{t.hero.titleLine2}</span>
+      </span>
+    </h1>
+
+    <p class="hero__subtitle" data-hero-fade>{t.hero.subtitle}</p>
+
+    <div class="hero__actions" data-hero-fade>
+      <Button href={SITE.amazonUrl} external>{t.hero.ctaPrimary}</Button>
+      <Button href="#technologie" variant="ghost">{t.hero.ctaSecondary}</Button>
+    </div>
+
+    <!-- Visuel produit stylisé (remplaçable par photo/3D sans toucher au reste) -->
+    <figure class="hero__visual" data-hero-visual aria-hidden="true">
+      <svg viewBox="0 0 640 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="housing" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#2e3136" />
+            <stop offset="0.45" stop-color="#141518" />
+            <stop offset="1" stop-color="#1f2124" />
+          </linearGradient>
+          <linearGradient id="ledbar" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#ffb454" />
+            <stop offset="0.18" stop-color="#ff1e2d" />
+            <stop offset="0.82" stop-color="#ff1e2d" />
+            <stop offset="1" stop-color="#ffb454" />
+          </linearGradient>
+          <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="18" />
+          </filter>
+        </defs>
+
+        <!-- Halo LED -->
+        <rect data-led-glow x="60" y="52" width="520" height="56" rx="28" fill="url(#ledbar)" filter="url(#blur)" opacity="0.8" />
+
+        <!-- Boîtier métal brossé -->
+        <rect x="40" y="40" width="560" height="80" rx="40" fill="url(#housing)" stroke="rgba(255,255,255,0.12)" />
+
+        <!-- Barre LED -->
+        <rect x="72" y="66" width="496" height="28" rx="14" fill="url(#ledbar)" />
+        <rect x="72" y="70" width="496" height="8" rx="4" fill="rgba(255,255,255,0.35)" />
+
+        <!-- Détails techniques -->
+        <circle cx="56" cy="80" r="4" fill="rgba(255,255,255,0.25)" />
+        <circle cx="584" cy="80" r="4" fill="rgba(255,255,255,0.25)" />
+      </svg>
+      <span class="hero__reflection"></span>
+    </figure>
+
+    <ul class="hero__stats" role="list" data-hero-fade>
+      {t.hero.stats.map((stat) => (
+        <li class="hero__stat">
+          <span class="hero__stat-value">{stat.value}</span>
+          <span class="hero__stat-label">{stat.label}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <a href="#produit" class="hero__scroll" data-hero-fade>
+    <span>{t.hero.scrollHint}</span>
+    <i aria-hidden="true"></i>
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100dvh;
+    display: grid;
+    align-items: center;
+    padding-block: calc(76px + var(--space-12)) var(--space-16);
+    overflow: clip;
+  }
+
+  /* --- Ambiance --- */
+  .hero__glow {
+    position: absolute;
+    inset: -20% -10%;
+    background:
+      radial-gradient(38% 30% at 72% 68%, rgba(255, 30, 45, 0.14), transparent 70%),
+      radial-gradient(30% 24% at 24% 30%, rgba(255, 180, 84, 0.06), transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(70% 60% at 50% 40%, #000 30%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .hero__inner {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    gap: var(--space-6);
+  }
+
+  /* --- Titre : reveal par lignes masquées --- */
+  .hero__title {
+    font-size: var(--text-hero);
+    font-weight: 700;
+    display: grid;
+  }
+
+  .hero__mask {
+    display: block;
+    overflow: hidden;
+    padding-block: 0.06em;
+  }
+
+  .hero__line {
+    display: block;
+  }
+
+  :global(html.js) .hero__line {
+    transform: translateY(110%);
+    opacity: 0;
+  }
+
+  .hero__line--accent {
+    background: var(--gradient-led);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero__subtitle {
+    max-width: 54ch;
+    color: var(--color-text-secondary);
+    font-size: var(--text-lg);
+    text-wrap: pretty;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-top: var(--space-2);
+  }
+
+  /* États initiaux (JS actif uniquement) */
+  :global(html.js) [data-hero-fade] {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  :global(html.js) .hero__visual {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+
+  /* --- Visuel produit --- */
+  .hero__visual {
+    position: relative;
+    width: min(640px, 88vw);
+    margin-top: var(--space-8);
+  }
+
+  .hero__reflection {
+    position: absolute;
+    inset-inline: 10%;
+    bottom: -34px;
+    height: 30px;
+    background: radial-gradient(50% 100% at 50% 0%, rgba(255, 30, 45, 0.22), transparent 75%);
+    filter: blur(6px);
+  }
+
+  /* --- Stats --- */
+  .hero__stats {
+    display: flex;
+    gap: clamp(var(--space-8), 6vw, var(--space-16));
+    margin-top: var(--space-8);
+  }
+
+  .hero__stat {
+    display: grid;
+    gap: var(--space-1);
+    text-align: center;
+  }
+
+  .hero__stat-value {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 700;
+  }
+
+  .hero__stat-label {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* --- Indicateur de scroll --- */
+  .hero__scroll {
+    position: absolute;
+    bottom: var(--space-6);
+    left: 50%;
+    translate: -50% 0;
+    display: grid;
+    justify-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .hero__scroll i {
+    width: 1px;
+    height: 36px;
+    background: linear-gradient(var(--color-text-muted), transparent);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hero__scroll i::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 12px;
+    background: var(--color-led-red);
+    animation: scroll-drip 1.8s var(--ease-in-out-soft) infinite;
+  }
+
+  @keyframes scroll-drip {
+    from {
+      transform: translateY(-12px);
+    }
+    to {
+      transform: translateY(48px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__scroll i::after {
+      animation: none;
+    }
+  }
+</style>

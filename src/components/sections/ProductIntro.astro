@@ -1,0 +1,67 @@
+---
+import { getDictionary } from '../../i18n';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+const t = getDictionary();
+---
+
+<section class="section product" id="produit" aria-labelledby="produit-title">
+  <div class="container product__inner">
+    <SectionHeading eyebrow={t.product.eyebrow} title={t.product.title} titleId="produit-title" />
+    <p class="product__body" data-reveal data-reveal-delay="0.15">{t.product.body}</p>
+
+    <!-- Panneau "matière" : métal brossé + ligne LED — emplacement futur photo/3D -->
+    <div class="product__panel" data-reveal data-reveal-delay="0.2">
+      <div class="product__panel-inner" data-parallax="0.06">
+        <span class="product__led" aria-hidden="true"></span>
+        <p class="product__panel-caption">RLX-WTL-01 — Kit signalisation sans fil</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .product__inner {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .product__body {
+    max-width: 58ch;
+    color: var(--color-text-secondary);
+    font-size: var(--text-lg);
+    text-wrap: pretty;
+  }
+
+  .product__panel {
+    margin-top: var(--space-8);
+    border-radius: var(--radius-lg);
+    background: var(--gradient-metal);
+    border: 1px solid var(--color-border);
+    overflow: clip;
+  }
+
+  .product__panel-inner {
+    position: relative;
+    display: grid;
+    place-items: center;
+    gap: var(--space-6);
+    min-height: clamp(260px, 40vw, 460px);
+    padding: var(--space-12);
+  }
+
+  .product__led {
+    width: min(420px, 70%);
+    height: 10px;
+    border-radius: var(--radius-full);
+    background: var(--gradient-led);
+    box-shadow: var(--glow-red);
+  }
+
+  .product__panel-caption {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+</style>

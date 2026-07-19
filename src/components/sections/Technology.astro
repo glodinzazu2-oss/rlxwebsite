@@ -1,0 +1,87 @@
+---
+import { getDictionary } from '../../i18n';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+const t = getDictionary();
+---
+
+<section class="section tech" id="technologie" data-tech-section aria-labelledby="tech-title">
+  <div class="container tech__inner">
+    <SectionHeading eyebrow={t.technology.eyebrow} title={t.technology.title} titleId="tech-title" />
+
+    <div class="tech__timeline">
+      <span class="tech__line" data-tech-line aria-hidden="true"></span>
+      <ol class="tech__steps" role="list">
+        {t.technology.steps.map((step) => (
+          <li class="tech__step" data-tech-step>
+            <span class="tech__number">{step.number}</span>
+            <div>
+              <h3 class="tech__step-title">{step.title}</h3>
+              <p class="tech__step-desc">{step.description}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tech {
+    background:
+      radial-gradient(40% 50% at 85% 20%, rgba(255, 30, 45, 0.05), transparent 70%),
+      var(--color-bg);
+  }
+
+  .tech__inner {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .tech__timeline {
+    position: relative;
+    padding-left: var(--space-8);
+  }
+
+  /* Ligne de progression animée au scroll (scaleY piloté par GSAP) */
+  .tech__line {
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    border-radius: var(--radius-full);
+    background: var(--gradient-led);
+    box-shadow: 0 0 12px rgba(255, 30, 45, 0.5);
+  }
+
+  .tech__steps {
+    display: grid;
+    gap: var(--space-16);
+    max-width: 40rem;
+  }
+
+  .tech__step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  .tech__number {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-led-red);
+    padding-top: 0.3em;
+  }
+
+  .tech__step-title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-2);
+  }
+
+  .tech__step-desc {
+    color: var(--color-text-secondary);
+  }
+</style>

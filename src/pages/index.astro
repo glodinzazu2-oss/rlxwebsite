@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/global/Header.astro';
+import Footer from '../components/global/Footer.astro';
+import Hero from '../components/sections/Hero.astro';
+import ProductIntro from '../components/sections/ProductIntro.astro';
+import Features from '../components/sections/Features.astro';
+import Technology from '../components/sections/Technology.astro';
+import Specs from '../components/sections/Specs.astro';
+import Trust from '../components/sections/Trust.astro';
+import FinalCta from '../components/sections/FinalCta.astro';
+---
+
+<BaseLayout>
+  <Header />
+  <main id="main">
+    <Hero />
+    <ProductIntro />
+    <Features />
+    <Technology />
+    <Specs />
+    <Trust />
+    <FinalCta />
+  </main>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,59 @@
+---
+import { getDictionary } from '../../i18n';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { SPECS } from '../../data/product';
+
+const t = getDictionary();
+---
+
+<section class="section specs" id="specs" aria-labelledby="specs-title">
+  <div class="container">
+    <SectionHeading eyebrow={t.specs.eyebrow} title={t.specs.title} titleId="specs-title" />
+
+    <dl class="specs__grid" data-reveal data-reveal-delay="0.1">
+      {SPECS.map((spec) => (
+        <div class="specs__row">
+          <dt class="specs__label">{spec.label}</dt>
+          <dd class="specs__value">{spec.value}</dd>
+        </div>
+      ))}
+    </dl>
+
+    <p class="specs__note" data-reveal data-reveal-delay="0.15">{t.specs.note}</p>
+  </div>
+</section>
+
+<style>
+  .specs__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 0 var(--space-16);
+    max-width: 56rem;
+  }
+
+  .specs__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .specs__label {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .specs__value {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .specs__note {
+    margin-top: var(--space-6);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+</style>

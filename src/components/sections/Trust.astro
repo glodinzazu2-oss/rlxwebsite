@@ -1,0 +1,50 @@
+---
+import { getDictionary } from '../../i18n';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+const t = getDictionary();
+---
+
+<section class="section trust" aria-labelledby="trust-title">
+  <div class="container">
+    <SectionHeading eyebrow={t.trust.eyebrow} title={t.trust.title} align="center" titleId="trust-title" />
+
+    <ul class="trust__grid" role="list">
+      {t.trust.items.map((item, i) => (
+        <li class="trust__card" data-reveal data-reveal-delay={String(0.08 * i)}>
+          <h3 class="trust__title">{item.title}</h3>
+          <p class="trust__desc">{item.description}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .trust__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-4);
+    max-width: 60rem;
+    margin-inline: auto;
+  }
+
+  .trust__card {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-8);
+    text-align: center;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+  }
+
+  .trust__title {
+    font-size: var(--text-base);
+  }
+
+  .trust__desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+</style>

@@ -1,0 +1,50 @@
+---
+import { getDictionary } from '../../i18n';
+import { SITE } from '../../config/site';
+import Button from '../ui/Button.astro';
+
+const t = getDictionary();
+---
+
+<section class="section cta" aria-labelledby="cta-title">
+  <div class="cta__glow" data-parallax="0.08" aria-hidden="true"></div>
+  <div class="container cta__inner">
+    <h2 class="cta__title" id="cta-title" data-reveal>{t.finalCta.title}</h2>
+    <p class="cta__subtitle" data-reveal data-reveal-delay="0.08">{t.finalCta.subtitle}</p>
+    <div data-reveal data-reveal-delay="0.16">
+      <Button href={SITE.amazonUrl} external>{t.finalCta.cta}</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    overflow: clip;
+    text-align: center;
+  }
+
+  .cta__glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(45% 55% at 50% 100%, rgba(255, 30, 45, 0.16), transparent 75%);
+    pointer-events: none;
+  }
+
+  .cta__inner {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: var(--space-6);
+  }
+
+  .cta__title {
+    font-size: var(--text-3xl);
+  }
+
+  .cta__subtitle {
+    color: var(--color-text-secondary);
+    font-size: var(--text-lg);
+    max-width: 46ch;
+  }
+</style>

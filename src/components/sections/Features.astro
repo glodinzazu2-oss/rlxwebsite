@@ -1,0 +1,93 @@
+---
+import { getDictionary } from '../../i18n';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../ui/Icon.astro';
+
+const t = getDictionary();
+---
+
+<section class="section features" aria-labelledby="features-title">
+  <div class="container">
+    <SectionHeading eyebrow={t.features.eyebrow} title={t.features.title} titleId="features-title" />
+
+    <ul class="features__grid" role="list">
+      {t.features.items.map((item, i) => (
+        <li class="features__card" data-reveal data-reveal-delay={String(0.06 * (i % 3))}>
+          <span class="features__icon">
+            <Icon name={item.icon} />
+          </span>
+          <h3 class="features__title">{item.title}</h3>
+          <p class="features__desc">{item.description}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .features__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .features__card {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    padding: var(--space-8);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    transition:
+      border-color var(--duration-base) var(--ease-out-quart),
+      transform var(--duration-base) var(--ease-out-quart),
+      background-color var(--duration-base) var(--ease-out-quart);
+  }
+
+  /* Hover sophistiqué : élévation + liseré LED en haut de carte */
+  .features__card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: var(--space-8);
+    right: var(--space-8);
+    height: 1px;
+    background: var(--gradient-led);
+    opacity: 0;
+    transition: opacity var(--duration-base) var(--ease-out-quart);
+  }
+
+  @media (hover: hover) {
+    .features__card:hover {
+      transform: translateY(-4px);
+      border-color: var(--color-border-strong);
+      background: var(--color-bg-panel);
+    }
+
+    .features__card:hover::before {
+      opacity: 1;
+    }
+  }
+
+  .features__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-md);
+    background: rgba(255, 30, 45, 0.08);
+    color: var(--color-led-red);
+    margin-bottom: var(--space-2);
+  }
+
+  .features__title {
+    font-size: var(--text-lg);
+  }
+
+  .features__desc {
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+  }
+</style>

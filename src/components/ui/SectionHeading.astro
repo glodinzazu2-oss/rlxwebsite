@@ -1,0 +1,41 @@
+---
+/**
+ * En-tête de section standardisé : eyebrow + titre (multi-lignes via \n).
+ * Garantit une hiérarchie visuelle identique sur tout le site.
+ */
+interface Props {
+  eyebrow: string;
+  title: string;
+  align?: 'left' | 'center';
+  level?: 'h2' | 'h3';
+  /** id du titre — à référencer par aria-labelledby sur la <section> parente */
+  titleId?: string;
+}
+
+const { eyebrow, title, align = 'left', level: Tag = 'h2', titleId } = Astro.props;
+const lines = title.split('\n');
+---
+
+<header class:list={['section-heading', `section-heading--${align}`]}>
+  <p class="eyebrow" data-reveal>{eyebrow}</p>
+  <Tag class="section-heading__title" id={titleId} data-reveal data-reveal-delay="0.08">
+    {lines.map((line, i) => (
+      <span class="section-heading__line">
+        {line}
+        {i < lines.length - 1 && <br />}
+      </span>
+    ))}
+  </Tag>
+</header>
+
+<style>
+  .section-heading {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 44ch;
+    margin-bottom: var(--space-12);
+  }
+
+  .section-heading--center {
+    justify-items: center;
+    text-align: center;

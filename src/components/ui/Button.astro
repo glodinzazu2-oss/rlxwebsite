@@ -1,0 +1,80 @@
+---
+/**
+ * Bouton / lien d'action.
+ * variant: 'primary' (LED, conversion) | 'ghost' (secondaire)
+ */
+interface Props {
+  href: string;
+  variant?: 'primary' | 'ghost';
+  external?: boolean;
+  class?: string;
+}
+
+const { href, variant = 'primary', external = false, class: className = '' } = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={['btn', `btn--${variant}`, className]}
+  {...external ? { target: '_blank', rel: 'noopener noreferrer' } : {}}
+>
+  <span class="btn__label"><slot /></span>
+  <svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</a>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.9em 1.6em;
+    border-radius: var(--radius-full);
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition:
+      transform var(--duration-fast) var(--ease-out-quart),
+      box-shadow var(--duration-base) var(--ease-out-quart),
+      background-color var(--duration-fast) var(--ease-out-quart),
+      border-color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .btn:active {
+    transform: scale(0.97);
+  }
+
+  .btn__arrow {
+    transition: transform var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .btn:hover .btn__arrow {
+    transform: translateX(4px);
+  }
+
+  /* Primaire — conversion */
+  .btn--primary {
+    background: var(--gradient-led);
+    color: #fff;
+    box-shadow: 0 0 0 rgba(255, 30, 45, 0);
+  }
+
+  .btn--primary:hover {
+    box-shadow: var(--glow-red);
+    transform: translateY(-2px);
+  }
+
+  /* Secondaire — discret */
+  .btn--ghost {
+    border: 1px solid var(--color-border-strong);
+    color: var(--color-text);
+    background: transparent;
+  }
+
+  .btn--ghost:hover {
+    border-color: var(--color-text-secondary);
+    background: rgba(255, 255, 255, 0.04);
+  }
+</style>

@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/global/Header.astro';
+import Footer from '../components/global/Footer.astro';
+import Button from '../components/ui/Button.astro';
+---
+
+<BaseLayout title="Page introuvable — REMOLUX" description="Cette page n'existe pas.">
+  <Header />
+  <main id="main" class="notfound">
+    <div class="container notfound__inner">
+      <p class="eyebrow">Erreur 404</p>
+      <h1 class="notfound__title">Cette route n'est pas éclairée.</h1>
+      <p class="notfound__body">La page demandée n'existe pas ou a été déplacée.</p>
+      <Button href="/" variant="ghost">Retour à l'accueil</Button>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .notfound {
+    min-height: 70dvh;
+    display: grid;
+    align-items: center;
+    padding-block: var(--space-24);
+  }
+
+  .notfound__inner {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-6);
+  }
+
+  .notfound__title {
+    font-size: var(--text-3xl);
+  }
+
+  .notfound__body {
+    color: var(--color-text-secondary);
+  }
+</style>
