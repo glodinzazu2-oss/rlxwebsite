@@ -88,9 +88,10 @@ Toute la documentation du projet vit dans `.claude/`, un seul système, une seul
 
 ## À faire avant mise en ligne
 
-- [ ] Remplacer `SITE.amazonUrl` par l'URL réelle de la fiche Amazon (`src/config/site.ts`)
+- [x] Remplacer `SITE.amazonUrl` par l'URL réelle de la fiche Amazon (`src/config/site.ts`)
+- [x] Rédiger mentions légales + politique de confidentialité (`/mentions-legales`, `/confidentialite`)
+- [x] Compléter le capital social dans `SITE.legal.shareCapital` (`src/config/site.ts`)
+- [x] Confirmer le domaine final : `remolux.eu` (`astro.config.mjs`, `src/config/site.ts`, `robots.txt`)
 - [ ] Valider les specs produit marquées `toValidate` (`src/data/product.ts`)
 - [ ] Ajouter les photos produit dans `src/assets/images/`
 - [ ] Créer `public/images/og-image.jpg` (1200×630)
-- [ ] Confirmer le domaine dans `astro.config.mjs` (`site`)
-- [ ] Rédiger mentions légales + politique de confidentialité
