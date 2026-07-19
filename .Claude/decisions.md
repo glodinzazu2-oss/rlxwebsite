@@ -529,19 +529,65 @@ Aucune réévaluation prévue — la conformité WCAG AA est un standard non né
 
 ---
 
+## ADR-011 — Vulnérabilités npm Astro 5.x : risque accepté et documenté
+
+**Statut**
+
+Adopté
+
+**Date**
+
+2026-07-19
+
+### Contexte
+
+`npm audit` signale 2 vulnérabilités (1 low, 1 high) sur Astro ≤7.0.0-beta.6 et esbuild 0.27.x : XSS via `define:vars`, replay de server islands, XSS via slot name, SSRF Host header, XSS via spread props, et lecture arbitraire de fichiers par le serveur de développement esbuild (Windows). Le seul correctif proposé par npm est Astro 7.1.1 — deux versions majeures au-dessus de la 5.x utilisée, avec breaking changes garantis.
+
+### Problème
+
+Faut-il monter vers Astro 7 (breaking change) pour éteindre l'alerte, ou accepter et documenter le risque ?
+
+### Options étudiées
+
+- Monter vers Astro 7.1.1 (`npm audit fix --force`)
+- Rester en Astro 5.x (dernière version 5, `^5.18.2`) et documenter le risque
+- Ignorer l'alerte sans documentation
+
+### Décision
+
+Rester en Astro 5.x et documenter le risque accepté (le présent ADR). Ignorer sans documenter est interdit par `rules.md` §15.
+
+### Justification
+
+Vérification faite faille par faille contre le code réel du projet : `define:vars`, les server islands (`server:defer`) et les slots nommés ne sont utilisés nulle part ; le site est 100 % SSG sans aucun rendu serveur (le SSRF et le XSS réfléchi supposent un runtime SSR) ; l'unique spread props (`Button.astro`) n'utilise que des attributs codés en dur, et le site n'accepte aucune entrée utilisateur ; la faille esbuild ne concerne que le serveur de développement local, absent du build livré. Aucune des failles n'est exploitable sur le site en production. Une montée majeure forcée casserait le build pour un gain de sécurité réel nul.
+
+### Compromis
+
+L'alerte `npm audit` restera visible tant que le projet est en Astro 5.x — elle est connue, comprise et assumée, pas ignorée.
+
+### Conséquences
+
+Aucune action immédiate. La CI et le développement local continuent en Astro 5.x.
+
+### Réévaluation
+
+À revoir si : (1) le projet introduit un jour du SSR, des server islands, des slots nommés dynamiques ou une entrée utilisateur quelconque — l'analyse ci-dessus deviendrait caduque et la montée vers Astro 7+ deviendrait prioritaire ; (2) une nouvelle faille touchant le SSG statique est publiée ; ou (3) une migration Astro 6/7 est planifiée pour d'autres raisons (fin de support de la 5.x).
+
+---
+
 # Décisions futures
 
 Cette section reste vide jusqu'à ce qu'une vraie décision importante apparaisse.
 
 Exemples de sujets qui **pourraient** un jour justifier un ADR, à condition de rester compatibles avec la mission définie dans `CLAUDE.md` :
 
-ADR-011 — Internationalisation
+ADR-012 — Internationalisation
 
-ADR-012 — CMS
+ADR-013 — CMS
 
-ADR-013 — PWA
+ADR-014 — PWA
 
-ADR-014 — Multi-langues
+ADR-015 — Multi-langues
 
 **Hors périmètre, jamais un sujet d'ADR** : toute fonctionnalité e-commerce (panier, paiement, compte utilisateur) est interdite de façon permanente et non négociable par `CLAUDE.md` section 22 et `rules.md` section 16 — ce n'est pas une décision technique à instruire un jour, c'est une exclusion de mission. Un ADR ne peut pas rouvrir ce sujet ; seule une révision explicite de `CLAUDE.md` par le client pourrait changer la mission elle-même, ce qui dépasse le cadre d'une décision d'architecture.
 

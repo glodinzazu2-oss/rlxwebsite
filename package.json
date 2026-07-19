@@ -20,7 +20,7 @@
     "@astrojs/sitemap": "^3.2.1",
     "@fontsource-variable/inter": "^5.1.0",
     "@fontsource-variable/space-grotesk": "^5.1.0",
-    "astro": "^5.1.1",
+    "astro": "^5.18.2",
     "gsap": "^3.12.5",
     "lenis": "^1.1.18"
   },
@@ -44,5 +44,10 @@
     "*.{ts,astro,css,json,md}": [
       "prettier --write"
     ]
+  },
+  "allowScripts": {
+    "esbuild@0.27.7": true,
+    "esbuild@0.25.12": true,
+    "sharp@0.34.5": true
   }
 }
