@@ -25,12 +25,7 @@ const hotspots = [
     <p class="product__body" data-reveal data-reveal-delay="0.15">{t.product.body}</p>
 
     <figure class="product__showcase" data-reveal data-reveal-delay="0.2">
-      <div
-        class="product__frame"
-        role="group"
-        aria-label={t.product.hotspotsLabel}
-        data-parallax="0.04"
-      >
+      <div class="product__frame" role="group" aria-label={t.product.hotspotsLabel} data-tilt>
         <Picture
           src={kitImage}
           formats={['avif', 'webp']}

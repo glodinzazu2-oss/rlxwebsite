@@ -6,6 +6,7 @@
 import { initSmoothScroll } from './core/smooth-scroll';
 import { initReveals } from './animations/reveal';
 import { initParallax } from './animations/parallax';
+import { initTilt } from './animations/tilt';
 import { playHeroIntro, startLedPulse } from './animations/hero';
 import { initTechnologyScroll } from './animations/technology';
 import { prefersReducedMotion } from './core/motion';
@@ -68,6 +69,7 @@ function init(): void {
   initMenu();
   initReveals();
   initParallax();
+  initTilt();
   initTechnologyScroll();
   startLedPulse();
   runLoader(playHeroIntro);
