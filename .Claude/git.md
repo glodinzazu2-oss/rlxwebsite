@@ -3,7 +3,7 @@
 > Ce document est la référence absolue de la gestion Git sur le projet REMOLUX. Il complète l'ensemble des documents existants : [`CLAUDE.md`](./CLAUDE.md), [`rules.md`](./rules.md), [`design.md`](./design.md), [`ux.md`](./ux.md), [`motion.md`](./motion.md), [`architecture.md`](./architecture.md), [`performance.md`](./performance.md), [`three.md`](./three.md), [`copywriting.md`](./copywriting.md), [`seo.md`](./seo.md), [`assets.md`](./assets.md) et [`testing.md`](./testing.md).
 > Chaque modification du projet doit être claire, traçable, maintenable et facilement réversible. L'historique Git n'est jamais un simple journal technique — c'est la mémoire du projet, consultée par des développeurs qui n'étaient pas présents au moment où une décision a été prise.
 
-> **État actuel** : ce document décrit le workflow cible, à appliquer **dès l'initialisation du dépôt Git** (`git init`). Tant que le projet n'est pas encore un dépôt Git, ces règles n'ont pas d'objet concret à appliquer — ne pas les considérer comme déjà en vigueur, mais comme la référence à suivre dès le premier commit.
+> **État actuel** : le dépôt Git est actif (GitHub : `glodinzazu2-oss/rlxwebsite`, branche principale `main`, CI GitHub Actions sur chaque push/PR, hooks pre-commit Husky + lint-staged). Ce workflow est **en vigueur** : une branche par sujet, une PR par livraison, jamais de commit direct sur `main` sans instruction explicite du client.
 
 ---
 

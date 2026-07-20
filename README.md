@@ -82,7 +82,7 @@ Toute la documentation du projet vit dans `.claude/`, un seul système, une seul
 | `.claude/copywriting.md`  | Ton, voix, structure des textes                                      |
 | `.claude/seo.md`          | SEO technique (meta, JSON-LD, sitemap)                               |
 | `.claude/testing.md`      | Protocole QA complet                                                 |
-| `.claude/git.md`          | Conventions Git et workflow (à appliquer dès `git init`)             |
+| `.claude/git.md`          | Conventions Git et workflow (branches, commits, PR)                  |
 | `.claude/roadmap.md`      | Phases d'évolution du site                                           |
 | `.claude/checklist.md`    | Checklist maître unique — remplace toute checklist locale à un guide |
 
