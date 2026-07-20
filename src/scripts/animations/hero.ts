@@ -12,6 +12,8 @@ export function playHeroIntro(): void {
     gsap.set('[data-hero-line], [data-hero-fade], [data-hero-visual]', {
       opacity: 1,
       y: 0,
+      scaleX: 1,
+      scaleY: 1,
     });
     return;
   }
@@ -25,7 +27,7 @@ export function playHeroIntro(): void {
     stagger: 0.12,
   })
     .to('[data-hero-fade]', { opacity: 1, y: 0, duration: 0.9, stagger: 0.08 }, '-=0.7')
-    .to('[data-hero-visual]', { opacity: 1, y: 0, scale: 1, duration: 1.4 }, '-=0.8')
+    .to('[data-hero-visual]', { opacity: 1, y: 0, scaleX: 1, scaleY: 1, duration: 1.4 }, '-=0.8')
     .from('[data-led-glow]', { opacity: 0, duration: 1.6, ease: 'power2.inOut' }, '-=0.9');
 }
 
