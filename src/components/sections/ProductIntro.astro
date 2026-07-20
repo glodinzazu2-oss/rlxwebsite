@@ -1,8 +1,22 @@
 ---
+import { Picture } from 'astro:assets';
 import { getDictionary } from '../../i18n';
 import SectionHeading from '../ui/SectionHeading.astro';
+import kitImage from '../../assets/images/kit-complet-mallette.png';
 
 const t = getDictionary();
+
+/**
+ * Points d'intérêt sur la photo du kit (coordonnées en % de l'image).
+ * Règle claims : uniquement des éléments visibles sur la photo réelle —
+ * aucune spécification non validée par la fiche technique (voir .claude/decisions.md).
+ */
+const hotspots = [
+  { x: 63, y: 50, align: 'center', ...t.product.hotspots.lights },
+  { x: 30, y: 66, align: 'center', ...t.product.hotspots.plugs },
+  { x: 55, y: 87, align: 'center', ...t.product.hotspots.cables },
+  { x: 85, y: 80, align: 'right', ...t.product.hotspots.manual },
+] as const;
 ---
 
 <section class="section product" id="produit" aria-labelledby="produit-title">
@@ -10,13 +24,37 @@ const t = getDictionary();
     <SectionHeading eyebrow={t.product.eyebrow} title={t.product.title} titleId="produit-title" />
     <p class="product__body" data-reveal data-reveal-delay="0.15">{t.product.body}</p>
 
-    <!-- Panneau "matière" : métal brossé + ligne LED — emplacement futur photo/3D -->
-    <div class="product__panel" data-reveal data-reveal-delay="0.2">
-      <div class="product__panel-inner" data-parallax="0.06">
-        <span class="product__led" aria-hidden="true"></span>
-        <p class="product__panel-caption">RLX-WTL-01 — Kit signalisation sans fil</p>
+    <figure class="product__showcase" data-reveal data-reveal-delay="0.2">
+      <div
+        class="product__frame"
+        role="group"
+        aria-label={t.product.hotspotsLabel}
+        data-parallax="0.04"
+      >
+        <Picture
+          src={kitImage}
+          formats={['avif', 'webp']}
+          widths={[480, 860, 1148]}
+          sizes="(min-width: 1024px) 900px, 92vw"
+          alt={t.product.kitAlt}
+          loading="lazy"
+        />
+        {
+          hotspots.map((spot) => (
+            <div
+              class:list={['hotspot', `hotspot--${spot.align}`]}
+              style={`--x: ${spot.x}%; --y: ${spot.y}%;`}
+            >
+              <button class="hotspot__dot" type="button" aria-label={spot.label} />
+              <span class="hotspot__tip" role="tooltip">
+                {spot.text}
+              </span>
+            </div>
+          ))
+        }
       </div>
-    </div>
+      <figcaption class="product__caption">{t.product.showcaseCaption}</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -33,35 +71,111 @@ const t = getDictionary();
     text-wrap: pretty;
   }
 
-  .product__panel {
+  .product__showcase {
     margin-top: var(--space-8);
-    border-radius: var(--radius-lg);
-    background: var(--gradient-metal);
-    border: 1px solid var(--color-border);
-    overflow: clip;
-  }
-
-  .product__panel-inner {
-    position: relative;
     display: grid;
-    place-items: center;
-    gap: var(--space-6);
-    min-height: clamp(260px, 40vw, 460px);
-    padding: var(--space-12);
+    gap: var(--space-4);
   }
 
-  .product__led {
-    width: min(420px, 70%);
-    height: 10px;
-    border-radius: var(--radius-full);
-    background: var(--gradient-led);
-    box-shadow: var(--glow-red);
+  /* La photo packshot est sur fond blanc : encadrée comme une fiche produit,
+     elle crée un contraste volontaire avec le fond sombre du site. */
+  .product__frame {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: clip;
+    border: 1px solid var(--color-border-strong);
+    background: #fff;
+    max-width: 900px;
   }
 
-  .product__panel-caption {
+  .product__frame :global(img) {
+    width: 100%;
+    height: auto;
+  }
+
+  .product__caption {
     font-size: var(--text-xs);
     letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
     color: var(--color-text-muted);
+  }
+
+  /* --- Hotspots --- */
+  .hotspot {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    translate: -50% -50%;
+  }
+
+  .hotspot__dot {
+    display: block;
+    width: 18px;
+    height: 18px;
+    border-radius: var(--radius-full);
+    background: var(--color-led-red);
+    border: 3px solid #fff;
+    box-shadow: 0 0 10px rgba(255, 30, 45, 0.7);
+    cursor: pointer;
+    transition: transform var(--duration-fast) var(--ease-out-quart);
+    animation: hotspot-pulse 2.4s var(--ease-in-out-soft) infinite;
+  }
+
+  .hotspot:hover .hotspot__dot,
+  .hotspot:focus-within .hotspot__dot {
+    transform: scale(1.25);
+    animation: none;
+  }
+
+  .hotspot__tip {
+    position: absolute;
+    bottom: calc(100% + 12px);
+    left: 50%;
+    translate: -50% 0;
+    width: max-content;
+    max-width: 230px;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border-strong);
+    color: var(--color-text);
+    font-size: var(--text-xs);
+    line-height: 1.45;
+    text-align: left;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity var(--duration-fast) var(--ease-out-quart),
+      visibility var(--duration-fast);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .hotspot--right .hotspot__tip {
+    left: auto;
+    right: -12px;
+    translate: 0 0;
+  }
+
+  .hotspot:hover .hotspot__tip,
+  .hotspot:focus-within .hotspot__tip {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  @keyframes hotspot-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 10px rgba(255, 30, 45, 0.7);
+    }
+    50% {
+      box-shadow: 0 0 18px rgba(255, 30, 45, 0.35);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hotspot__dot {
+      animation: none;
+    }
   }
 </style>

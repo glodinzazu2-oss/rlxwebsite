@@ -36,6 +36,64 @@ export const fr = {
     eyebrow: 'Le produit',
     title: 'Dessiné pour la route.\nConstruit pour durer.',
     body: 'Chaque détail du kit REMOLUX a été pensé pour un usage réel : remorques, plateaux, porte-engins. Une fixation magnétique puissante, des LED haute intensité et une autonomie qui tient la distance.',
+    kitAlt:
+      'Kit REMOLUX complet : mallette de transport, deux feux LED, connecteurs d’attelage, câbles antivol en acier et notice d’utilisation en français.',
+    showcaseCaption: 'RLX-WTL-01 — le kit complet, tel que livré.',
+    hotspotsLabel: 'Découvrir les éléments du kit',
+    hotspots: {
+      lights: {
+        label: 'Feux LED magnétiques',
+        text: 'Deux feux LED à fixation magnétique — se posent et se retirent sans outil.',
+      },
+      plugs: {
+        label: 'Connecteurs d’attelage',
+        text: 'Connecteurs d’attelage inclus pour la liaison au véhicule.',
+      },
+      cables: {
+        label: 'Câbles antivol',
+        text: 'Câbles antivol en acier pour sécuriser chaque feu.',
+      },
+      manual: {
+        label: 'Notice en français',
+        text: 'Notice d’utilisation rédigée en français, incluse dans la mallette.',
+      },
+    },
+  },
+  useCases: {
+    eyebrow: 'En situation',
+    title: 'Un seul kit.\nTous les terrains.',
+    items: [
+      {
+        key: 'nautisme',
+        title: 'Nautisme',
+        description: 'Mise à l’eau au crépuscule : la remorque reste signalée jusqu’au quai.',
+        alt: 'Feux REMOLUX allumés à l’arrière d’une remorque porte-bateau, sur un port au crépuscule — visuel d’illustration.',
+      },
+      {
+        key: 'caravaning',
+        title: 'Caravaning',
+        description: 'Sur la route des vacances, visible de jour comme de nuit.',
+        alt: 'Feux REMOLUX allumés à l’arrière d’une caravane tractée sur une route de campagne — visuel d’illustration.',
+      },
+      {
+        key: 'agricole',
+        title: 'Agricole',
+        description: 'Dans la boue des champs, la signalisation ne faiblit pas.',
+        alt: 'Feux REMOLUX allumés sur une remorque agricole chargée de paille, dans un champ boueux — visuel d’illustration.',
+      },
+      {
+        key: 'btp',
+        title: 'BTP',
+        description: 'Du chantier à la route, chaque transfert d’engin reste sécurisé.',
+        alt: 'Feux REMOLUX allumés sur un porte-engins transportant une mini-pelle sur un chantier — visuel d’illustration.',
+      },
+    ],
+    disclaimer: 'Mises en situation illustratives. Produit réel présenté ci-dessus.',
+    realPhoto: {
+      title: 'Le kit réel, sans mise en scène.',
+      caption: 'RLX-WTL-01 photographié tel quel, à la sortie de sa mallette.',
+      alt: 'Photo brute du kit REMOLUX réel : feux LED, connecteurs, câbles antivol, notice et packaging, posés sur un sol de parking.',
+    },
   },
   features: {
     eyebrow: 'Points forts',
