@@ -102,6 +102,7 @@ const ignitePoints: Partial<Record<(typeof items)[number]['key'], { x: number; y
   }
 
   .usages__media {
+    position: relative;
     border-radius: var(--radius-md);
     overflow: clip;
     border: 1px solid var(--color-border);
@@ -136,7 +137,6 @@ const ignitePoints: Partial<Record<(typeof items)[number]['key'], { x: number; y
     mix-blend-mode: screen;
     pointer-events: none;
     opacity: 0;
-    will-change: opacity, transform;
   }
 
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
