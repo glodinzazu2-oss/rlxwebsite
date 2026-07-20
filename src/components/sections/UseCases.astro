@@ -12,6 +12,18 @@ const t = getDictionary();
 
 const images = { nautisme, caravaning, agricole, btp } as const;
 const items = t.useCases.items.map((item) => ({ ...item, image: images[item.key] }));
+
+/**
+ * Points d'allumage LED par scène (coordonnées en % de l'image, sur chaque feu).
+ * Prototype : agricole uniquement — placement à valider sur preview avant
+ * d'étendre aux autres univers (voir src/scripts/animations/ignite.ts).
+ */
+const ignitePoints: Partial<Record<(typeof items)[number]['key'], { x: number; y: number }[]>> = {
+  agricole: [
+    { x: 57, y: 57 },
+    { x: 83, y: 57 },
+  ],
+};
 ---
 
 <section class="section usages" aria-labelledby="usages-title">
@@ -22,7 +34,11 @@ const items = t.useCases.items.map((item) => ({ ...item, image: images[item.key]
       {
         items.map((item, i) => (
           <li class="usages__card" data-reveal data-reveal-delay={String(0.06 * (i % 2))}>
-            <div class="usages__media" data-tilt>
+            <div
+              class="usages__media"
+              data-tilt
+              data-ignite-group={ignitePoints[item.key] ? '' : null}
+            >
               <Picture
                 src={item.image}
                 formats={['avif', 'webp']}
@@ -31,6 +47,14 @@ const items = t.useCases.items.map((item) => ({ ...item, image: images[item.key]
                 alt={item.alt}
                 loading="lazy"
               />
+              {(ignitePoints[item.key] ?? []).map((pt) => (
+                <span
+                  class="ignite"
+                  style={`--x: ${pt.x}%; --y: ${pt.y}%;`}
+                  data-ignite
+                  aria-hidden="true"
+                />
+              ))}
             </div>
             <h3 class="usages__title">{item.title}</h3>
             <p class="usages__desc">{item.description}</p>
@@ -91,6 +115,28 @@ const items = t.useCases.items.map((item) => ({ ...item, image: images[item.key]
     height: 100%;
     object-fit: cover;
     transition: transform var(--duration-slow) var(--ease-out-quart);
+  }
+
+  /* Halo d'allumage LED, posé sur chaque feu de la scène (voir ignite.ts).
+     mix-blend-mode: screen → la lumière s'ajoute à la photo au lieu de la masquer. */
+  .ignite {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: 17%;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: var(--radius-full);
+    background: radial-gradient(
+      circle,
+      rgba(255, 30, 45, 0.75) 0%,
+      rgba(255, 30, 45, 0.28) 42%,
+      transparent 70%
+    );
+    mix-blend-mode: screen;
+    pointer-events: none;
+    opacity: 0;
+    will-change: opacity, transform;
   }
 
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
