@@ -22,7 +22,7 @@ const items = t.useCases.items.map((item) => ({ ...item, image: images[item.key]
       {
         items.map((item, i) => (
           <li class="usages__card" data-reveal data-reveal-delay={String(0.06 * (i % 2))}>
-            <div class="usages__media">
+            <div class="usages__media" data-tilt>
               <Picture
                 src={item.image}
                 formats={['avif', 'webp']}
@@ -42,7 +42,7 @@ const items = t.useCases.items.map((item) => ({ ...item, image: images[item.key]
     <p class="usages__disclaimer">{t.useCases.disclaimer}</p>
 
     <figure class="usages__real" data-reveal>
-      <div class="usages__real-media">
+      <div class="usages__real-media" data-tilt>
         <Picture
           src={kitReel}
           formats={['avif', 'webp']}
