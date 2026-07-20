@@ -92,6 +92,7 @@ Toute la documentation du projet vit dans `.claude/`, un seul système, une seul
 - [x] Rédiger mentions légales + politique de confidentialité (`/mentions-legales`, `/confidentialite`)
 - [x] Compléter le capital social dans `SITE.legal.shareCapital` (`src/config/site.ts`)
 - [x] Confirmer le domaine final : `remolux.eu` (`astro.config.mjs`, `src/config/site.ts`, `robots.txt`)
+- [x] Ajouter les photos produit dans `src/assets/images/` (kit réel + mises en situation)
+- [x] Créer `public/images/og-image.jpg` (1200×630)
 - [ ] Valider les specs produit marquées `toValidate` (`src/data/product.ts`)
-- [ ] Ajouter les photos produit dans `src/assets/images/`
-- [ ] Créer `public/images/og-image.jpg` (1200×630)
+- [ ] Confirmation écrite IP67/RED (fiche technique fournisseur) avant mise en ligne — voir Suivi Projet
