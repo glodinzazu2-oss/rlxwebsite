@@ -20,3 +20,8 @@ Thumbs.db
 
 # Fichiers de verrouillage Word/Office (artefacts temporaires, jamais de contenu réel)
 ~$*
+
+# Sources d'images brutes (non optimisées, non renommées) — jamais servies ni versionnées.
+# Les versions retenues, recadrées et renommées vivent dans src/assets/images/.
+public/images/image site/
+.image-sources/
