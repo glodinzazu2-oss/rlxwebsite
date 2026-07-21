@@ -15,13 +15,25 @@ const items = t.useCases.items.map((item) => ({ ...item, image: images[item.key]
 
 /**
  * Points d'allumage LED par scène (coordonnées en % de l'image, sur chaque feu).
- * Prototype : agricole uniquement — placement à valider sur preview avant
- * d'étendre aux autres univers (voir src/scripts/animations/ignite.ts).
+ * Un halo est posé sur chaque feu REMOLUX de la mise en situation et s'allume
+ * à l'entrée dans le viewport (voir src/scripts/animations/ignite.ts).
  */
 const ignitePoints: Partial<Record<(typeof items)[number]['key'], { x: number; y: number }[]>> = {
+  nautisme: [
+    { x: 58, y: 66 },
+    { x: 84, y: 65 },
+  ],
+  caravaning: [
+    { x: 53, y: 64 },
+    { x: 84, y: 64 },
+  ],
   agricole: [
     { x: 57, y: 57 },
     { x: 83, y: 57 },
+  ],
+  btp: [
+    { x: 63, y: 70 },
+    { x: 87, y: 69 },
   ],
 };
 ---
@@ -121,12 +133,14 @@ const ignitePoints: Partial<Record<(typeof items)[number]['key'], { x: number; y
   /* Halo d'allumage LED, posé sur chaque feu de la scène (voir ignite.ts).
      mix-blend-mode: screen → la lumière s'ajoute à la photo au lieu de la masquer. */
   .ignite {
+    /* Positionné en haut-gauche du point ; le centrage (-50%/-50%) et le scale
+       sont pilotés par GSAP dans ignite.ts (xPercent/yPercent), car GSAP écrase
+       la propriété CSS native `translate`. */
     position: absolute;
     left: var(--x);
     top: var(--y);
     width: 17%;
     aspect-ratio: 1;
-    translate: -50% -50%;
     border-radius: var(--radius-full);
     background: radial-gradient(
       circle,

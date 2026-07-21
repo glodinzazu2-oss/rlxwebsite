@@ -7,8 +7,8 @@
  * transform/opacity uniquement (GPU). Sous prefers-reduced-motion : les halos
  * sont posés directement à leur état stable, sans animation d'éclosion.
  *
- * Prototype : appliqué à une seule scène pour validation du placement et du ton
- * sur preview réelle avant extension aux autres univers (voir roadmap.md §10).
+ * Générique : s'applique à toute scène portant des halos [data-ignite]. Les
+ * coordonnées des feux par univers vivent dans UseCases.astro (ignitePoints).
  */
 import { gsap, ScrollTrigger, prefersReducedMotion } from '../core/motion';
 
@@ -20,12 +20,20 @@ export function initIgnite(): void {
     const glows = group.querySelectorAll<HTMLElement>('[data-ignite]');
     if (!glows.length) return;
 
+    // Centrage piloté par GSAP (xPercent/yPercent) : la propriété CSS native
+    // `translate` serait écrasée par le transform que GSAP applique au scale.
     if (prefersReducedMotion()) {
-      gsap.set(glows, { opacity: SETTLED_OPACITY, scaleX: 1, scaleY: 1 });
+      gsap.set(glows, {
+        xPercent: -50,
+        yPercent: -50,
+        opacity: SETTLED_OPACITY,
+        scaleX: 1,
+        scaleY: 1,
+      });
       return;
     }
 
-    gsap.set(glows, { opacity: 0, scaleX: 0.4, scaleY: 0.4 });
+    gsap.set(glows, { xPercent: -50, yPercent: -50, opacity: 0, scaleX: 0.4, scaleY: 0.4 });
 
     ScrollTrigger.create({
       trigger: group,
