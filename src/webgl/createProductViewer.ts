@@ -123,6 +123,8 @@ export function createProductViewer(
   renderer.domElement.style.display = 'block';
   renderer.domElement.style.width = '100%';
   renderer.domElement.style.height = '100%';
+  // Rendu purement visuel : l'info produit passe par le texte/l'alt du repli.
+  renderer.domElement.setAttribute('aria-hidden', 'true');
 
   // --- Scene + éclairage studio (IBL) ---
   const scene = new Scene();

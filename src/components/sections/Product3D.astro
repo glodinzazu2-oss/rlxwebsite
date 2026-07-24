@@ -39,8 +39,11 @@ const modelUrls = {
       data-models={JSON.stringify(modelUrls)}
       data-reveal
       data-reveal-delay="0.1"
+      role="region"
+      aria-label={p.viewerAria}
     >
-      <!-- Repli : affiché tant que la 3D n'est pas prête (ou si WebGL indisponible) -->
+      <!-- Repli produit : porte l'alternative textuelle du produit (lue par les
+           lecteurs d'écran dans tous les cas) ; visible seulement si WebGL absent. -->
       <div class="product3d__fallback" data-viewer-fallback>
         <Picture
           src={fallbackImage}
@@ -51,10 +54,10 @@ const modelUrls = {
           loading="lazy"
         />
       </div>
-      <p class="product3d__loading" data-viewer-loading hidden>{p.loading}</p>
+      <p class="product3d__loading" data-viewer-loading aria-hidden="true" hidden>{p.loading}</p>
     </div>
 
-    <div class="product3d__controls" role="group" aria-label={p.eyebrow}>
+    <div class="product3d__controls" role="group" aria-label={p.controlsAria}>
       {
         p.items.map((item, i) => (
           <button
@@ -69,6 +72,16 @@ const modelUrls = {
       }
     </div>
 
+    <!-- Annonce vocale du modèle sélectionné (invisible, lue par les lecteurs d'écran). -->
+    <p
+      class="visually-hidden"
+      role="status"
+      aria-live="polite"
+      data-viewer-status
+      data-suffix={p.announceSuffix}
+    >
+    </p>
+
     <p class="product3d__hint" aria-hidden="true">{p.hint}</p>
   </div>
 </section>
@@ -81,7 +94,14 @@ const modelUrls = {
   if (stage) {
     const models = JSON.parse(stage.dataset.models ?? '{}') as Record<string, ModelConfig>;
     const loading = stage.querySelector<HTMLElement>('[data-viewer-loading]');
+    const status = document.querySelector<HTMLElement>('[data-viewer-status]');
     const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-model]'));
+
+    // Annonce vocale : « <élément> affiché » à chaque sélection.
+    const announce = (tab: HTMLButtonElement) => {
+      if (status)
+        status.textContent = `${tab.textContent?.trim()} ${status.dataset.suffix ?? ''}`.trim();
+    };
 
     const webglOk = (() => {
       try {
@@ -114,6 +134,7 @@ const modelUrls = {
           const key = tab.dataset.model as ModelKey;
           tabs.forEach((other) => other.setAttribute('aria-pressed', String(other === tab)));
           viewer.setModel(key);
+          announce(tab);
         });
       });
 
