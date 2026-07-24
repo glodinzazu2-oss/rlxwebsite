@@ -573,6 +573,10 @@ Aucune action immédiate. La CI et le développement local continuent en Astro 5
 
 À revoir si : (1) le projet introduit un jour du SSR, des server islands, des slots nommés dynamiques ou une entrée utilisateur quelconque — l'analyse ci-dessus deviendrait caduque et la montée vers Astro 7+ deviendrait prioritaire ; (2) une nouvelle faille touchant le SSG statique est publiée ; ou (3) une migration Astro 6/7 est planifiée pour d'autres raisons (fin de support de la 5.x).
 
+### Addendum 2026-07-24 — sharp (image processing)
+
+Après l'ajout de `three` (intégration 3D), `npm audit` remonte une 3ᵉ vulnérabilité (high) : `sharp <0.35.0` (CVE libvips héritées). `three` n'introduit aucune vulnérabilité propre ; `sharp` est une dépendance transitive d'`astro:assets` déjà présente, désormais surfacée. Analyse : `sharp` s'exécute **au build**, pour optimiser **nos propres images de confiance** (AVIF/WebP), jamais au runtime du site déployé ni sur une entrée utilisateur non maîtrisée. Les CVE libvips concernent le traitement d'images malveillantes — vecteur absent ici. Risque accepté au même titre que les précédentes ; le correctif reste lié à Astro 7 (breaking). Même déclencheur de réévaluation.
+
 ---
 
 # Décisions futures
