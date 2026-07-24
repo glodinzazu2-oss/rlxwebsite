@@ -1,12 +1,17 @@
-# WebGL / Three.js — architecture prête, non imposée
+# WebGL / Three.js — scènes 3D
 
-Ce dossier accueillera les scènes 3D (produit en 3D, environnement HDRI, réflexions)
-**sans alourdir le site tant qu'elles ne sont pas nécessaires**.
+Ce dossier contient les scènes 3D du site. Three.js est actif depuis le 24/07/2026.
+
+## Implémentation de référence
+
+`createProductViewer.ts` — visualiseur du kit REMOLUX (feu, émetteur, mallette),
+monté par `components/sections/Product3D.astro` en island `client:visible` (import
+dynamique → chunk séparé chargé à l'approche du viewport). Studio PMREM/RoomEnvironment,
+OrbitControls bridés, chargement GLB avec cache, `dispose()` complet, boucle suspendue
+hors viewport. Modèles dans `src/assets/models/` (textures optimisées 1K). Voir `.claude/three.md`.
 
 ## Principe
 
-- Three.js n'est **pas** installé par défaut : zéro poids inutile dans le bundle.
-- Quand une scène 3D sera prête : `npm install three @types/three`.
 - Chaque scène est un module autonome chargé **dynamiquement** (code splitting)
   et **uniquement** si l'élément cible est présent et visible.
 

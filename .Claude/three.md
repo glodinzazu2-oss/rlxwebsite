@@ -3,7 +3,7 @@
 > Ce document est la référence absolue de tout développement 3D sur le projet REMOLUX. Il complète [`CLAUDE.md`](./CLAUDE.md), [`rules.md`](./rules.md), [`design.md`](./design.md), [`ux.md`](./ux.md), [`motion.md`](./motion.md), [`architecture.md`](./architecture.md) et [`performance.md`](./performance.md).
 > L'objectif n'est jamais de faire une démonstration technique. Le rendu 3D doit servir le produit. Toujours. Une scène 3D impressionnante mais qui n'aide pas l'utilisateur à comprendre ou désirer le produit REMOLUX est une scène 3D mal conçue, quelle que soit sa qualité d'exécution.
 
-> **État actuel** : `three` n'est pas encore une dépendance du projet (absent de `package.json`) et `src/webgl/` est vide. Ce document décrit l'architecture cible à appliquer **au moment de l'introduction réelle de Three.js**, pas un système déjà en place. Avant la première scène 3D réelle, valider ce guide par rapport à `architecture.md` section 12 (évaluation de toute nouvelle dépendance) plutôt que de l'appliquer littéralement sans le confronter à l'état du code à ce moment-là.
+> **État actuel** : Three.js est **actif** dans le projet depuis le 24/07/2026 (`three` ^0.171 en dépendance). Première intégration réelle : le visualiseur produit 3D `src/webgl/createProductViewer.ts` (kit REMOLUX — feu, émetteur, mallette), chargé en island Astro `client:visible` via import dynamique (chunk séparé, ~150 Ko gzip chargé à l'approche du viewport). Modèles GLB fournis par l'artiste 3D, textures optimisées 2K→1K (VRAM ~53 Mo pour les 3), éclairage studio PMREM/RoomEnvironment, OrbitControls bridés. Ce guide fait désormais foi pour toute évolution 3D.
 
 ---
 

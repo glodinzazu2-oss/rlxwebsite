@@ -59,6 +59,19 @@ export const fr = {
       },
     },
   },
+  product3d: {
+    eyebrow: 'Vue 3D',
+    title: 'Inspectez le kit\nsous tous les angles.',
+    subtitle: 'Faites pivoter chaque élément et zoomez sur les détails de fabrication.',
+    hint: 'Glissez pour pivoter · molette ou pincez pour zoomer',
+    loading: 'Chargement du modèle 3D…',
+    fallbackAlt: 'Kit REMOLUX complet — feu LED, émetteur sans fil et mallette de transport.',
+    items: [
+      { key: 'light', label: 'Feu LED' },
+      { key: 'transmitter', label: 'Émetteur' },
+      { key: 'toolbox', label: 'Mallette' },
+    ],
+  },
   useCases: {
     eyebrow: 'En situation',
     title: 'Un seul kit.\nTous les terrains.',

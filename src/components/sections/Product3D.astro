@@ -1,0 +1,237 @@
+---
+import { Picture } from 'astro:assets';
+import { getDictionary } from '../../i18n';
+import SectionHeading from '../ui/SectionHeading.astro';
+import fallbackImage from '../../assets/images/kit-complet-mallette.png';
+
+// URLs des modèles résolues au build (hashées, mises en cache long).
+import lightUrl from '../../assets/models/remolux-light.glb?url';
+import transmitterUrl from '../../assets/models/remolux-transmitter.glb?url';
+import toolboxUrl from '../../assets/models/remolux-toolbox.glb?url';
+
+const t = getDictionary();
+const p = t.product3d;
+
+const modelUrls = { light: lightUrl, transmitter: transmitterUrl, toolbox: toolboxUrl };
+---
+
+<section class="section product3d" id="vue-3d" aria-labelledby="product3d-title">
+  <div class="container product3d__inner">
+    <SectionHeading eyebrow={p.eyebrow} title={p.title} titleId="product3d-title" align="center" />
+    <p class="product3d__subtitle" data-reveal>{p.subtitle}</p>
+
+    <div
+      class="product3d__stage"
+      data-viewer
+      data-models={JSON.stringify(modelUrls)}
+      data-reveal
+      data-reveal-delay="0.1"
+    >
+      <!-- Repli : affiché tant que la 3D n'est pas prête (ou si WebGL indisponible) -->
+      <div class="product3d__fallback" data-viewer-fallback>
+        <Picture
+          src={fallbackImage}
+          formats={['avif', 'webp']}
+          widths={[480, 860]}
+          sizes="(min-width: 900px) 720px, 92vw"
+          alt={p.fallbackAlt}
+          loading="lazy"
+        />
+      </div>
+      <p class="product3d__loading" data-viewer-loading hidden>{p.loading}</p>
+    </div>
+
+    <div class="product3d__controls" role="group" aria-label={p.eyebrow}>
+      {
+        p.items.map((item, i) => (
+          <button
+            class="product3d__tab"
+            type="button"
+            data-model={item.key}
+            aria-pressed={i === 0 ? 'true' : 'false'}
+          >
+            {item.label}
+          </button>
+        ))
+      }
+    </div>
+
+    <p class="product3d__hint" aria-hidden="true">{p.hint}</p>
+  </div>
+</section>
+
+<script>
+  // Type seul (effacé au build) : n'entraîne aucun chargement de three.js.
+  import type { ModelKey } from '../../webgl/createProductViewer';
+
+  const stage = document.querySelector<HTMLElement>('[data-viewer]');
+  if (stage) {
+    const models = JSON.parse(stage.dataset.models ?? '{}') as Record<string, string>;
+    const loading = stage.querySelector<HTMLElement>('[data-viewer-loading]');
+    const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-model]'));
+
+    const webglOk = (() => {
+      try {
+        return !!document.createElement('canvas').getContext('webgl2');
+      } catch {
+        return false;
+      }
+    })();
+
+    let booted = false;
+    const boot = async () => {
+      if (booted || !webglOk) return;
+      booted = true;
+
+      loading?.removeAttribute('hidden');
+      // Import dynamique : three.js + le viewer ne sont téléchargés qu'ici (chunk séparé).
+      const { createProductViewer } = await import('../../webgl/createProductViewer');
+      const viewer = createProductViewer(stage, models);
+
+      const select = async (key: ModelKey) => {
+        await viewer.setModel(key);
+        loading?.setAttribute('hidden', '');
+        stage.classList.add('is-ready'); // masque le repli une fois le 1er modèle prêt
+      };
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          const key = tab.dataset.model as ModelKey;
+          tabs.forEach((other) => other.setAttribute('aria-pressed', String(other === tab)));
+          void select(key);
+        });
+      });
+
+      void select((tabs[0]?.dataset.model as ModelKey) ?? 'light');
+    };
+
+    // Chargement différé : on n'importe/instancie la 3D qu'à l'approche du viewport.
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          io.disconnect();
+          void boot();
+        }
+      },
+      { rootMargin: '200px' },
+    );
+    io.observe(stage);
+  }
+</script>
+
+<style>
+  .product3d {
+    background:
+      radial-gradient(50% 50% at 50% 30%, rgba(255, 30, 45, 0.05), transparent 70%), var(--color-bg);
+  }
+
+  .product3d__inner {
+    display: grid;
+    justify-items: center;
+  }
+
+  .product3d__subtitle {
+    max-width: 46ch;
+    text-align: center;
+    color: var(--color-text-secondary);
+    font-size: var(--text-lg);
+    margin-top: calc(-1 * var(--space-8));
+    margin-bottom: var(--space-8);
+  }
+
+  .product3d__stage {
+    position: relative;
+    width: 100%;
+    max-width: 760px;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-lg);
+    overflow: clip;
+    border: 1px solid var(--color-border);
+    background:
+      radial-gradient(60% 60% at 50% 45%, rgba(255, 255, 255, 0.05), transparent 70%),
+      var(--color-bg-elevated);
+    touch-action: pan-y; /* laisse le scroll vertical de page fonctionner sur mobile */
+  }
+
+  .product3d__stage :global(canvas) {
+    cursor: grab;
+  }
+  .product3d__stage :global(canvas):active {
+    cursor: grabbing;
+  }
+
+  .product3d__fallback {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    transition: opacity var(--duration-base) var(--ease-out-quart);
+  }
+
+  .product3d__fallback :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: var(--space-6);
+    background: #fff;
+  }
+
+  /* Une fois le modèle 3D prêt, le repli s'efface. */
+  .product3d__stage.is-ready .product3d__fallback {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .product3d__loading {
+    position: absolute;
+    inset-inline: 0;
+    bottom: var(--space-4);
+    text-align: center;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .product3d__controls {
+    display: flex;
+    gap: var(--space-2);
+    margin-top: var(--space-6);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .product3d__tab {
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-strong);
+    background: transparent;
+    color: var(--color-text-secondary);
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    transition:
+      color var(--duration-fast) var(--ease-out-quart),
+      border-color var(--duration-fast) var(--ease-out-quart),
+      background-color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  @media (hover: hover) {
+    .product3d__tab:hover {
+      color: var(--color-text);
+      border-color: var(--color-text-secondary);
+    }
+  }
+
+  .product3d__tab[aria-pressed='true'] {
+    color: #fff;
+    background: var(--gradient-led);
+    border-color: transparent;
+  }
+
+  .product3d__hint {
+    margin-top: var(--space-4);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+</style>
