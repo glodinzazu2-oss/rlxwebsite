@@ -78,6 +78,9 @@ const modelUrls = { light: lightUrl, transmitter: transmitterUrl, toolbox: toolb
       }
     })();
 
+    // WebGL indisponible : on affiche le repli produit (dégradation gracieuse).
+    if (!webglOk) stage.classList.add('no-webgl');
+
     let booted = false;
     const boot = async () => {
       if (booted || !webglOk) return;
@@ -144,13 +147,16 @@ const modelUrls = { light: lightUrl, transmitter: transmitterUrl, toolbox: toolb
     width: 100%;
     max-width: 760px;
     aspect-ratio: 4 / 3;
-    border-radius: var(--radius-lg);
-    overflow: clip;
-    border: 1px solid var(--color-border);
-    background:
-      radial-gradient(60% 60% at 50% 45%, rgba(255, 255, 255, 0.05), transparent 70%),
-      var(--color-bg-elevated);
     touch-action: pan-y; /* laisse le scroll vertical de page fonctionner sur mobile */
+  }
+
+  /* Halo doux sous l'objet pour l'ancrer sans le mettre en boîte. */
+  .product3d__stage::before {
+    content: '';
+    position: absolute;
+    inset: 12% 10% 8%;
+    background: radial-gradient(60% 55% at 50% 55%, rgba(255, 30, 45, 0.06), transparent 72%);
+    pointer-events: none;
   }
 
   .product3d__stage :global(canvas) {
@@ -160,26 +166,27 @@ const modelUrls = { light: lightUrl, transmitter: transmitterUrl, toolbox: toolb
     cursor: grabbing;
   }
 
+  /* Repli produit : masqué par défaut, affiché uniquement si WebGL est absent
+     (dégradation gracieuse). Pendant le chargement 3D, seul l'indicateur discret
+     apparaît sur le stage transparent — pas de boîte. */
   .product3d__fallback {
     position: absolute;
     inset: 0;
     display: grid;
     place-items: center;
+    opacity: 0;
+    pointer-events: none;
     transition: opacity var(--duration-base) var(--ease-out-quart);
+  }
+
+  .product3d__stage.no-webgl .product3d__fallback {
+    opacity: 1;
   }
 
   .product3d__fallback :global(img) {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    padding: var(--space-6);
-    background: #fff;
-  }
-
-  /* Une fois le modèle 3D prêt, le repli s'efface. */
-  .product3d__stage.is-ready .product3d__fallback {
-    opacity: 0;
-    pointer-events: none;
   }
 
   .product3d__loading {
@@ -195,38 +202,52 @@ const modelUrls = { light: lightUrl, transmitter: transmitterUrl, toolbox: toolb
 
   .product3d__controls {
     display: flex;
-    gap: var(--space-2);
-    margin-top: var(--space-6);
+    gap: var(--space-6);
+    margin-top: var(--space-8);
     flex-wrap: wrap;
     justify-content: center;
   }
 
+  /* Onglets texte épurés : discrets au repos, actif souligné d'un trait LED. */
   .product3d__tab {
-    padding: var(--space-2) var(--space-4);
-    border-radius: var(--radius-full);
-    border: 1px solid var(--color-border-strong);
+    position: relative;
+    padding: var(--space-2) 0;
+    border: none;
     background: transparent;
-    color: var(--color-text-secondary);
+    color: var(--color-text-muted);
     font-family: var(--font-display);
     font-size: var(--text-sm);
-    font-weight: 600;
-    transition:
-      color var(--duration-fast) var(--ease-out-quart),
-      border-color var(--duration-fast) var(--ease-out-quart),
-      background-color var(--duration-fast) var(--ease-out-quart);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transition: color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .product3d__tab::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 2px;
+    border-radius: var(--radius-full);
+    background: var(--color-led-red);
+    box-shadow: 0 0 8px rgba(255, 30, 45, 0.6);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform var(--duration-base) var(--ease-out-expo);
   }
 
   @media (hover: hover) {
     .product3d__tab:hover {
-      color: var(--color-text);
-      border-color: var(--color-text-secondary);
+      color: var(--color-text-secondary);
     }
   }
 
   .product3d__tab[aria-pressed='true'] {
-    color: #fff;
-    background: var(--gradient-led);
-    border-color: transparent;
+    color: var(--color-text);
+  }
+
+  .product3d__tab[aria-pressed='true']::after {
+    transform: scaleX(1);
   }
 
   .product3d__hint {

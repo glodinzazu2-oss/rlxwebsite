@@ -52,9 +52,10 @@ export function createProductViewer(
   });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.setClearColor(0x000000, 0); // transparent : l'objet flotte sur le fond de la page
   renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
+  renderer.toneMappingExposure = 0.92;
   container.appendChild(renderer.domElement);
   renderer.domElement.style.display = 'block';
   renderer.domElement.style.width = '100%';
@@ -64,12 +65,18 @@ export function createProductViewer(
   const scene = new Scene();
   const pmrem = new PMREMGenerator(renderer);
   const envTexture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-  scene.environment = envTexture; // reflets + éclairage diffus PBR
+  scene.environment = envTexture; // reflets sur métal/verre
+  // IBL volontairement atténué : sur un site sombre, un studio plein écran
+  // aplatirait le rendu. On garde les reflets, on baisse la lumière diffuse.
+  scene.environmentIntensity = 0.5;
 
   // Lumière clé douce pour sculpter le volume par-dessus l'IBL
-  const keyLight = new DirectionalLight(0xffffff, 1.6);
-  keyLight.position.set(3, 5, 4);
-  scene.add(keyLight);
+  const keyLight = new DirectionalLight(0xffffff, 1.0);
+  keyLight.position.set(2, 4, 3);
+  // Liseré rouge de marque : rappelle l'identité LED sur les arêtes du produit
+  const rimLight = new DirectionalLight(0xff1e2d, 0.55);
+  rimLight.position.set(-3.5, 1.5, -4);
+  scene.add(keyLight, rimLight);
 
   // --- Caméra ---
   const camera = new PerspectiveCamera(
