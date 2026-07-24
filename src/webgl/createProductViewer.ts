@@ -7,12 +7,14 @@
  * neutre (couleurs de matériaux fidèles) et liseré rouge de marque ; ombre de
  * contact douce (ShadowMaterial) pour ancrer l'objet sans le mettre en boîte.
  * Chaque objet a sa pose et ses bornes de zoom (mallette bridée pour ne pas
- * exposer les petits marquages). Rotation d'accueil unique à l'affichage.
- * OrbitControls bornés en rotation verticale. Boucle suspendue hors viewport.
+ * exposer les petits marquages). Changement d'objet en fondu + rotation d'accueil
+ * (GSAP, cohérent avec motion.md §8). OrbitControls bornés en rotation verticale.
+ * Boucle de rendu suspendue hors viewport.
  *
  * Interface stable : createProductViewer(container, models) -> { setModel, dispose }.
  * Aucun autre module ne manipule les objets three.js internes.
  */
+import { gsap } from 'gsap';
 import {
   ACESFilmicToneMapping,
   Box3,
@@ -20,6 +22,8 @@ import {
   Group,
   MathUtils,
   Mesh,
+  type Material,
+  type Object3D,
   PCFSoftShadowMap,
   PerspectiveCamera,
   PlaneGeometry,
@@ -51,19 +55,55 @@ export interface ModelConfig {
 }
 
 export interface ProductViewer {
-  setModel(key: ModelKey): Promise<void>;
+  setModel(key: ModelKey): void;
   dispose(): void;
 }
 
-const INTRO_MS = 1100;
 const INTRO_FROM = -0.5; // rad : l'objet s'installe depuis ~-29° jusqu'à sa pose de repos
-const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+const OUT_DUR = 0.18;
+const IN_FADE_DUR = 0.4;
+const IN_ROT_DUR = 1.0;
+
+/** Matériau vu comme fondable — on mémorise son opacité/transparence de base. */
+type FadeMaterial = Material & { userData: { baseOpacity?: number; baseTransparent?: boolean } };
+
+function eachMaterial(object: Object3D, fn: (m: FadeMaterial) => void): void {
+  object.traverse((o) => {
+    const mesh = o as Mesh;
+    if (!mesh.isMesh || !mesh.material) return;
+    const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+    for (const m of mats) fn(m as FadeMaterial);
+  });
+}
+
+function primeFade(object: Object3D): void {
+  eachMaterial(object, (m) => {
+    if (m.userData.baseOpacity === undefined) {
+      m.userData.baseOpacity = m.opacity;
+      m.userData.baseTransparent = m.transparent;
+    }
+  });
+}
+
+/** Applique un facteur de fondu [0..1] en préservant l'opacité de base (verre translucide inclus). */
+function applyFade(object: Object3D, f: number): void {
+  eachMaterial(object, (m) => {
+    m.opacity = (m.userData.baseOpacity ?? 1) * f;
+    const wantTransparent = f < 0.999 ? true : (m.userData.baseTransparent ?? false);
+    if (m.transparent !== wantTransparent) {
+      m.transparent = wantTransparent;
+      m.needsUpdate = true;
+    }
+  });
+}
 
 export function createProductViewer(
   container: HTMLElement,
   models: Record<ModelKey, ModelConfig>,
+  onReady?: () => void,
 ): ProductViewer {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let notifiedReady = false;
 
   // --- Renderer ---
   const renderer = new WebGLRenderer({
@@ -133,8 +173,10 @@ export function createProductViewer(
   const cache = new Map<ModelKey, Group>();
   const current = new Group();
   scene.add(current);
+
   let activeKey: ModelKey | null = null;
-  let introT0 = 0; // horodatage de la rotation d'accueil (0 = inactive)
+  let pendingKey: ModelKey | null = null;
+  let busy = false;
 
   /** Centre le modèle, place la caméra à sa pose, borne le zoom, cale l'ombre. */
   function frame(object: Group, cfg: ModelConfig): void {
@@ -172,41 +214,103 @@ export function createProductViewer(
     shadowCam.updateProjectionMatrix();
   }
 
-  async function setModel(key: ModelKey): Promise<void> {
-    if (key === activeKey) return;
-    activeKey = key;
+  async function ensureLoaded(key: ModelKey): Promise<Group | null> {
+    const cached = cache.get(key);
+    if (cached) return cached;
+    const cfg = models[key];
+    if (!cfg) return null;
+    const gltf = await loader.loadAsync(cfg.url);
+    const group = gltf.scene;
+    group.traverse((obj) => {
+      if ((obj as Mesh).isMesh) (obj as Mesh).castShadow = true;
+    });
+    cache.set(key, group);
+    return group;
+  }
 
-    let group = cache.get(key);
-    if (!group) {
-      const cfg = models[key];
-      if (!cfg) return;
-      const gltf = await loader.loadAsync(cfg.url);
-      group = gltf.scene;
-      group.traverse((obj) => {
-        if ((obj as Mesh).isMesh) (obj as Mesh).castShadow = true;
-      });
-      cache.set(key, group);
+  /** Boucle latest-wins : gère les clics rapides sans empiler les transitions. */
+  async function drive(): Promise<void> {
+    busy = true;
+    try {
+      while (pendingKey && pendingKey !== activeKey) {
+        const target = pendingKey;
+        const prev = current.children[0];
+
+        // Sortie : fondu de l'objet courant.
+        if (prev && !reducedMotion) {
+          primeFade(prev);
+          await gsap.to(
+            { f: 1 },
+            {
+              f: 0,
+              duration: OUT_DUR,
+              ease: 'power2.in',
+              onUpdate() {
+                applyFade(prev, (this.targets()[0] as { f: number }).f);
+              },
+            },
+          );
+          gsap.killTweensOf(prev.rotation);
+        }
+
+        const group = await ensureLoaded(target);
+        if (!group) {
+          pendingKey = null;
+          break;
+        }
+
+        current.clear();
+        current.rotation.y = 0;
+        current.add(group);
+        frame(group, models[target]);
+        activeKey = target;
+
+        // Le 1er modèle est à l'écran : on peut masquer l'indicateur de chargement.
+        if (!notifiedReady) {
+          notifiedReady = true;
+          onReady?.();
+        }
+
+        // Entrée : fondu + rotation d'accueil (une fois, pas de boucle).
+        if (reducedMotion) {
+          applyFade(group, 1);
+        } else {
+          primeFade(group);
+          applyFade(group, 0);
+          group.rotation.y = INTRO_FROM;
+          gsap.to(group.rotation, { y: 0, duration: IN_ROT_DUR, ease: 'power3.out' });
+          await gsap.to(
+            { f: 0 },
+            {
+              f: 1,
+              duration: IN_FADE_DUR,
+              ease: 'power2.out',
+              onUpdate() {
+                applyFade(group, (this.targets()[0] as { f: number }).f);
+              },
+              onComplete() {
+                applyFade(group, 1);
+              },
+            },
+          );
+        }
+
+        if (pendingKey === target) pendingKey = null;
+      }
+    } finally {
+      busy = false;
     }
-    if (activeKey !== key) return; // une sélection plus récente a pris le dessus
+  }
 
-    current.clear();
-    current.rotation.y = 0;
-    current.add(group);
-    frame(group, models[key]);
-
-    // Rotation d'accueil : signale l'interactivité (une seule fois, pas de boucle).
-    introT0 = reducedMotion ? 0 : performance.now();
+  function setModel(key: ModelKey): void {
+    pendingKey = key;
+    if (!busy) void drive();
   }
 
   // --- Boucle de rendu, suspendue hors du viewport ---
   let rafId = 0;
   let visible = false;
   const tick = () => {
-    if (introT0) {
-      const p = Math.min((performance.now() - introT0) / INTRO_MS, 1);
-      current.rotation.y = INTRO_FROM * (1 - easeOutCubic(p));
-      if (p >= 1) introT0 = 0;
-    }
     controls.update();
     renderer.render(scene, camera);
     rafId = requestAnimationFrame(tick);
@@ -256,6 +360,7 @@ export function createProductViewer(
 
     // Libère toutes les ressources GPU des modèles chargés (three.md §9).
     for (const group of cache.values()) {
+      gsap.killTweensOf(group.rotation);
       group.traverse((obj) => {
         const mesh = obj as { geometry?: { dispose(): void }; material?: unknown };
         mesh.geometry?.dispose();

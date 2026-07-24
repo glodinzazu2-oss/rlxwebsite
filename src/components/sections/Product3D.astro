@@ -102,23 +102,22 @@ const modelUrls = {
       loading?.removeAttribute('hidden');
       // Import dynamique : three.js + le viewer ne sont téléchargés qu'ici (chunk séparé).
       const { createProductViewer } = await import('../../webgl/createProductViewer');
-      const viewer = createProductViewer(stage, models);
 
-      const select = async (key: ModelKey) => {
-        await viewer.setModel(key);
+      // onReady : appelé dès que le 1er modèle est à l'écran.
+      const viewer = createProductViewer(stage, models, () => {
         loading?.setAttribute('hidden', '');
-        stage.classList.add('is-ready'); // masque le repli une fois le 1er modèle prêt
-      };
+        stage.classList.add('is-ready');
+      });
 
       tabs.forEach((tab) => {
         tab.addEventListener('click', () => {
           const key = tab.dataset.model as ModelKey;
           tabs.forEach((other) => other.setAttribute('aria-pressed', String(other === tab)));
-          void select(key);
+          viewer.setModel(key);
         });
       });
 
-      void select((tabs[0]?.dataset.model as ModelKey) ?? 'light');
+      viewer.setModel((tabs[0]?.dataset.model as ModelKey) ?? 'light');
     };
 
     // Chargement différé : on n'importe/instancie la 3D qu'à l'approche du viewport.
