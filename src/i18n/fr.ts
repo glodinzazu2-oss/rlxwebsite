@@ -78,6 +78,51 @@ export const fr = {
       { key: 'transmitter', label: 'Émetteur' },
       { key: 'toolbox', label: 'Mallette' },
     ],
+    /** Points d'intérêt cliquables sur les modèles 3D (éléments physiques réels). */
+    hotspots: {
+      light: [
+        {
+          label: 'LED haute intensité',
+          text: 'Signal lumineux net, visible de jour comme de nuit.',
+        },
+        {
+          label: 'Fixation magnétique',
+          text: 'Aimants haute puissance — se pose et se retire sans outil.',
+        },
+        {
+          label: 'Boîtier renforcé',
+          text: 'Coque résistante aux chocs et aux vibrations de la route.',
+        },
+      ],
+      transmitter: [
+        {
+          label: 'Connecteur véhicule',
+          text: 'Se branche sur la prise d’attelage — aucune installation.',
+        },
+        {
+          label: 'Liaison sans fil',
+          text: 'Transmet les signaux aux feux, sans appairage manuel.',
+        },
+        {
+          label: 'Boîtier compact',
+          text: 'Format réduit et résistant, pensé pour l’extérieur.',
+        },
+      ],
+      toolbox: [
+        {
+          label: 'Mallette de transport',
+          text: 'Protège et range tout le kit entre deux utilisations.',
+        },
+        {
+          label: 'Poignée intégrée',
+          text: 'Se transporte d’une main, prête à l’emploi.',
+        },
+        {
+          label: 'Fermoirs de sécurité',
+          text: 'Maintiennent la mallette close pendant le transport.',
+        },
+      ],
+    },
   },
   useCases: {
     eyebrow: 'En situation',
