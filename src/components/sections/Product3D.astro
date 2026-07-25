@@ -12,6 +12,16 @@ import toolboxUrl from '../../assets/models/remolux-toolbox.glb?url';
 const t = getDictionary();
 const p = t.product3d;
 
+// Points d'intérêt du feu LED : ancrés en fractions [-1..1] des demi-dimensions
+// (0 = centre, 1 = bord), avec leur normale sortante (masquage quand le point passe
+// derrière l'objet). Libellés/textes issus de l'i18n. Éléments physiques réels
+// uniquement (pas de mention IP67 : cf. décision claims du 24/07).
+const lightHotspots = [
+  { pos: [0, 0.12, 1], normal: [0, 0, 1], ...p.hotspots.light[0] }, // face LED
+  { pos: [0, 0, -1], normal: [0, 0, -1], ...p.hotspots.light[1] }, // dos aimanté
+  { pos: [1, -0.1, 0.15], normal: [1, 0, 0.2], ...p.hotspots.light[2] }, // flanc boîtier
+];
+
 // Pose (angle de vue initial) + bornes de zoom par objet. La mallette est bridée
 // en zoom (minZoomScale élevé) pour ne jamais exposer les petits marquages packaging.
 const modelUrls = {
@@ -24,6 +34,7 @@ const modelUrls = {
     distanceScale: 1.5,
     maxZoomScale: 1.7,
     maxPolarDeg: 80,
+    hotspots: lightHotspots,
   },
   transmitter: { url: transmitterUrl, azimuthDeg: 35, polarDeg: 76, distanceScale: 1.55 },
   toolbox: {
@@ -296,5 +307,128 @@ const modelUrls = {
     margin-top: var(--space-4);
     font-size: var(--text-xs);
     color: var(--color-text-muted);
+  }
+
+  /* --- Hotspots 3D : marqueurs créés en JS (styles globaux, portés au stage) --- */
+  .product3d__stage :global(.product3d__hotspots) {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Cible tactile de 44px centrée sur le point projeté (le point visible est plus petit). */
+  .product3d__stage :global(.product3d__hs) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-base) var(--ease-out-quart);
+    will-change: transform, opacity;
+  }
+
+  .product3d__stage :global(.product3d__hs-dot) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: var(--color-led-red);
+    box-shadow:
+      0 0 0 4px rgba(255, 30, 45, 0.16),
+      0 0 12px rgba(255, 30, 45, 0.7);
+    transition: transform var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .product3d__stage :global(.product3d__hs:hover .product3d__hs-dot),
+  .product3d__stage :global(.product3d__hs:focus-visible .product3d__hs-dot),
+  .product3d__stage :global(.product3d__hs.is-open .product3d__hs-dot) {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+
+  .product3d__stage :global(.product3d__hs:focus-visible) {
+    outline: none;
+  }
+  .product3d__stage :global(.product3d__hs:focus-visible .product3d__hs-dot) {
+    box-shadow:
+      0 0 0 3px var(--color-bg),
+      0 0 0 5px var(--color-led-red),
+      0 0 12px rgba(255, 30, 45, 0.7);
+  }
+
+  /* Onde discrète autour du point (désactivée si mouvement réduit). */
+  @media (prefers-reduced-motion: no-preference) {
+    .product3d__stage :global(.product3d__hs-dot)::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px rgba(255, 30, 45, 0.55);
+      animation: product3d-hs-pulse 2.6s var(--ease-out-quart) infinite;
+    }
+  }
+
+  @keyframes product3d-hs-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    70%,
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+
+  /* Info-bulle : au-dessus du point, révélée au survol / focus / clic. */
+  .product3d__stage :global(.product3d__hs-card) {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% - 8px);
+    width: max-content;
+    max-width: 220px;
+    display: grid;
+    gap: 4px;
+    padding: var(--space-3) var(--space-4);
+    background: rgba(12, 12, 14, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg, 0 12px 32px rgba(0, 0, 0, 0.5));
+    backdrop-filter: blur(8px);
+    text-align: left;
+    opacity: 0;
+    transform: translate(-50%, 4px);
+    pointer-events: none;
+    transition:
+      opacity var(--duration-fast) var(--ease-out-quart),
+      transform var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .product3d__stage :global(.product3d__hs:hover .product3d__hs-card),
+  .product3d__stage :global(.product3d__hs:focus-visible .product3d__hs-card),
+  .product3d__stage :global(.product3d__hs.is-open .product3d__hs-card) {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  .product3d__stage :global(.product3d__hs-title) {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .product3d__stage :global(.product3d__hs-text) {
+    font-size: var(--text-xs);
+    line-height: 1.4;
+    color: var(--color-text-secondary);
   }
 </style>

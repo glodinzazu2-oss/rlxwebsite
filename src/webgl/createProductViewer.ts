@@ -55,6 +55,19 @@ export interface ModelConfig {
   /** Angle polaire max (°) : borne la bascule vers le bas. Défaut ~97°. Baisser
    *  pour interdire de voir la face inférieure (ex. écriture d'usine du feu LED). */
   maxPolarDeg?: number;
+  /** Points d'intérêt cliquables ancrés sur l'objet (voir HotspotConfig). */
+  hotspots?: HotspotConfig[];
+}
+
+export interface HotspotConfig {
+  /** Position sur l'objet, en fractions [-1..1] des demi-dimensions (0 = centre, 1 = bord). */
+  pos: [number, number, number];
+  /** Normale sortante : sert au masquage du point quand il passe derrière l'objet. */
+  normal: [number, number, number];
+  /** Libellé court (titre de l'info-bulle + nom accessible). */
+  label: string;
+  /** Phrase descriptive affichée dans l'info-bulle. */
+  text: string;
 }
 
 /** Borne basse par défaut de la rotation verticale (juste sous l'horizontale). */
@@ -186,8 +199,86 @@ export function createProductViewer(
   let pendingKey: ModelKey | null = null;
   let busy = false;
 
+  // --- Hotspots : marqueurs HTML ancrés en 3D, projetés à l'écran chaque frame ---
+  // L'objet reste fixe (seule la caméra orbite) : la position monde de chaque point
+  // est donc constante après cadrage — on ne recalcule que sa projection écran.
+  const hotspotLayer = document.createElement('div');
+  hotspotLayer.className = 'product3d__hotspots';
+  container.appendChild(hotspotLayer);
+
+  type ActiveHotspot = { el: HTMLButtonElement; world: Vector3; normal: Vector3 };
+  let activeHotspots: ActiveHotspot[] = [];
+  let hotspotsShown = false;
+  const hsProj = new Vector3();
+  const hsToCam = new Vector3();
+
+  function clearHotspots(): void {
+    hotspotsShown = false;
+    for (const hs of activeHotspots) hs.el.remove();
+    activeHotspots = [];
+  }
+
+  /** Construit les marqueurs du modèle courant (masqués tant que hotspotsShown = false). */
+  function buildHotspots(cfg: ModelConfig, size: Vector3): void {
+    clearHotspots();
+    const list = cfg.hotspots;
+    if (!list?.length) return;
+    const hx = size.x / 2;
+    const hy = size.y / 2;
+    const hz = size.z / 2;
+    for (const h of list) {
+      const el = document.createElement('button');
+      el.type = 'button';
+      el.className = 'product3d__hs';
+      el.setAttribute('aria-label', `${h.label} : ${h.text}`);
+      el.style.opacity = '0';
+      el.innerHTML =
+        '<span class="product3d__hs-dot" aria-hidden="true"></span>' +
+        '<span class="product3d__hs-card" aria-hidden="true">' +
+        '<span class="product3d__hs-title"></span>' +
+        '<span class="product3d__hs-text"></span></span>';
+      (el.querySelector('.product3d__hs-title') as HTMLElement).textContent = h.label;
+      (el.querySelector('.product3d__hs-text') as HTMLElement).textContent = h.text;
+      el.addEventListener('click', () => el.classList.toggle('is-open'));
+      hotspotLayer.appendChild(el);
+      activeHotspots.push({
+        el,
+        world: new Vector3(h.pos[0] * hx, h.pos[1] * hy, h.pos[2] * hz),
+        normal: new Vector3(h.normal[0], h.normal[1], h.normal[2]).normalize(),
+      });
+    }
+  }
+
+  /** Projette chaque point à l'écran et masque ceux passés derrière l'objet. */
+  function updateHotspots(): void {
+    if (!activeHotspots.length) return;
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    for (const hs of activeHotspots) {
+      if (!hotspotsShown) {
+        hs.el.style.opacity = '0';
+        hs.el.style.pointerEvents = 'none';
+        continue;
+      }
+      hsToCam.copy(camera.position).sub(hs.world).normalize();
+      const facing = hs.normal.dot(hsToCam) > 0.05;
+      hsProj.copy(hs.world).project(camera);
+      if (facing && hsProj.z < 1) {
+        const x = (hsProj.x * 0.5 + 0.5) * w;
+        const y = (-hsProj.y * 0.5 + 0.5) * h;
+        hs.el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+        hs.el.style.opacity = '1';
+        hs.el.style.pointerEvents = 'auto';
+      } else {
+        hs.el.style.opacity = '0';
+        hs.el.style.pointerEvents = 'none';
+        hs.el.classList.remove('is-open');
+      }
+    }
+  }
+
   /** Centre le modèle, place la caméra à sa pose, borne le zoom, cale l'ombre. */
-  function frame(object: Group, cfg: ModelConfig): void {
+  function frame(object: Group, cfg: ModelConfig): Vector3 {
     const box = new Box3().setFromObject(object);
     const size = box.getSize(new Vector3());
     const center = box.getCenter(new Vector3());
@@ -222,6 +313,8 @@ export function createProductViewer(
     shadowCam.near = 0.1;
     shadowCam.far = 20;
     shadowCam.updateProjectionMatrix();
+
+    return size;
   }
 
   async function ensureLoaded(key: ModelKey): Promise<Group | null> {
@@ -245,6 +338,9 @@ export function createProductViewer(
       while (pendingKey && pendingKey !== activeKey) {
         const target = pendingKey;
         const prev = current.children[0];
+
+        // Les hotspots de l'objet sortant disparaissent dès le début de la transition.
+        hotspotsShown = false;
 
         // Sortie : fondu de l'objet courant.
         if (prev && !reducedMotion) {
@@ -272,7 +368,8 @@ export function createProductViewer(
         current.clear();
         current.rotation.y = 0;
         current.add(group);
-        frame(group, models[target]);
+        const size = frame(group, models[target]);
+        buildHotspots(models[target], size);
         activeKey = target;
 
         // Le 1er modèle est à l'écran : on peut masquer l'indicateur de chargement.
@@ -284,11 +381,20 @@ export function createProductViewer(
         // Entrée : fondu + rotation d'accueil (une fois, pas de boucle).
         if (reducedMotion) {
           applyFade(group, 1);
+          hotspotsShown = activeHotspots.length > 0; // révèle les points (pas de rotation)
         } else {
           primeFade(group);
           applyFade(group, 0);
           group.rotation.y = INTRO_FROM;
-          gsap.to(group.rotation, { y: 0, duration: IN_ROT_DUR, ease: 'power3.out' });
+          // Les hotspots n'apparaissent qu'une fois l'objet posé (fin de rotation).
+          gsap.to(group.rotation, {
+            y: 0,
+            duration: IN_ROT_DUR,
+            ease: 'power3.out',
+            onComplete: () => {
+              if (activeKey === target) hotspotsShown = activeHotspots.length > 0;
+            },
+          });
           await gsap.to(
             { f: 0 },
             {
@@ -323,6 +429,7 @@ export function createProductViewer(
   const tick = () => {
     controls.update();
     renderer.render(scene, camera);
+    updateHotspots();
     rafId = requestAnimationFrame(tick);
   };
   const start = () => {
@@ -367,6 +474,8 @@ export function createProductViewer(
     ro.disconnect();
     document.removeEventListener('visibilitychange', onVisibility);
     controls.dispose();
+    clearHotspots();
+    hotspotLayer.remove();
 
     // Libère toutes les ressources GPU des modèles chargés (three.md §9).
     for (const group of cache.values()) {

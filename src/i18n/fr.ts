@@ -78,6 +78,23 @@ export const fr = {
       { key: 'transmitter', label: 'Émetteur' },
       { key: 'toolbox', label: 'Mallette' },
     ],
+    /** Points d'intérêt cliquables sur les modèles 3D (éléments physiques réels). */
+    hotspots: {
+      light: [
+        {
+          label: 'LED haute intensité',
+          text: 'Signal lumineux net, visible de jour comme de nuit.',
+        },
+        {
+          label: 'Fixation magnétique',
+          text: 'Aimants haute puissance — se pose et se retire sans outil.',
+        },
+        {
+          label: 'Boîtier renforcé',
+          text: 'Coque résistante aux chocs et aux vibrations de la route.',
+        },
+      ],
+    },
   },
   useCases: {
     eyebrow: 'En situation',
