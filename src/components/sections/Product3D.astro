@@ -22,6 +22,20 @@ const lightHotspots = [
   { pos: [1, -0.1, 0.15], normal: [1, 0, 0.2], ...p.hotspots.light[2] }, // flanc boîtier
 ];
 
+// Émetteur (boîtier bas et allongé, face avant en +Z).
+const transmitterHotspots = [
+  { pos: [0, 0.15, 1], normal: [0, 0, 1], ...p.hotspots.transmitter[0] }, // connecteur (avant)
+  { pos: [0, 1, -0.1], normal: [0, 1, 0], ...p.hotspots.transmitter[1] }, // liaison (dessus)
+  { pos: [1, -0.1, -0.15], normal: [1, 0, -0.1], ...p.hotspots.transmitter[2] }, // flanc
+];
+
+// Mallette (panneau plat, grande face en +Z, poignée sur l'arête haute).
+const toolboxHotspots = [
+  { pos: [-0.25, 0, 1], normal: [0, 0, 1], ...p.hotspots.toolbox[0] }, // grande face
+  { pos: [0, 1, 0.25], normal: [0, 0.7, 0.7], ...p.hotspots.toolbox[1] }, // poignée (arête haute)
+  { pos: [0.45, -0.35, 1], normal: [0, 0, 1], ...p.hotspots.toolbox[2] }, // fermoirs
+];
+
 // Pose (angle de vue initial) + bornes de zoom par objet. La mallette est bridée
 // en zoom (minZoomScale élevé) pour ne jamais exposer les petits marquages packaging.
 const modelUrls = {
@@ -36,7 +50,13 @@ const modelUrls = {
     maxPolarDeg: 80,
     hotspots: lightHotspots,
   },
-  transmitter: { url: transmitterUrl, azimuthDeg: 35, polarDeg: 76, distanceScale: 1.55 },
+  transmitter: {
+    url: transmitterUrl,
+    azimuthDeg: 35,
+    polarDeg: 76,
+    distanceScale: 1.55,
+    hotspots: transmitterHotspots,
+  },
   toolbox: {
     url: toolboxUrl,
     azimuthDeg: 24,
@@ -44,6 +64,7 @@ const modelUrls = {
     distanceScale: 1.4,
     minZoomScale: 0.92,
     maxZoomScale: 1.4,
+    hotspots: toolboxHotspots,
   },
 };
 ---
