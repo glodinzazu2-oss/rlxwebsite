@@ -1,48 +1,115 @@
 /**
  * Visualiseur 3D produit REMOLUX — three.js vanilla, encapsulé (voir three.md).
  *
- * Une scène, un renderer, une caméra. Charge les modèles GLB à la demande (cache),
- * éclairage studio par IBL (RoomEnvironment via PMREM) pour révéler les matériaux
- * PBR et les reflets, map émissive native pour la lueur des LED. OrbitControls
- * bridés (rotation verticale + zoom) pour toujours valoriser le produit et ne
- * jamais exposer la face inférieure. Boucle de rendu suspendue hors du viewport.
+ * Une scène, un renderer, une caméra. Charge les modèles GLB à la demande (cache).
+ * Fond transparent : l'objet flotte sur la page. Éclairage studio par IBL
+ * (RoomEnvironment via PMREM) atténué pour un rendu sombre premium, clé blanche
+ * neutre (couleurs de matériaux fidèles) et liseré rouge de marque ; ombre de
+ * contact douce (ShadowMaterial) pour ancrer l'objet sans le mettre en boîte.
+ * Chaque objet a sa pose et ses bornes de zoom (mallette bridée pour ne pas
+ * exposer les petits marquages). Changement d'objet en fondu + rotation d'accueil
+ * (GSAP, cohérent avec motion.md §8). OrbitControls bornés en rotation verticale.
+ * Boucle de rendu suspendue hors viewport.
  *
  * Interface stable : createProductViewer(container, models) -> { setModel, dispose }.
  * Aucun autre module ne manipule les objets three.js internes.
  */
+import { gsap } from 'gsap';
 import {
   ACESFilmicToneMapping,
   Box3,
   DirectionalLight,
   Group,
   MathUtils,
+  Mesh,
+  type Material,
+  type Object3D,
+  PCFSoftShadowMap,
   PerspectiveCamera,
+  PlaneGeometry,
   PMREMGenerator,
   Scene,
+  ShadowMaterial,
   SRGBColorSpace,
   Vector3,
   WebGLRenderer,
-  type Object3D,
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 export type ModelKey = string;
-export interface ProductViewerModels {
-  [key: ModelKey]: string; // clé -> URL du .glb
+
+export interface ModelConfig {
+  url: string;
+  /** Azimut caméra (° autour de Y) — 0 = face. Donne l'angle de vue initial. */
+  azimuthDeg?: number;
+  /** Angle polaire caméra (° depuis Y) — 90 = horizontal, <90 = légèrement au-dessus. */
+  polarDeg?: number;
+  /** Multiplicateur de distance de cadrage (plus grand = plus loin). */
+  distanceScale?: number;
+  /** Zoom min autorisé, en fraction de la distance initiale (grand = ne peut pas s'approcher). */
+  minZoomScale?: number;
+  /** Zoom max autorisé, en fraction de la distance initiale. */
+  maxZoomScale?: number;
+  /** Angle polaire max (°) : borne la bascule vers le bas. Défaut ~97°. Baisser
+   *  pour interdire de voir la face inférieure (ex. écriture d'usine du feu LED). */
+  maxPolarDeg?: number;
 }
 
+/** Borne basse par défaut de la rotation verticale (juste sous l'horizontale). */
+const DEFAULT_MAX_POLAR_DEG = 97.2; // = Math.PI * 0.54
+
 export interface ProductViewer {
-  setModel(key: ModelKey): Promise<void>;
+  setModel(key: ModelKey): void;
   dispose(): void;
+}
+
+const INTRO_FROM = -0.5; // rad : l'objet s'installe depuis ~-29° jusqu'à sa pose de repos
+const OUT_DUR = 0.18;
+const IN_FADE_DUR = 0.4;
+const IN_ROT_DUR = 1.0;
+
+/** Matériau vu comme fondable — on mémorise son opacité/transparence de base. */
+type FadeMaterial = Material & { userData: { baseOpacity?: number; baseTransparent?: boolean } };
+
+function eachMaterial(object: Object3D, fn: (m: FadeMaterial) => void): void {
+  object.traverse((o) => {
+    const mesh = o as Mesh;
+    if (!mesh.isMesh || !mesh.material) return;
+    const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+    for (const m of mats) fn(m as FadeMaterial);
+  });
+}
+
+function primeFade(object: Object3D): void {
+  eachMaterial(object, (m) => {
+    if (m.userData.baseOpacity === undefined) {
+      m.userData.baseOpacity = m.opacity;
+      m.userData.baseTransparent = m.transparent;
+    }
+  });
+}
+
+/** Applique un facteur de fondu [0..1] en préservant l'opacité de base (verre translucide inclus). */
+function applyFade(object: Object3D, f: number): void {
+  eachMaterial(object, (m) => {
+    m.opacity = (m.userData.baseOpacity ?? 1) * f;
+    const wantTransparent = f < 0.999 ? true : (m.userData.baseTransparent ?? false);
+    if (m.transparent !== wantTransparent) {
+      m.transparent = wantTransparent;
+      m.needsUpdate = true;
+    }
+  });
 }
 
 export function createProductViewer(
   container: HTMLElement,
-  models: ProductViewerModels,
+  models: Record<ModelKey, ModelConfig>,
+  onReady?: () => void,
 ): ProductViewer {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let notifiedReady = false;
 
   // --- Renderer ---
   const renderer = new WebGLRenderer({
@@ -52,24 +119,44 @@ export function createProductViewer(
   });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.setClearColor(0x000000, 0); // transparent : l'objet flotte sur le fond de la page
   renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
+  renderer.toneMappingExposure = 0.95;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = PCFSoftShadowMap;
   container.appendChild(renderer.domElement);
   renderer.domElement.style.display = 'block';
   renderer.domElement.style.width = '100%';
   renderer.domElement.style.height = '100%';
+  // Rendu purement visuel : l'info produit passe par le texte/l'alt du repli.
+  renderer.domElement.setAttribute('aria-hidden', 'true');
 
   // --- Scene + éclairage studio (IBL) ---
   const scene = new Scene();
   const pmrem = new PMREMGenerator(renderer);
   const envTexture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-  scene.environment = envTexture; // reflets + éclairage diffus PBR
+  scene.environment = envTexture; // reflets sur métal/verre
+  // IBL atténué : on garde les reflets, on baisse la lumière diffuse pour le thème sombre.
+  scene.environmentIntensity = 0.55;
 
-  // Lumière clé douce pour sculpter le volume par-dessus l'IBL
-  const keyLight = new DirectionalLight(0xffffff, 1.6);
-  keyLight.position.set(3, 5, 4);
-  scene.add(keyLight);
+  // Clé blanche neutre : restitue fidèlement les couleurs d'albédo (plastique, métal).
+  const keyLight = new DirectionalLight(0xffffff, 1.1);
+  keyLight.position.set(2.5, 4, 3);
+  keyLight.castShadow = true;
+  keyLight.shadow.mapSize.set(1024, 1024);
+  keyLight.shadow.bias = -0.0004;
+  keyLight.shadow.normalBias = 0.02;
+  // Liseré rouge de marque : accentue les arêtes sans teinter les matériaux.
+  const rimLight = new DirectionalLight(0xff1e2d, 0.45);
+  rimLight.position.set(-3.5, 1.5, -4);
+  scene.add(keyLight, rimLight);
+
+  // Ombre de contact : un plan invisible qui ne rend que l'ombre (ancrage doux).
+  const ground = new Mesh(new PlaneGeometry(12, 12), new ShadowMaterial({ opacity: 0.32 }));
+  ground.rotation.x = -Math.PI / 2;
+  ground.receiveShadow = true;
+  scene.add(ground);
 
   // --- Caméra ---
   const camera = new PerspectiveCamera(
@@ -78,26 +165,29 @@ export function createProductViewer(
     0.1,
     100,
   );
-  camera.position.set(0, 0.4, 4);
 
-  // --- Contrôles bridés ---
+  // --- Contrôles bornés ---
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
   controls.enablePan = false;
   controls.rotateSpeed = 0.8;
-  // Rotation verticale bornée : jamais sous l'équateur (cache la face inférieure)
+  // Rotation verticale bornée : jamais sous l'équateur (cache la face inférieure).
   controls.minPolarAngle = Math.PI * 0.12;
   controls.maxPolarAngle = Math.PI * 0.54;
+  if (reducedMotion) controls.enableDamping = false;
 
   const loader = new GLTFLoader();
   const cache = new Map<ModelKey, Group>();
   const current = new Group();
   scene.add(current);
-  let activeKey: ModelKey | null = null;
 
-  /** Centre le modèle à l'origine et cadre la caméra + bornes de zoom. */
-  function frame(object: Object3D): void {
+  let activeKey: ModelKey | null = null;
+  let pendingKey: ModelKey | null = null;
+  let busy = false;
+
+  /** Centre le modèle, place la caméra à sa pose, borne le zoom, cale l'ombre. */
+  function frame(object: Group, cfg: ModelConfig): void {
     const box = new Box3().setFromObject(object);
     const size = box.getSize(new Vector3());
     const center = box.getCenter(new Vector3());
@@ -105,32 +195,126 @@ export function createProductViewer(
 
     const maxDim = Math.max(size.x, size.y, size.z);
     const fitDist = maxDim / (2 * Math.tan(MathUtils.degToRad(camera.fov) / 2));
-    const dist = fitDist * 1.5;
+    const dist = fitDist * (cfg.distanceScale ?? 1.5);
 
+    const phi = MathUtils.degToRad(cfg.polarDeg ?? 78);
+    const theta = MathUtils.degToRad(cfg.azimuthDeg ?? 20);
+    camera.position.set(
+      dist * Math.sin(phi) * Math.sin(theta),
+      dist * Math.cos(phi),
+      dist * Math.sin(phi) * Math.cos(theta),
+    );
     controls.target.set(0, 0, 0);
-    camera.position.set(0, maxDim * 0.15, dist);
-    controls.minDistance = dist * 0.6;
-    controls.maxDistance = dist * 1.8;
+    controls.minDistance = dist * (cfg.minZoomScale ?? 0.6);
+    controls.maxDistance = dist * (cfg.maxZoomScale ?? 1.8);
+    // Borne verticale propre à l'objet (verrouille la face inférieure du feu LED).
+    controls.maxPolarAngle = MathUtils.degToRad(cfg.maxPolarDeg ?? DEFAULT_MAX_POLAR_DEG);
     controls.update();
+
+    // Ombre de contact au pied de l'objet + cadrage serré de la shadow camera.
+    ground.position.y = -size.y / 2;
+    const shadowCam = keyLight.shadow.camera;
+    const s = maxDim * 1.3;
+    shadowCam.left = -s;
+    shadowCam.right = s;
+    shadowCam.top = s;
+    shadowCam.bottom = -s;
+    shadowCam.near = 0.1;
+    shadowCam.far = 20;
+    shadowCam.updateProjectionMatrix();
   }
 
-  async function setModel(key: ModelKey): Promise<void> {
-    if (key === activeKey) return;
-    activeKey = key;
+  async function ensureLoaded(key: ModelKey): Promise<Group | null> {
+    const cached = cache.get(key);
+    if (cached) return cached;
+    const cfg = models[key];
+    if (!cfg) return null;
+    const gltf = await loader.loadAsync(cfg.url);
+    const group = gltf.scene;
+    group.traverse((obj) => {
+      if ((obj as Mesh).isMesh) (obj as Mesh).castShadow = true;
+    });
+    cache.set(key, group);
+    return group;
+  }
 
-    let group = cache.get(key);
-    if (!group) {
-      const url = models[key];
-      if (!url) return;
-      const gltf = await loader.loadAsync(url);
-      group = gltf.scene;
-      cache.set(key, group);
+  /** Boucle latest-wins : gère les clics rapides sans empiler les transitions. */
+  async function drive(): Promise<void> {
+    busy = true;
+    try {
+      while (pendingKey && pendingKey !== activeKey) {
+        const target = pendingKey;
+        const prev = current.children[0];
+
+        // Sortie : fondu de l'objet courant.
+        if (prev && !reducedMotion) {
+          primeFade(prev);
+          await gsap.to(
+            { f: 1 },
+            {
+              f: 0,
+              duration: OUT_DUR,
+              ease: 'power2.in',
+              onUpdate() {
+                applyFade(prev, (this.targets()[0] as { f: number }).f);
+              },
+            },
+          );
+          gsap.killTweensOf(prev.rotation);
+        }
+
+        const group = await ensureLoaded(target);
+        if (!group) {
+          pendingKey = null;
+          break;
+        }
+
+        current.clear();
+        current.rotation.y = 0;
+        current.add(group);
+        frame(group, models[target]);
+        activeKey = target;
+
+        // Le 1er modèle est à l'écran : on peut masquer l'indicateur de chargement.
+        if (!notifiedReady) {
+          notifiedReady = true;
+          onReady?.();
+        }
+
+        // Entrée : fondu + rotation d'accueil (une fois, pas de boucle).
+        if (reducedMotion) {
+          applyFade(group, 1);
+        } else {
+          primeFade(group);
+          applyFade(group, 0);
+          group.rotation.y = INTRO_FROM;
+          gsap.to(group.rotation, { y: 0, duration: IN_ROT_DUR, ease: 'power3.out' });
+          await gsap.to(
+            { f: 0 },
+            {
+              f: 1,
+              duration: IN_FADE_DUR,
+              ease: 'power2.out',
+              onUpdate() {
+                applyFade(group, (this.targets()[0] as { f: number }).f);
+              },
+              onComplete() {
+                applyFade(group, 1);
+              },
+            },
+          );
+        }
+
+        if (pendingKey === target) pendingKey = null;
+      }
+    } finally {
+      busy = false;
     }
-    if (activeKey !== key) return; // une sélection plus récente a pris le dessus
+  }
 
-    current.clear();
-    current.add(group);
-    frame(group);
+  function setModel(key: ModelKey): void {
+    pendingKey = key;
+    if (!busy) void drive();
   }
 
   // --- Boucle de rendu, suspendue hors du viewport ---
@@ -159,7 +343,7 @@ export function createProductViewer(
   );
   io.observe(container);
 
-  // Suspension quand l'onglet passe en arrière-plan (batterie)
+  // Suspension quand l'onglet passe en arrière-plan (batterie).
   const onVisibility = () => {
     if (document.hidden) stop();
     else if (visible) start();
@@ -177,12 +361,6 @@ export function createProductViewer(
   });
   ro.observe(container);
 
-  // Sous prefers-reduced-motion : amortissement désactivé (arrêt net, pas de dérive)
-  if (reducedMotion) {
-    controls.enableDamping = false;
-    controls.autoRotate = false;
-  }
-
   function dispose(): void {
     stop();
     io.disconnect();
@@ -190,8 +368,9 @@ export function createProductViewer(
     document.removeEventListener('visibilitychange', onVisibility);
     controls.dispose();
 
-    // Libère toutes les ressources GPU des modèles chargés (three.md §9)
+    // Libère toutes les ressources GPU des modèles chargés (three.md §9).
     for (const group of cache.values()) {
+      gsap.killTweensOf(group.rotation);
       group.traverse((obj) => {
         const mesh = obj as { geometry?: { dispose(): void }; material?: unknown };
         mesh.geometry?.dispose();
@@ -208,6 +387,8 @@ export function createProductViewer(
       });
     }
     cache.clear();
+    ground.geometry.dispose();
+    (ground.material as ShadowMaterial).dispose();
     envTexture.dispose();
     pmrem.dispose();
     renderer.dispose();

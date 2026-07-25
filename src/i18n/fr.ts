@@ -66,6 +66,13 @@ export const fr = {
     hint: 'Glissez pour pivoter · molette ou pincez pour zoomer',
     loading: 'Chargement du modèle 3D…',
     fallbackAlt: 'Kit REMOLUX complet — feu LED, émetteur sans fil et mallette de transport.',
+    /** Libellé de la région 3D pour les technologies d'assistance. */
+    viewerAria:
+      'Kit REMOLUX en 3D — vue interactive. Choisissez un élément avec les boutons ci-dessous.',
+    /** Libellé du groupe de boutons de sélection. */
+    controlsAria: 'Choisir l’élément à visualiser en 3D',
+    /** Suffixe d'annonce vocale au changement d'élément (ex. « Feu LED affiché »). */
+    announceSuffix: 'affiché',
     items: [
       { key: 'light', label: 'Feu LED' },
       { key: 'transmitter', label: 'Émetteur' },
