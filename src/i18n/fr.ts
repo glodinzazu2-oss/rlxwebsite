@@ -6,7 +6,7 @@ export const fr = {
   meta: {
     title: 'REMOLUX — Feux LED de remorque sans fil. Installés en 60 secondes.',
     description:
-      'Kit de feux LED de remorque sans fil premium. Fixation magnétique, étanchéité IP67, signalisation complète sans aucun câblage. Conçu pour durer.',
+      'Kit de feux LED de remorque sans fil premium. Fixation magnétique, boîtier étanche résistant à l’eau, signalisation complète sans aucun câblage. Conçu pour durer.',
   },
   nav: {
     product: 'Produit',
@@ -28,7 +28,7 @@ export const fr = {
     scrollHint: 'Défiler pour découvrir',
     stats: [
       { value: '60 s', label: 'Installation' },
-      { value: 'IP67', label: 'Étanchéité' },
+      { value: 'Étanche', label: 'Résistant à l’eau' },
       { value: '0', label: 'Câble à brancher' },
     ],
   },
@@ -178,7 +178,7 @@ export const fr = {
       },
       {
         icon: 'water',
-        title: 'Étanchéité IP67',
+        title: 'Résistant à l’eau',
         description:
           'Pluie battante, projections, poussière : le boîtier scellé protège l’électronique dans toutes les conditions.',
       },

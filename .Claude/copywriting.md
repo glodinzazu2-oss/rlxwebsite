@@ -61,7 +61,7 @@ Chaque phrase doit pouvoir être lue en une seule respiration. Une phrase longue
 
 ## Être précis
 
-Préférer toujours un mot exact à un mot approximatif. "Résiste aux projections d'eau jusqu'à IP67" est précis ; "très résistant à l'eau" ne l'est pas. La précision est elle-même une preuve de sérieux — elle montre que la marque connaît exactement ce qu'elle décrit.
+Préférer toujours un mot exact à un mot approximatif. "Installé en 60 secondes, sans outil" est précis ; "installation rapide et facile" ne l'est pas. La précision est elle-même une preuve de sérieux — elle montre que la marque connaît exactement ce qu'elle décrit. N'attribuer une norme ou une certification (indice IP, etc.) qu'une fois celle-ci formellement validée par le fournisseur — à défaut, décrire le bénéfice réel ("boîtier étanche, résistant à l'eau").
 
 ## Écrire pour être compris
 
@@ -180,7 +180,7 @@ Pour chaque caractéristique technique, se poser la question : _"Et donc, concr�
 | Fonctionnalité (technique)          | Bénéfice (utilisateur)                                                                           |
 | ----------------------------------- | ------------------------------------------------------------------------------------------------ |
 | Fixation magnétique haute puissance | Se fixe en une seconde, sans outil, sans perceuse.                                               |
-| Certification IP67                  | Continue de fonctionner sous une pluie battante, sans jamais vous laisser dans le noir.          |
+| Boîtier étanche, résistant à l'eau  | Continue de fonctionner sous une pluie battante, sans jamais vous laisser dans le noir.          |
 | Batterie longue autonomie           | Reste allumé tout le trajet, même le plus long, sans y penser.                                   |
 | Boîtier en polymère renforcé        | Encaisse les chocs de la route sans se fissurer, année après année.                              |
 | Sans fil, sans câblage              | S'installe et se retire en un geste, sur n'importe quelle remorque, sans jamais abîmer un câble. |
@@ -296,7 +296,7 @@ Chaque mot ci-dessous est interdit par défaut car il a été vidé de son sens 
 - **Promesses non prouvées** — toute affirmation de qualité doit être accompagnée d'une preuve (section 7) ; une promesse seule est interdite.
 - **Phrases creuses** — toute phrase qui pourrait s'appliquer à n'importe quel produit générique sans perdre de sens doit être reformulée ou supprimée.
 - **Marketing agressif** — aucune formulation d'urgence, de rareté artificielle, ou de pression psychologique sur le lecteur.
-- **Majuscules inutiles** — aucun mot en majuscules pour créer un effet d'emphase artificielle (hors sigles ou acronymes légitimes comme IP67).
+- **Majuscules inutiles** — aucun mot en majuscules pour créer un effet d'emphase artificielle (hors sigles ou acronymes légitimes comme LED ou 12 V).
 - **Emoji** — aucun emoji sur le site, incompatible avec le registre sobre et premium de la marque.
 - **Ponctuation excessive** — aucun point d'exclamation multiple, aucun enchaînement de points de suspension pour créer un effet dramatique artificiel.
 - **Clickbait** — aucun titre ou accroche qui suscite une curiosité artificielle sans tenir sa promesse immédiatement dans le contenu qui suit.
