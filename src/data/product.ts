@@ -5,7 +5,7 @@
  */
 export const SPECS: { label: string; value: string; toValidate?: boolean }[] = [
   { label: 'Référence', value: 'RLX-WTL-01' },
-  { label: 'Indice de protection', value: 'IP67' },
+  { label: 'Résistance à l’eau', value: 'Boîtier scellé étanche' },
   { label: 'Fixation', value: 'Magnétique haute puissance' },
   { label: 'Alimentation', value: 'Batterie rechargeable', toValidate: true },
   { label: 'Compatibilité véhicule', value: '12 V / 24 V', toValidate: true },
