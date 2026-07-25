@@ -52,7 +52,13 @@ export interface ModelConfig {
   minZoomScale?: number;
   /** Zoom max autorisé, en fraction de la distance initiale. */
   maxZoomScale?: number;
+  /** Angle polaire max (°) : borne la bascule vers le bas. Défaut ~97°. Baisser
+   *  pour interdire de voir la face inférieure (ex. écriture d'usine du feu LED). */
+  maxPolarDeg?: number;
 }
+
+/** Borne basse par défaut de la rotation verticale (juste sous l'horizontale). */
+const DEFAULT_MAX_POLAR_DEG = 97.2; // = Math.PI * 0.54
 
 export interface ProductViewer {
   setModel(key: ModelKey): void;
@@ -201,6 +207,8 @@ export function createProductViewer(
     controls.target.set(0, 0, 0);
     controls.minDistance = dist * (cfg.minZoomScale ?? 0.6);
     controls.maxDistance = dist * (cfg.maxZoomScale ?? 1.8);
+    // Borne verticale propre à l'objet (verrouille la face inférieure du feu LED).
+    controls.maxPolarAngle = MathUtils.degToRad(cfg.maxPolarDeg ?? DEFAULT_MAX_POLAR_DEG);
     controls.update();
 
     // Ombre de contact au pied de l'objet + cadrage serré de la shadow camera.

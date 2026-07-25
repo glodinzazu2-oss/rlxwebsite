@@ -15,7 +15,16 @@ const p = t.product3d;
 // Pose (angle de vue initial) + bornes de zoom par objet. La mallette est bridée
 // en zoom (minZoomScale élevé) pour ne jamais exposer les petits marquages packaging.
 const modelUrls = {
-  light: { url: lightUrl, azimuthDeg: 22, polarDeg: 78, distanceScale: 1.5, maxZoomScale: 1.7 },
+  // maxPolarDeg 80 : verrouille la bascule vers le bas bien avant la face
+  // inférieure du feu (écriture d'usine jamais visible).
+  light: {
+    url: lightUrl,
+    azimuthDeg: 22,
+    polarDeg: 78,
+    distanceScale: 1.5,
+    maxZoomScale: 1.7,
+    maxPolarDeg: 80,
+  },
   transmitter: { url: transmitterUrl, azimuthDeg: 35, polarDeg: 76, distanceScale: 1.55 },
   toolbox: {
     url: toolboxUrl,
