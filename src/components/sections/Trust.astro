@@ -5,8 +5,10 @@ import SectionHeading from '../ui/SectionHeading.astro';
 const t = getDictionary();
 ---
 
-<section class="section trust" aria-labelledby="trust-title">
-  <div class="container">
+<section class="section trust" aria-labelledby="trust-title" data-glow-zone>
+  <span class="trust__glow" data-reactive-glow aria-hidden="true"></span>
+
+  <div class="container trust__inner">
     <SectionHeading
       eyebrow={t.trust.eyebrow}
       title={t.trust.title}
@@ -17,7 +19,8 @@ const t = getDictionary();
     <ul class="trust__grid" role="list">
       {
         t.trust.items.map((item, i) => (
-          <li class="trust__card" data-reveal data-reveal-delay={String(0.08 * i)}>
+          <li class="trust__item" data-reveal data-reveal-delay={String(0.08 * i)}>
+            <span class="trust__node" aria-hidden="true" />
             <h3 class="trust__title">{item.title}</h3>
             <p class="trust__desc">{item.description}</p>
           </li>
@@ -28,30 +31,101 @@ const t = getDictionary();
 </section>
 
 <style>
+  .trust {
+    position: relative;
+    overflow: clip;
+    isolation: isolate;
+  }
+
+  /* Halo ambiant réactif (suit le curseur via reactiveGlow). */
+  .trust__glow {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      42% 50% at var(--gx, 50%) var(--gy, 20%),
+      rgba(255, 30, 45, 0.07),
+      transparent 70%
+    );
+    animation: trust-glow-breathe 7s var(--ease-in-out-soft) infinite;
+  }
+
+  .trust__inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Grille aérée, sans carte : les points de réassurance respirent sur le fond. */
   .trust__grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: var(--space-4);
-    max-width: 60rem;
-    margin-inline: auto;
+    gap: clamp(var(--space-8), 4vw, var(--space-12)) var(--space-10);
+    max-width: 62rem;
+    margin: var(--space-10) auto 0;
   }
 
-  .trust__card {
+  .trust__item {
     display: grid;
-    gap: var(--space-2);
-    padding: var(--space-8);
+    justify-items: center;
+    gap: var(--space-3);
     text-align: center;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--color-border);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+  }
+
+  /* Nœud LED : petit plot rougeoyant, coché par un trait blanc. */
+  .trust__node {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 30, 45, 0.08);
+    border: 1px solid var(--color-led-red);
+    box-shadow:
+      0 0 0 4px rgba(255, 30, 45, 0.08),
+      0 0 16px rgba(255, 30, 45, 0.32);
+    margin-bottom: var(--space-1);
+  }
+  /* Coche dessinée en CSS (deux traits). */
+  .trust__node::after {
+    content: '';
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    width: 12px;
+    height: 6px;
+    translate: -50% -50%;
+    border-left: 2px solid var(--color-text);
+    border-bottom: 2px solid var(--color-text);
+    rotate: -45deg;
   }
 
   .trust__title {
-    font-size: var(--text-base);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-lg);
+    letter-spacing: -0.01em;
   }
 
   .trust__desc {
     font-size: var(--text-sm);
+    line-height: 1.55;
     color: var(--color-text-secondary);
+    max-width: 34ch;
+  }
+
+  @keyframes trust-glow-breathe {
+    0%,
+    100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .trust__glow {
+      animation: none;
+    }
   }
 </style>
