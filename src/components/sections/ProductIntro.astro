@@ -150,6 +150,17 @@ const kit = t.product.kit;
     line-height: 1.5;
   }
 
+  .manifest__node {
+    transition: box-shadow var(--duration-base) var(--ease-out-quart);
+  }
+  @media (hover: hover) {
+    .manifest__item:hover .manifest__node {
+      box-shadow:
+        0 0 0 4px rgba(255, 30, 45, 0.16),
+        0 0 20px rgba(255, 30, 45, 0.85);
+    }
+  }
+
   @keyframes product-glow-breathe {
     0%,
     100% {
