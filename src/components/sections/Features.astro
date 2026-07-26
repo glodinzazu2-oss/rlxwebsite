@@ -6,8 +6,10 @@ import Icon from '../ui/Icon.astro';
 const t = getDictionary();
 ---
 
-<section class="section features" aria-labelledby="features-title">
-  <div class="container">
+<section class="section features" aria-labelledby="features-title" data-glow-zone>
+  <span class="features__glow" data-reactive-glow aria-hidden="true"></span>
+
+  <div class="container features__inner">
     <SectionHeading
       eyebrow={t.features.eyebrow}
       title={t.features.title}
@@ -17,8 +19,8 @@ const t = getDictionary();
     <ul class="features__grid" role="list">
       {
         t.features.items.map((item, i) => (
-          <li class="features__card" data-reveal data-reveal-delay={String(0.06 * (i % 3))}>
-            <span class="features__icon">
+          <li class="features__item" data-reveal data-reveal-delay={String(0.06 * (i % 3))}>
+            <span class="features__icon" aria-hidden="true">
               <Icon name={item.icon} />
             </span>
             <h3 class="features__title">{item.title}</h3>
@@ -31,69 +33,134 @@ const t = getDictionary();
 </section>
 
 <style>
-  .features__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--space-4);
+  .features {
+    position: relative;
+    overflow: clip;
+    isolation: isolate;
   }
 
-  .features__card {
+  /* Halo ambiant réactif (suit le curseur via reactiveGlow). */
+  .features__glow {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      40% 46% at var(--gx, 50%) var(--gy, 16%),
+      rgba(255, 30, 45, 0.08),
+      transparent 70%
+    );
+    animation: features-glow-breathe 7s var(--ease-in-out-soft) infinite;
+  }
+
+  .features__inner {
     position: relative;
+    z-index: 1;
+  }
+
+  /* Grille aérée, sans carte : chaque point fort respire sur le fond sombre. */
+  .features__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(var(--space-8), 4vw, var(--space-12)) var(--space-10);
+    margin-top: var(--space-10);
+  }
+
+  .features__item {
     display: grid;
     align-content: start;
     gap: var(--space-3);
-    padding: var(--space-8);
-    border-radius: var(--radius-md);
-    background: var(--color-bg-elevated);
-    border: 1px solid var(--color-border);
-    transition:
-      border-color var(--duration-base) var(--ease-out-quart),
-      transform var(--duration-base) var(--ease-out-quart),
-      background-color var(--duration-base) var(--ease-out-quart);
   }
 
-  /* Hover sophistiqué : élévation + liseré LED en haut de carte */
-  .features__card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: var(--space-8);
-    right: var(--space-8);
-    height: 1px;
-    background: var(--gradient-led);
-    opacity: 0;
-    transition: opacity var(--duration-base) var(--ease-out-quart);
-  }
-
-  @media (hover: hover) {
-    .features__card:hover {
-      transform: translateY(-4px);
-      border-color: var(--color-border-strong);
-      background: var(--color-bg-panel);
-    }
-
-    .features__card:hover::before {
-      opacity: 1;
-    }
-  }
-
+  /* Nœud LED : icône dans un plot rougeoyant, qui s'intensifie au survol. */
   .features__icon {
     display: inline-grid;
     place-items: center;
-    width: 52px;
-    height: 52px;
+    width: 54px;
+    height: 54px;
     border-radius: var(--radius-md);
-    background: rgba(255, 30, 45, 0.08);
     color: var(--color-led-red);
+    background: rgba(255, 30, 45, 0.06);
+    border: 1px solid rgba(255, 30, 45, 0.2);
+    box-shadow:
+      inset 0 0 12px rgba(255, 30, 45, 0.06),
+      0 0 10px rgba(255, 30, 45, 0.12);
     margin-bottom: var(--space-2);
+    transition:
+      box-shadow var(--duration-base) var(--ease-out-quart),
+      border-color var(--duration-base) var(--ease-out-quart),
+      transform var(--duration-base) var(--ease-out-quart);
   }
 
   .features__title {
+    position: relative;
+    width: fit-content;
+    font-family: var(--font-display);
+    font-weight: 600;
     font-size: var(--text-lg);
+    letter-spacing: -0.01em;
+  }
+
+  /* Soulignement LED qui se trace au survol. */
+  .features__title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 2px;
+    border-radius: var(--radius-full);
+    background: var(--color-led-red);
+    box-shadow: 0 0 8px rgba(255, 30, 45, 0.6);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--duration-base) var(--ease-out-expo);
   }
 
   .features__desc {
     color: var(--color-text-secondary);
     font-size: var(--text-sm);
+    line-height: 1.55;
+    max-width: 42ch;
+  }
+
+  @media (hover: hover) {
+    .features__item:hover .features__icon {
+      transform: translateY(-2px);
+      border-color: rgba(255, 30, 45, 0.5);
+      box-shadow:
+        inset 0 0 12px rgba(255, 30, 45, 0.12),
+        0 0 20px rgba(255, 30, 45, 0.32);
+    }
+    .features__item:hover .features__title::after {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes features-glow-breathe {
+    0%,
+    100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .features__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 560px) {
+    .features__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .features__glow {
+      animation: none;
+    }
   }
 </style>
