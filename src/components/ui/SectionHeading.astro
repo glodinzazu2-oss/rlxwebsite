@@ -1,7 +1,8 @@
 ---
 /**
  * En-tête de section standardisé : eyebrow + titre (multi-lignes via \n).
- * Garantit une hiérarchie visuelle identique sur tout le site.
+ * Le titre se dévoile ligne par ligne au scroll (masque + translation),
+ * piloté par animations/titleReveal.ts. Garantit une hiérarchie identique partout.
  */
 interface Props {
   eyebrow: string;
@@ -18,12 +19,11 @@ const lines = title.split('\n');
 
 <header class:list={['section-heading', `section-heading--${align}`]}>
   <p class="eyebrow" data-reveal>{eyebrow}</p>
-  <Tag class="section-heading__title" id={titleId} data-reveal data-reveal-delay="0.08">
+  <Tag class="section-heading__title" id={titleId} data-reveal-lines>
     {
-      lines.map((line, i) => (
+      lines.map((line) => (
         <span class="section-heading__line">
-          {line}
-          {i < lines.length - 1 && <br />}
+          <span class="section-heading__line-inner">{line}</span>
         </span>
       ))
     }
@@ -41,5 +41,20 @@ const lines = title.split('\n');
   .section-heading--center {
     justify-items: center;
     text-align: center;
+  }
+
+  /* Chaque ligne est un masque ; l'intérieur monte de sous le masque au scroll. */
+  .section-heading__line {
+    display: block;
+    overflow: hidden;
+    padding-block: 0.04em;
+  }
+  .section-heading__line-inner {
+    display: block;
+  }
+
+  /* État initial (JS actif) : ligne cachée sous le masque, sans flash. */
+  :global(html.js) [data-reveal-lines] .section-heading__line-inner {
+    transform: translateY(110%);
   }
 </style>
