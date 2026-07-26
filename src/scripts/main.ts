@@ -8,7 +8,9 @@ import { initReveals } from './animations/reveal';
 import { initParallax } from './animations/parallax';
 import { initTilt } from './animations/tilt';
 import { initIgnite } from './animations/ignite';
-import { playHeroIntro, startLedPulse } from './animations/hero';
+import { playHeroIntro } from './animations/hero';
+import { initHeroAtmosphere } from './animations/heroAtmosphere';
+import { initHeroProduct } from './animations/heroProduct';
 import { initTechnologyScroll } from './animations/technology';
 import { prefersReducedMotion } from './core/motion';
 import { getDictionary } from '../i18n';
@@ -73,7 +75,8 @@ function init(): void {
   initTilt();
   initIgnite();
   initTechnologyScroll();
-  startLedPulse();
+  initHeroAtmosphere();
+  initHeroProduct();
   runLoader(playHeroIntro);
 }
 

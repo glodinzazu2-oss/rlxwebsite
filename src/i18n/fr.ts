@@ -28,8 +28,9 @@ export const fr = {
     scrollHint: 'Défiler pour découvrir',
     stats: [
       { value: '60 s', label: 'Installation' },
-      { value: 'Étanche', label: 'Résistant à l’eau' },
-      { value: '0', label: 'Câble à brancher' },
+      { value: '20 m', label: 'Portée sans fil' },
+      { value: '20 h', label: 'Autonomie' },
+      { value: '0', label: 'Câble' },
     ],
   },
   product: {
