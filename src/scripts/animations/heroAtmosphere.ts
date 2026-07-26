@@ -65,7 +65,7 @@ export function initHeroAtmosphere(): void {
   }
 
   function seed(): void {
-    const n = Math.min(44, Math.round((W * H) / 28000));
+    const n = Math.min(30, Math.round((W * H) / 36000));
     motes = [];
     for (let i = 0; i < n; i++) {
       motes.push({
@@ -149,9 +149,15 @@ export function initHeroAtmosphere(): void {
     el.style.setProperty('--py', `${y.toFixed(1)}px`);
   }
 
-  function frame(): void {
-    draw();
+  // Effet ambiant lent : 30 i/s suffit largement et divise par ~2 le coût CPU du
+  // canvas (remplissages de dégradés plein écran) — stabilise le TBT mobile.
+  const FRAME_MS = 1000 / 30;
+  let lastDraw = 0;
+  function frame(now: number): void {
     raf = requestAnimationFrame(frame);
+    if (now - lastDraw < FRAME_MS) return;
+    lastDraw = now;
+    draw();
   }
   function start(): void {
     if (!raf) raf = requestAnimationFrame(frame);

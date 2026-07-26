@@ -1,60 +1,66 @@
 ---
-import { Picture } from 'astro:assets';
 import { getDictionary } from '../../i18n';
 import SectionHeading from '../ui/SectionHeading.astro';
-import kitImage from '../../assets/images/kit-complet-mallette.png';
 
 const t = getDictionary();
-
-/**
- * Points d'intérêt sur la photo du kit (coordonnées en % de l'image).
- * Règle claims : uniquement des éléments visibles sur la photo réelle —
- * aucune spécification non validée par la fiche technique (voir .claude/decisions.md).
- */
-const hotspots = [
-  { x: 63, y: 50, align: 'center', ...t.product.hotspots.lights },
-  { x: 30, y: 66, align: 'center', ...t.product.hotspots.plugs },
-  { x: 55, y: 87, align: 'center', ...t.product.hotspots.cables },
-  { x: 85, y: 80, align: 'right', ...t.product.hotspots.manual },
-] as const;
+const kit = t.product.kit;
 ---
 
-<section class="section product" id="produit" aria-labelledby="produit-title">
+<section class="section product" id="produit" aria-labelledby="produit-title" data-glow-zone>
+  <span class="product__ambient" data-reactive-glow aria-hidden="true"></span>
+
   <div class="container product__inner">
     <SectionHeading eyebrow={t.product.eyebrow} title={t.product.title} titleId="produit-title" />
-    <p class="product__body" data-reveal data-reveal-delay="0.15">{t.product.body}</p>
+    <p class="product__body" data-reveal data-reveal-delay="0.1">{t.product.body}</p>
 
-    <figure class="product__showcase" data-reveal data-reveal-delay="0.2">
-      <div class="product__frame" role="group" aria-label={t.product.hotspotsLabel} data-tilt>
-        <Picture
-          src={kitImage}
-          formats={['avif', 'webp']}
-          widths={[480, 860, 1148]}
-          sizes="(min-width: 1024px) 900px, 92vw"
-          alt={t.product.kitAlt}
-          loading="lazy"
-        />
+    <div class="product__manifest">
+      <p class="product__manifest-label" data-reveal data-reveal-delay="0.15">
+        {t.product.kitLabel}
+      </p>
+      <ul class="manifest" role="list">
         {
-          hotspots.map((spot) => (
-            <div
-              class:list={['hotspot', `hotspot--${spot.align}`]}
-              style={`--x: ${spot.x}%; --y: ${spot.y}%;`}
-            >
-              <button class="hotspot__dot" type="button" aria-label={spot.label} />
-              <span class="hotspot__tip" role="tooltip">
-                {spot.text}
-              </span>
-            </div>
+          kit.map((item, i) => (
+            <li class="manifest__item" data-reveal data-reveal-delay={0.2 + i * 0.06}>
+              <span class="manifest__node" aria-hidden="true" />
+              <div class="manifest__text">
+                <p class="manifest__name">
+                  {item.name}
+                  <span class="manifest__qty">×{item.qty}</span>
+                </p>
+                <p class="manifest__desc">{item.text}</p>
+              </div>
+            </li>
           ))
         }
-      </div>
-      <figcaption class="product__caption">{t.product.showcaseCaption}</figcaption>
-    </figure>
+      </ul>
+    </div>
   </div>
 </section>
 
 <style>
+  .product {
+    position: relative;
+    overflow: clip;
+    isolation: isolate;
+  }
+
+  /* Halo ambiant réactif : suit le curseur (variables --gx/--gy posées par reactiveGlow). */
+  .product__ambient {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      36% 42% at var(--gx, 62%) var(--gy, 36%),
+      rgba(255, 30, 45, 0.1),
+      transparent 70%
+    );
+    animation: product-glow-breathe 6s var(--ease-in-out-soft) infinite;
+  }
+
   .product__inner {
+    position: relative;
+    z-index: 1;
     display: grid;
     gap: var(--space-8);
   }
@@ -66,110 +72,115 @@ const hotspots = [
     text-wrap: pretty;
   }
 
-  .product__showcase {
-    margin-top: var(--space-8);
+  .product__manifest {
+    margin-top: var(--space-4);
     display: grid;
-    gap: var(--space-4);
+    gap: var(--space-6);
   }
 
-  /* La photo packshot est sur fond blanc : encadrée comme une fiche produit,
-     elle crée un contraste volontaire avec le fond sombre du site. */
-  .product__frame {
-    position: relative;
-    border-radius: var(--radius-lg);
-    overflow: clip;
-    border: 1px solid var(--color-border-strong);
-    background: #fff;
-    max-width: 900px;
-  }
-
-  .product__frame :global(img) {
-    width: 100%;
-    height: auto;
-  }
-
-  .product__caption {
+  .product__manifest-label {
     font-size: var(--text-xs);
     letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
     color: var(--color-text-muted);
   }
 
-  /* --- Hotspots --- */
-  .hotspot {
-    position: absolute;
-    left: var(--x);
-    top: var(--y);
-    translate: -50% -50%;
+  .manifest {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 clamp(var(--space-8), 5vw, var(--space-16));
+    max-width: 62rem;
   }
 
-  .hotspot__dot {
-    display: block;
-    width: 18px;
-    height: 18px;
+  .manifest__item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding-block: var(--space-5);
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* Nœud LED : point rouge qui « vit » (halo pulsé, GPU only). */
+  .manifest__node {
+    position: relative;
+    flex: none;
+    width: 11px;
+    height: 11px;
+    margin-top: 0.45em;
     border-radius: var(--radius-full);
     background: var(--color-led-red);
-    border: 3px solid #fff;
-    box-shadow: 0 0 10px rgba(255, 30, 45, 0.7);
-    cursor: pointer;
-    transition: transform var(--duration-fast) var(--ease-out-quart);
-    animation: hotspot-pulse 2.4s var(--ease-in-out-soft) infinite;
+    box-shadow:
+      0 0 0 4px rgba(255, 30, 45, 0.12),
+      0 0 12px rgba(255, 30, 45, 0.6);
   }
-
-  .hotspot:hover .hotspot__dot,
-  .hotspot:focus-within .hotspot__dot {
-    transform: scale(1.25);
-    animation: none;
-  }
-
-  .hotspot__tip {
+  .manifest__node::after {
+    content: '';
     position: absolute;
-    bottom: calc(100% + 12px);
-    left: 50%;
-    translate: -50% 0;
-    width: max-content;
-    max-width: 230px;
-    padding: var(--space-2) var(--space-3);
-    border-radius: var(--radius-sm);
-    background: var(--color-bg-panel);
-    border: 1px solid var(--color-border-strong);
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 0 2px rgba(255, 30, 45, 0.5);
+    animation: manifest-pulse 2.8s var(--ease-out-quart) infinite;
+  }
+
+  .manifest__name {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-lg);
+    letter-spacing: -0.01em;
     color: var(--color-text);
+  }
+
+  .manifest__qty {
     font-size: var(--text-xs);
-    line-height: 1.45;
-    text-align: left;
-    opacity: 0;
-    visibility: hidden;
-    transition:
-      opacity var(--duration-fast) var(--ease-out-quart),
-      visibility var(--duration-fast);
-    pointer-events: none;
-    z-index: 2;
+    font-weight: 600;
+    color: var(--color-led-red);
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
   }
 
-  .hotspot--right .hotspot__tip {
-    left: auto;
-    right: -12px;
-    translate: 0 0;
+  .manifest__desc {
+    margin-top: var(--space-2);
+    max-width: 44ch;
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    line-height: 1.5;
   }
 
-  .hotspot:hover .hotspot__tip,
-  .hotspot:focus-within .hotspot__tip {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  @keyframes hotspot-pulse {
+  @keyframes product-glow-breathe {
     0%,
     100% {
-      box-shadow: 0 0 10px rgba(255, 30, 45, 0.7);
+      opacity: 0.7;
     }
     50% {
-      box-shadow: 0 0 18px rgba(255, 30, 45, 0.35);
+      opacity: 1;
+    }
+  }
+
+  @keyframes manifest-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    70%,
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .manifest {
+      grid-template-columns: 1fr;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hotspot__dot {
+    .product__ambient,
+    .manifest__node::after {
       animation: none;
     }
   }

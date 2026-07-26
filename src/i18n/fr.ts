@@ -37,28 +37,39 @@ export const fr = {
     eyebrow: 'Le produit',
     title: 'Dessiné pour la route.\nConstruit pour durer.',
     body: 'Chaque détail du kit REMOLUX a été pensé pour un usage réel : remorques, plateaux, porte-engins. Une fixation magnétique puissante, des LED haute intensité et une autonomie qui tient la distance.',
-    kitAlt:
-      'Kit REMOLUX complet : mallette de transport rigide, deux feux LED magnétiques, émetteur 7 broches, câble de charge USB-C, câbles anti-chute en acier et notice d’utilisation en français.',
-    showcaseCaption: 'RLX-WTL-01 — le kit complet, tel que livré.',
-    hotspotsLabel: 'Découvrir les éléments du kit',
-    hotspots: {
-      lights: {
-        label: 'Feux LED magnétiques',
-        text: 'Deux feux LED à fixation magnétique — se posent et se retirent sans outil.',
+    kitLabel: 'Ce que contient le kit',
+    kit: [
+      {
+        name: 'Feux LED magnétiques',
+        qty: 2,
+        text: 'Signal net, jour comme nuit. Fixation aimantée, sans outil ni perçage.',
       },
-      plugs: {
-        label: 'Émetteur 7 broches',
-        text: 'Se branche sur la prise 7 broches du véhicule pour la liaison sans fil.',
+      {
+        name: 'Émetteur 7 broches',
+        qty: 1,
+        text: 'Se branche sur la prise du véhicule — liaison sans fil, sans appairage.',
       },
-      cables: {
-        label: 'Câbles anti-chute',
-        text: 'Câbles anti-chute en acier pour sécuriser chaque feu.',
+      {
+        name: 'Câbles anti-chute en acier',
+        qty: 2,
+        text: 'Sécurisent chaque feu contre les vibrations et les secousses de la route.',
       },
-      manual: {
-        label: 'Notice en français',
-        text: 'Notice d’utilisation rédigée en français, incluse dans la mallette.',
+      {
+        name: 'Câble de charge USB-C',
+        qty: 1,
+        text: 'Recharge rapide et universelle, entre deux trajets.',
       },
-    },
+      {
+        name: 'Notice d’utilisation',
+        qty: 1,
+        text: 'Rédigée en français — tout est expliqué, simplement.',
+      },
+      {
+        name: 'Mallette de transport rigide',
+        qty: 1,
+        text: 'Protège et range l’ensemble du kit, prêt à repartir.',
+      },
+    ],
   },
   product3d: {
     eyebrow: 'Vue 3D',
