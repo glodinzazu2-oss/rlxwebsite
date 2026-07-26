@@ -16,13 +16,14 @@
  */
 import { gsap } from 'gsap';
 import {
-  ACESFilmicToneMapping,
   Box3,
   DirectionalLight,
   Group,
   MathUtils,
   Mesh,
+  MeshStandardMaterial,
   type Material,
+  NeutralToneMapping,
   type Object3D,
   PCFSoftShadowMap,
   PerspectiveCamera,
@@ -134,8 +135,10 @@ export function createProductViewer(
   renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.setClearColor(0x000000, 0); // transparent : l'objet flotte sur le fond de la page
   renderer.outputColorSpace = SRGBColorSpace;
-  renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.95;
+  // Khronos PBR Neutral : restitution fidèle des couleurs et matières (pensé pour le
+  // rendu produit), sans la sur-saturation « jeu vidéo » d'ACES.
+  renderer.toneMapping = NeutralToneMapping;
+  renderer.toneMappingExposure = 1.0;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap;
   container.appendChild(renderer.domElement);
@@ -149,24 +152,29 @@ export function createProductViewer(
   const scene = new Scene();
   const pmrem = new PMREMGenerator(renderer);
   const envTexture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-  scene.environment = envTexture; // reflets sur métal/verre
-  // IBL atténué : on garde les reflets, on baisse la lumière diffuse pour le thème sombre.
-  scene.environmentIntensity = 0.55;
+  scene.environment = envTexture; // reflets studio sur plastique/métal/verre
+  // IBL affirmé : ce sont les reflets de l'environnement qui donnent la sensation de
+  // vraie matière (plastique mat qui accroche la lumière du studio).
+  scene.environmentIntensity = 0.9;
 
-  // Clé blanche neutre : restitue fidèlement les couleurs d'albédo (plastique, métal).
-  const keyLight = new DirectionalLight(0xffffff, 1.1);
-  keyLight.position.set(2.5, 4, 3);
+  // Éclairage studio 3 points. Clé blanche neutre, pénombre douce (softbox).
+  const keyLight = new DirectionalLight(0xffffff, 2.0);
+  keyLight.position.set(2.6, 4.2, 3.2);
   keyLight.castShadow = true;
-  keyLight.shadow.mapSize.set(1024, 1024);
+  keyLight.shadow.mapSize.set(2048, 2048);
   keyLight.shadow.bias = -0.0004;
   keyLight.shadow.normalBias = 0.02;
+  keyLight.shadow.radius = 8; // bord d'ombre adouci (PCFSoft)
+  // Fill froid : débouche les ombres et révèle le relief, sans les écraser.
+  const fillLight = new DirectionalLight(0xdfe7f2, 0.45);
+  fillLight.position.set(-3, 1.6, 2.6);
   // Liseré rouge de marque : accentue les arêtes sans teinter les matériaux.
-  const rimLight = new DirectionalLight(0xff1e2d, 0.45);
-  rimLight.position.set(-3.5, 1.5, -4);
-  scene.add(keyLight, rimLight);
+  const rimLight = new DirectionalLight(0xff1e2d, 0.55);
+  rimLight.position.set(-3.5, 1.8, -4);
+  scene.add(keyLight, fillLight, rimLight);
 
   // Ombre de contact : un plan invisible qui ne rend que l'ombre (ancrage doux).
-  const ground = new Mesh(new PlaneGeometry(12, 12), new ShadowMaterial({ opacity: 0.32 }));
+  const ground = new Mesh(new PlaneGeometry(12, 12), new ShadowMaterial({ opacity: 0.4 }));
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
   scene.add(ground);
@@ -324,8 +332,23 @@ export function createProductViewer(
     if (!cfg) return null;
     const gltf = await loader.loadAsync(cfg.url);
     const group = gltf.scene;
+    const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
     group.traverse((obj) => {
-      if ((obj as Mesh).isMesh) (obj as Mesh).castShadow = true;
+      const mesh = obj as Mesh;
+      if (!mesh.isMesh) return;
+      mesh.castShadow = true;
+      const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+      for (const mat of mats) {
+        const m = mat as MeshStandardMaterial;
+        if (!m.isMeshStandardMaterial) continue;
+        // Reflets d'environnement plus présents = matière perçue plus « réelle ».
+        m.envMapIntensity = 1.15;
+        // Filtrage anisotrope : textures nettes même en incidence rasante (grain conservé).
+        for (const tex of [m.map, m.roughnessMap, m.metalnessMap, m.normalMap]) {
+          if (tex) tex.anisotropy = maxAnisotropy;
+        }
+        m.needsUpdate = true;
+      }
     });
     cache.set(key, group);
     return group;
