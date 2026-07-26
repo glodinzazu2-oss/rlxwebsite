@@ -6,8 +6,10 @@ import { SPECS } from '../../data/product';
 const t = getDictionary();
 ---
 
-<section class="section specs" id="specs" aria-labelledby="specs-title">
-  <div class="container">
+<section class="section specs" id="specs" aria-labelledby="specs-title" data-glow-zone>
+  <span class="specs__glow" data-reactive-glow aria-hidden="true"></span>
+
+  <div class="container specs__inner">
     <SectionHeading eyebrow={t.specs.eyebrow} title={t.specs.title} titleId="specs-title" />
 
     <dl class="specs__grid" data-reveal data-reveal-delay="0.1">
@@ -26,11 +28,37 @@ const t = getDictionary();
 </section>
 
 <style>
+  .specs {
+    position: relative;
+    overflow: clip;
+    isolation: isolate;
+  }
+
+  /* Halo ambiant réactif (suit le curseur via reactiveGlow). */
+  .specs__glow {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      38% 46% at var(--gx, 18%) var(--gy, 22%),
+      rgba(255, 30, 45, 0.07),
+      transparent 70%
+    );
+    animation: specs-glow-breathe 7s var(--ease-in-out-soft) infinite;
+  }
+
+  .specs__inner {
+    position: relative;
+    z-index: 1;
+  }
+
   .specs__grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 0 var(--space-16);
     max-width: 56rem;
+    margin-top: var(--space-8);
   }
 
   .specs__row {
@@ -44,7 +72,9 @@ const t = getDictionary();
 
   .specs__label {
     color: var(--color-text-muted);
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
   }
 
   .specs__value {
@@ -72,5 +102,21 @@ const t = getDictionary();
     margin-top: var(--space-6);
     font-size: var(--text-sm);
     color: var(--color-text-muted);
+  }
+
+  @keyframes specs-glow-breathe {
+    0%,
+    100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .specs__glow {
+      animation: none;
+    }
   }
 </style>

@@ -6,8 +6,13 @@ import Button from '../ui/Button.astro';
 const t = getDictionary();
 ---
 
-<section class="section cta" aria-labelledby="cta-title">
-  <div class="cta__glow" data-parallax="0.08" aria-hidden="true"></div>
+<section class="section cta" aria-labelledby="cta-title" data-glow-zone>
+  <span class="cta__glow" data-reactive-glow aria-hidden="true"></span>
+  <span class="cta__hud cta__hud--tl" aria-hidden="true"></span>
+  <span class="cta__hud cta__hud--tr" aria-hidden="true"></span>
+  <span class="cta__hud cta__hud--bl" aria-hidden="true"></span>
+  <span class="cta__hud cta__hud--br" aria-hidden="true"></span>
+
   <div class="container cta__inner">
     <h2 class="cta__title" id="cta-title" data-reveal>{t.finalCta.title}</h2>
     <p class="cta__subtitle" data-reveal data-reveal-delay="0.08">{t.finalCta.subtitle}</p>
@@ -21,30 +26,90 @@ const t = getDictionary();
   .cta {
     position: relative;
     overflow: clip;
+    isolation: isolate;
     text-align: center;
   }
 
+  /* Lumière qui converge vers le CTA, réactive au curseur (variables --gx/--gy). */
   .cta__glow {
     position: absolute;
     inset: 0;
-    background: radial-gradient(45% 55% at 50% 100%, rgba(255, 30, 45, 0.16), transparent 75%);
+    z-index: 0;
     pointer-events: none;
+    background: radial-gradient(
+      45% 60% at var(--gx, 50%) var(--gy, 62%),
+      rgba(255, 30, 45, 0.16),
+      transparent 72%
+    );
+    animation: cta-glow-breathe 6s var(--ease-in-out-soft) infinite;
+  }
+
+  .cta__hud {
+    position: absolute;
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+    border: solid rgba(180, 200, 230, 0.16);
+    pointer-events: none;
+  }
+  .cta__hud--tl {
+    top: 22px;
+    left: 22px;
+    border-width: 1px 0 0 1px;
+  }
+  .cta__hud--tr {
+    top: 22px;
+    right: 22px;
+    border-width: 1px 1px 0 0;
+  }
+  .cta__hud--bl {
+    bottom: 22px;
+    left: 22px;
+    border-width: 0 0 1px 1px;
+  }
+  .cta__hud--br {
+    bottom: 22px;
+    right: 22px;
+    border-width: 0 1px 1px 0;
   }
 
   .cta__inner {
     position: relative;
+    z-index: 1;
     display: grid;
     justify-items: center;
     gap: var(--space-6);
   }
 
   .cta__title {
-    font-size: var(--text-3xl);
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 1.2rem + 4vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    text-wrap: balance;
   }
 
   .cta__subtitle {
     color: var(--color-text-secondary);
     font-size: var(--text-lg);
     max-width: 46ch;
+    text-wrap: pretty;
+  }
+
+  @keyframes cta-glow-breathe {
+    0%,
+    100% {
+      opacity: 0.7;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta__glow {
+      animation: none;
+    }
   }
 </style>
