@@ -13,7 +13,7 @@ const t = getDictionary();
     <dl class="specs__grid" data-reveal data-reveal-delay="0.1">
       {
         SPECS.map((spec) => (
-          <div class="specs__row">
+          <div class:list={['specs__row', spec.wide && 'specs__row--wide']}>
             <dt class="specs__label">{spec.label}</dt>
             <dd class="specs__value">{spec.value}</dd>
           </div>
@@ -51,6 +51,21 @@ const t = getDictionary();
     font-family: var(--font-display);
     font-weight: 600;
     text-align: right;
+  }
+
+  /* Ligne pleine largeur pour les valeurs longues (ex. contenu du kit) :
+     libellé au-dessus, liste alignée à gauche — lecture nette, pas de rivière
+     de texte en drapeau à droite. */
+  .specs__row--wide {
+    grid-column: 1 / -1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+
+  .specs__row--wide .specs__value {
+    text-align: left;
+    font-weight: 500;
   }
 
   .specs__note {

@@ -37,7 +37,7 @@ export const fr = {
     title: 'Dessiné pour la route.\nConstruit pour durer.',
     body: 'Chaque détail du kit REMOLUX a été pensé pour un usage réel : remorques, plateaux, porte-engins. Une fixation magnétique puissante, des LED haute intensité et une autonomie qui tient la distance.',
     kitAlt:
-      'Kit REMOLUX complet : mallette de transport, deux feux LED, connecteurs d’attelage, câbles antivol en acier et notice d’utilisation en français.',
+      'Kit REMOLUX complet : mallette de transport rigide, deux feux LED magnétiques, émetteur 7 broches, câble de charge USB-C, câbles anti-chute en acier et notice d’utilisation en français.',
     showcaseCaption: 'RLX-WTL-01 — le kit complet, tel que livré.',
     hotspotsLabel: 'Découvrir les éléments du kit',
     hotspots: {
@@ -46,12 +46,12 @@ export const fr = {
         text: 'Deux feux LED à fixation magnétique — se posent et se retirent sans outil.',
       },
       plugs: {
-        label: 'Connecteurs d’attelage',
-        text: 'Connecteurs d’attelage inclus pour la liaison au véhicule.',
+        label: 'Émetteur 7 broches',
+        text: 'Se branche sur la prise 7 broches du véhicule pour la liaison sans fil.',
       },
       cables: {
-        label: 'Câbles antivol',
-        text: 'Câbles antivol en acier pour sécuriser chaque feu.',
+        label: 'Câbles anti-chute',
+        text: 'Câbles anti-chute en acier pour sécuriser chaque feu.',
       },
       manual: {
         label: 'Notice en français',
@@ -157,7 +157,7 @@ export const fr = {
     realPhoto: {
       title: 'Le kit réel, sans mise en scène.',
       caption: 'RLX-WTL-01 photographié tel quel, à la sortie de sa mallette.',
-      alt: 'Photo brute du kit REMOLUX réel : feux LED, connecteurs, câbles antivol, notice et packaging, posés sur un sol de parking.',
+      alt: 'Photo brute du kit REMOLUX réel : feux LED, émetteur 7 broches, câbles anti-chute en acier, notice et packaging, posés sur un sol de parking.',
     },
   },
   features: {
