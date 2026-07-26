@@ -30,7 +30,7 @@
   --glow-amber: 0 0 24px rgba(255, 180, 84, 0.4), 0 0 80px rgba(255, 180, 84, 0.15);
 
   /* ----- Typographie ----- */
-  --font-display: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
+  --font-display: 'Sora Variable', 'Sora', system-ui, sans-serif;
   --font-body: 'Inter Variable', 'Inter', system-ui, sans-serif;
 
   /* Échelle fluide (mobile → desktop) */
