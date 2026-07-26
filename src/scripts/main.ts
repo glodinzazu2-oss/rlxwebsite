@@ -12,6 +12,7 @@ import { playHeroIntro } from './animations/hero';
 import { initHeroAtmosphere } from './animations/heroAtmosphere';
 import { initHeroProduct } from './animations/heroProduct';
 import { initReactiveGlow } from './animations/reactiveGlow';
+import { initMagnetic } from './animations/magnetic';
 import { initTechnologyScroll } from './animations/technology';
 import { prefersReducedMotion } from './core/motion';
 import { getDictionary } from '../i18n';
@@ -79,6 +80,7 @@ function init(): void {
   initHeroAtmosphere();
   initHeroProduct();
   initReactiveGlow();
+  initMagnetic();
   runLoader(playHeroIntro);
 }
 
