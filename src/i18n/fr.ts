@@ -165,11 +165,14 @@ export const fr = {
         alt: 'Feux REMOLUX allumés sur un porte-engins transportant une mini-pelle sur un chantier — visuel d’illustration.',
       },
     ],
-    disclaimer: 'Mises en situation illustratives. Produit réel présenté ci-dessus.',
-    realPhoto: {
-      title: 'Le kit réel, sans mise en scène.',
-      caption: 'RLX-WTL-01 photographié tel quel, à la sortie de sa mallette.',
-      alt: 'Photo brute du kit REMOLUX réel : feux LED, émetteur 7 broches, câbles anti-chute en acier, notice et packaging, posés sur un sol de parking.',
+    disclaimer:
+      'Mises en situation illustratives. Le produit réel se manipule en 3D sur cette page.',
+    proof: {
+      eyebrow: 'Transparence',
+      title: 'Rien à cacher.',
+      caption:
+        'Nos modèles 3D sont fidèles au produit réel. Faites-le pivoter, zoomez sur chaque détail — et jugez la finition par vous-même.',
+      cta: 'Inspecter le kit en 3D',
     },
   },
   features: {
