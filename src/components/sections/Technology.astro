@@ -5,7 +5,15 @@ import SectionHeading from '../ui/SectionHeading.astro';
 const t = getDictionary();
 ---
 
-<section class="section tech" id="technologie" data-tech-section aria-labelledby="tech-title">
+<section
+  class="section tech"
+  id="technologie"
+  data-tech-section
+  data-glow-zone
+  aria-labelledby="tech-title"
+>
+  <span class="tech__glow" data-reactive-glow aria-hidden="true"></span>
+
   <div class="container tech__inner">
     <SectionHeading
       eyebrow={t.technology.eyebrow}
@@ -14,13 +22,16 @@ const t = getDictionary();
     />
 
     <div class="tech__timeline">
+      <span class="tech__track" aria-hidden="true"></span>
       <span class="tech__line" data-tech-line aria-hidden="true"></span>
       <ol class="tech__steps" role="list">
         {
           t.technology.steps.map((step) => (
             <li class="tech__step" data-tech-step>
-              <span class="tech__number">{step.number}</span>
-              <div>
+              <span class="tech__node" aria-hidden="true">
+                {step.number}
+              </span>
+              <div class="tech__body">
                 <h3 class="tech__step-title">{step.title}</h3>
                 <p class="tech__step-desc">{step.description}</p>
               </div>
@@ -34,59 +45,141 @@ const t = getDictionary();
 
 <style>
   .tech {
-    background:
-      radial-gradient(40% 50% at 85% 20%, rgba(255, 30, 45, 0.05), transparent 70%), var(--color-bg);
+    position: relative;
+    overflow: clip;
+    isolation: isolate;
+  }
+
+  /* Halo ambiant réactif (suit le curseur via reactiveGlow). */
+  .tech__glow {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      40% 50% at var(--gx, 82%) var(--gy, 18%),
+      rgba(255, 30, 45, 0.08),
+      transparent 70%
+    );
+    animation: tech-glow-breathe 7s var(--ease-in-out-soft) infinite;
   }
 
   .tech__inner {
+    position: relative;
+    z-index: 1;
     display: grid;
     gap: var(--space-8);
   }
 
   .tech__timeline {
+    --node: 48px;
     position: relative;
-    padding-left: var(--space-8);
   }
 
-  /* Ligne de progression animée au scroll (scaleY piloté par GSAP) */
+  /* Rail complet (faible) + ligne de progression qui « allume » le circuit. */
+  .tech__track,
   .tech__line {
     position: absolute;
-    left: 0;
-    top: 8px;
-    bottom: 8px;
+    left: calc(var(--node) / 2 - 1px);
+    top: calc(var(--node) / 2);
+    bottom: calc(var(--node) / 2);
     width: 2px;
     border-radius: var(--radius-full);
+  }
+  .tech__track {
+    background: var(--color-border);
+  }
+  .tech__line {
     background: var(--gradient-led);
     box-shadow: 0 0 12px rgba(255, 30, 45, 0.5);
+    transform-origin: top center;
   }
 
   .tech__steps {
     display: grid;
-    gap: var(--space-16);
-    max-width: 40rem;
+    gap: var(--space-12);
+    max-width: 42rem;
   }
 
   .tech__step {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: var(--node) 1fr;
     gap: var(--space-6);
     align-items: start;
   }
 
-  .tech__number {
+  /* Nœud LED : numéro d'étape sur le rail, éteint puis « allumé » au scroll. */
+  .tech__node {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: var(--node);
+    height: var(--node);
+    border-radius: var(--radius-full);
+    background: rgba(255, 30, 45, 0.08);
+    border: 1px solid var(--color-led-red);
+    color: var(--color-text);
     font-family: var(--font-display);
-    font-size: var(--text-sm);
     font-weight: 700;
-    color: var(--color-led-red);
-    padding-top: 0.3em;
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+    box-shadow:
+      0 0 0 4px rgba(255, 30, 45, 0.1),
+      0 0 18px rgba(255, 30, 45, 0.4);
+    transition:
+      border-color var(--duration-base) var(--ease-out-quart),
+      box-shadow var(--duration-base) var(--ease-out-quart),
+      color var(--duration-base) var(--ease-out-quart),
+      background-color var(--duration-base) var(--ease-out-quart);
+  }
+
+  /* Sous JS, les nœuds démarrent éteints et s'allument à l'entrée dans le viewport
+     (piloté par technology.ts). Sans JS / mouvement réduit : allumés d'emblée. */
+  .js .tech__step:not(.is-lit) .tech__node {
+    background: var(--color-bg);
+    border-color: var(--color-border);
+    color: var(--color-text-muted);
+    box-shadow: none;
   }
 
   .tech__step-title {
+    font-family: var(--font-display);
+    font-weight: 600;
     font-size: var(--text-xl);
+    letter-spacing: -0.01em;
     margin-bottom: var(--space-2);
+    padding-top: 0.35em;
   }
 
   .tech__step-desc {
     color: var(--color-text-secondary);
+    max-width: 44ch;
+    line-height: 1.55;
+  }
+
+  @keyframes tech-glow-breathe {
+    0%,
+    100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .tech__timeline {
+      --node: 42px;
+    }
+    .tech__step {
+      gap: var(--space-4);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tech__glow {
+      animation: none;
+    }
   }
 </style>
