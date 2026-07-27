@@ -43,11 +43,13 @@ const ignitePoints: Partial<Record<(typeof items)[number]['key'], { x: number; y
 
     <ul class="usages__grid" role="list">
       {
-        items.map((item, i) => (
-          <li class="usages__card" data-reveal data-reveal-delay={String(0.06 * (i % 2))}>
+        items.map((item) => (
+          <li class="usages__card">
             <div
               class="usages__media"
               data-tilt
+              data-mask-reveal
+              data-spotlight
               data-ignite-group={ignitePoints[item.key] ? '' : null}
             >
               <Picture
@@ -66,9 +68,14 @@ const ignitePoints: Partial<Record<(typeof items)[number]['key'], { x: number; y
                   aria-hidden="true"
                 />
               ))}
+              <span class="usages__mask" data-mask aria-hidden="true" />
             </div>
-            <h3 class="usages__title">{item.title}</h3>
-            <p class="usages__desc">{item.description}</p>
+            <h3 class="usages__title" data-reveal>
+              {item.title}
+            </h3>
+            <p class="usages__desc" data-reveal data-reveal-delay="0.06">
+              {item.description}
+            </p>
           </li>
         ))
       }
@@ -148,11 +155,53 @@ const ignitePoints: Partial<Record<(typeof items)[number]['key'], { x: number; y
     mix-blend-mode: screen;
     pointer-events: none;
     opacity: 0;
+    z-index: 2;
+  }
+
+  /* Reflet doux qui suit le curseur sur la surface (spotlight.ts pose --mx/--my). */
+  .usages__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: radial-gradient(
+      30% 40% at var(--mx, 50%) var(--my, 50%),
+      rgba(255, 255, 255, 0.16),
+      transparent 60%
+    );
+    mix-blend-mode: screen;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-base) var(--ease-out-quart);
+  }
+  .usages__media.is-spot::after {
+    opacity: 1;
+  }
+
+  /* Masque de révélation : recouvre l'image puis se retire vers le haut au scroll
+     (maskReveal.ts). Sans JS / mouvement réduit : rétracté, image visible. */
+  .usages__mask {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background: var(--color-bg);
+    transform: scaleY(0);
+    transform-origin: top;
+    pointer-events: none;
+  }
+  :global(html.js) [data-mask-reveal] .usages__mask {
+    transform: scaleY(1);
   }
 
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
     .usages__card:hover .usages__media :global(img) {
       transform: scale(1.04);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .usages__mask {
+      transform: scaleY(0) !important;
     }
   }
 
