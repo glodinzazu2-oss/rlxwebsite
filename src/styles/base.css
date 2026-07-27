@@ -69,7 +69,7 @@ h3 {
    pour garantir un contenu visible sans JavaScript (SEO + robustesse). */
 .js [data-reveal] {
   opacity: 0;
-  transform: translateY(32px);
+  transform: translateY(64px);
   will-change: opacity, transform;
 }
 

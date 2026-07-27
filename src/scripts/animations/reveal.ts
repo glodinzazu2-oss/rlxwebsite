@@ -20,11 +20,11 @@ export function initReveals(): void {
     gsap.to(el, {
       opacity: 1,
       y: 0,
-      duration: 1.1,
+      duration: 1.2,
       delay,
       scrollTrigger: {
         trigger: el,
-        start: 'top 85%',
+        start: 'top 80%',
         once: true,
       },
       onComplete: () => {

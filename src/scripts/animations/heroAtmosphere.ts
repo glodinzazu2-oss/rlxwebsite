@@ -98,9 +98,9 @@ export function initHeroAtmosphere(): void {
     const R = Math.max(W, H) * (0.5 + 0.06 * breathe);
     const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
     const i2 = intensity;
-    g.addColorStop(0, `rgba(255,54,68,${0.4 * i2})`);
-    g.addColorStop(0.22, `rgba(255,30,45,${0.19 * i2})`);
-    g.addColorStop(0.5, `rgba(120,36,54,${0.07 * i2})`);
+    g.addColorStop(0, `rgba(255,54,68,${0.54 * i2})`);
+    g.addColorStop(0.22, `rgba(255,30,45,${0.27 * i2})`);
+    g.addColorStop(0.5, `rgba(120,36,54,${0.1 * i2})`);
     g.addColorStop(1, 'rgba(5,6,9,0)');
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, H);
@@ -109,7 +109,7 @@ export function initHeroAtmosphere(): void {
     const ax = cx + W * 0.12;
     const ay = cy + H * 0.06;
     const ag = ctx.createRadialGradient(ax, ay, 0, ax, ay, R * 0.5);
-    ag.addColorStop(0, `rgba(255,180,84,${0.09 * i2})`);
+    ag.addColorStop(0, `rgba(255,180,84,${0.13 * i2})`);
     ag.addColorStop(1, 'rgba(255,180,84,0)');
     ctx.fillStyle = ag;
     ctx.fillRect(0, 0, W, H);

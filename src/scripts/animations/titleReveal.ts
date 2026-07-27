@@ -28,12 +28,12 @@ export function initTitleReveals(): void {
       { yPercent: 110 },
       {
         yPercent: 0,
-        duration: 1,
+        duration: 1.15,
         ease: 'power4.out',
-        stagger: 0.1,
+        stagger: 0.14,
         scrollTrigger: {
           trigger: title,
-          start: 'top 88%',
+          start: 'top 85%',
           once: true,
         },
       },
