@@ -11,7 +11,7 @@
 import { gsap, prefersReducedMotion } from '../core/motion';
 
 /** Force par défaut : fraction de la distance curseur→centre reportée sur l'élément. */
-const DEFAULT_STRENGTH = 0.3;
+const DEFAULT_STRENGTH = 0.5;
 /** Le contenu interne suit un peu plus (profondeur). */
 const INNER_RATIO = 0.4;
 

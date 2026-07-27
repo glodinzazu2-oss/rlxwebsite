@@ -9,10 +9,10 @@
  */
 import { gsap, prefersReducedMotion } from '../core/motion';
 
-/** Inclinaison maximale en degrés aux bords — assez pour être ressentie, jamais spectaculaire. */
-const MAX_TILT_DEG = 5;
-/** Léger soulèvement au survol, cohérent avec le hover des cartes (motion.md §8). */
-const LIFT_SCALE = 1.02;
+/** Inclinaison maximale en degrés aux bords — franche, pour un vrai ressenti 3D. */
+const MAX_TILT_DEG = 10;
+/** Soulèvement au survol, cohérent avec le hover des cartes (motion.md §8). */
+const LIFT_SCALE = 1.03;
 
 export function initTilt(): void {
   if (prefersReducedMotion()) return;
